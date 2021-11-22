@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <Compile Remove="Admin\Database\MYSQL\Building\**" />
+    <Compile Remove="Admin\Database\MYSQL\Locker\**" />
+    <Compile Remove="Admin\Database\MYSQL\Parking\**" />
+    <EmbeddedResource Remove="Admin\Database\MYSQL\Building\**" />
+    <EmbeddedResource Remove="Admin\Database\MYSQL\Locker\**" />
+    <EmbeddedResource Remove="Admin\Database\MYSQL\Parking\**" />
+    <None Remove="Admin\Database\MYSQL\Building\**" />
+    <None Remove="Admin\Database\MYSQL\Locker\**" />
+    <None Remove="Admin\Database\MYSQL\Parking\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kztek_Core\Kztek_Core.csproj" />
+    <ProjectReference Include="..\Kztek_Model\Kztek_Model.csproj" />
+    <ProjectReference Include="..\Kztek_Data\Kztek_Data.csproj" />
+    <ProjectReference Include="..\Kztek_Library\Kztek_Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Api\Database\MYSQL\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <ReleaseVersion>1.0.2</ReleaseVersion>
+  </PropertyGroup>
+
+</Project>

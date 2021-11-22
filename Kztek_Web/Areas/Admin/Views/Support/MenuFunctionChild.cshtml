@@ -1,0 +1,35 @@
+﻿@model Kztek_Library.Models.AdminViewModel
+
+@if (Model != null && Model.Childs.Any())
+{
+    <ul style="list-style-type:none;" class="submenu1">
+
+        @foreach (var item in Model.Childs)
+        {
+            var strActive = item.Active ? "" : "text-decoration:line-through";
+            var child = Model.Menus.Where(n => n.ParentId.Equals(item.Id)).ToList();
+        <li>
+            <input type="checkbox" name="chkCheckBox" class="chkCheckBox ace" value="@item.Id" @string.Format("{0}", (Model.Selecteds != null && Model.Selecteds.Any(n => n.MenuFunctionId == item.Id)) ? "checked" : "")/>
+            <span class="showButton lbl" style="@strActive">
+                @item.MenuName
+            </span>
+            <span class="pull-right">
+                @await Html.PartialAsync("ShowGroupName", new Kztek_Library.Models.GroupNameModel() {
+                              GroupList = item.MenuGroupListId,
+                              IsSystem = item.isSystem
+                           })
+            </span>
+            @if (child.Any())
+            {
+                @await Html.PartialAsync("MenuFunctionChild", new Kztek_Library.Models.AdminViewModel() {
+                               Childs = child,
+                               Config = Model.Config,
+                               Menus = Model.Menus,
+                               Selecteds = Model.Selecteds
+                           })
+            }
+        </li>
+        }
+
+    </ul>
+}

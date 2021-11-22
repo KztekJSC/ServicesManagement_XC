@@ -1,0 +1,19 @@
+﻿<div class="ace-settings-container" id="ace-settings-container" style="position: fixed; top: 300px;">
+    <div class="ace-settings-box clearfix open" id="ace-settings-box">
+        <!-- /.pull-left -->
+        <div class="bg-rightbox">
+            <div class="clearfix lineButton">
+                @{
+                    var list = Kztek_Library.Helpers.StaticList.GroupMenuList();
+                    foreach (var item in list)
+                    {
+                        <p>
+                            <span>@item.ItemValue</span> - <span>@item.ItemText</span>
+                        </p>
+                    }
+                }
+            </div>
+        </div>
+        <!-- /.pull-left -->
+    </div><!-- /.ace-settings-box -->
+</div>

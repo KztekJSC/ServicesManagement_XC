@@ -1,0 +1,46 @@
+﻿@model Kztek_Library.Models.AdminViewModel
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="treeCustom" style="list-style-type:none">
+            @if (Model != null && Model.Menus.Any())
+            {
+                var listParent = Model.Menus.Where(c => c.ParentId == "0").ToList();
+                if (listParent.Any())
+                {
+                    foreach (var item0 in listParent)
+                    {
+                        var strActive = item0.Active ? "" : "text-decoration:line-through";
+                        var child = Model.Menus.Where(c => c.ParentId == item0.Id).ToList();
+                        <li>
+                            <input type="checkbox" name="chkCheckBox" class="chkCheckBox ace" value="@item0.Id" @string.Format("{0}", (Model.Selecteds != null && Model.Selecteds.Any(n => n.MenuFunctionId == item0.Id)) ? "checked" : "") />
+
+                            <span class="showButton lbl" style="@strActive">
+                                @item0.MenuName
+                            </span>
+
+                            <span class="pull-right">
+                                @await Html.PartialAsync("ShowGroupName", new Kztek_Library.Models.GroupNameModel() {
+                              GroupList = item0.MenuGroupListId,
+                              IsSystem = item0.isSystem
+                           })
+                            </span>
+
+                            @if (child.Any())
+                            {
+                                @await Html.PartialAsync("MenuFunctionChild", new Kztek_Library.Models.AdminViewModel() {
+                               Childs = child,
+                               Config = Model.Config,
+                               Menus = Model.Menus,
+                               Selecteds = Model.Selecteds
+                           })
+                            }
+                        </li>
+                    }
+                }
+
+            }
+        </ul>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+

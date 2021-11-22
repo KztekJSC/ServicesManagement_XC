@@ -1,0 +1,195 @@
+﻿@using Kztek_Library.Helpers
+
+@model Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tblCamera>
+
+@{
+    var action = Model.Action;
+    var controller = Model.Controller;
+    ViewBag.Title = action.Contains("Create") ? await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:CREATE" })
+         : await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" });
+    int pn = Model.Page;
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm(action, controller, FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.Hidden("CameraID", Model.Model.id.ToString())
+            @Html.Hidden("SaveAndCountinue", false)
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> IP <span style="color:red">(*)</span></label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("video_Source", Model.Model.video_Source, new { @class = "form-control", @placeholder = "IP" })
+                    @Html.ValidationMessage("video_Source", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Username" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("auth_Login", Model.Model.auth_Login, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:Username") })
+                    @Html.ValidationMessage("UserName", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:CameraName" })<span class="error">*</span> </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("camera_Name", Model.Model.camera_Name, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:CameraName") })
+                    @Html.ValidationMessage("camera_Name", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:PCName" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_1)
+
+                </div>
+            </div>*@
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:HttpURL" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("HttpURL", Model.Model.u, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:HttpURL") })
+                    @Html.ValidationMessage("HttpURL", "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:HttpPort" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("http_Port", Model.Model.http_Port, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:HttpPort") })
+                    @Html.ValidationMessage("http_Port", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:RtspPort" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("RtspPort", Model.Model., new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:RtspPort") })
+                    @Html.ValidationMessage("RtspPort", "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Password" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @*@{
+                        var _pass = "";
+                        if (!string.IsNullOrWhiteSpace(Model.Model.auth_Password) && !action.Contains("Create"))
+                        {
+                            _pass = Kztek_Library.Security.CryptoHelper.Decrypt(Model.Model.auth_Password, true);
+                        }
+                    }*@
+                    @Html.TextBox("auth_Password", Model.Model.auth_Password, new { @class = "form-control", @*@type = "password",*@@placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:Password") })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Channel" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("chanel", Model.Model.chanel, new { @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:Channel") })
+                    @Html.ValidationMessage("chanel", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> MotionZone</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("MotionZone", Model.Model.MotionZone, new { @class = "form-control", @placeholder = "MotionZone" })
+                    @Html.ValidationMessage("MotionZone", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> Config</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("Config", Model.Model.Config, new { @class = "form-control", @placeholder = "Config" })
+                    @Html.ValidationMessage("Config", "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:CameraType" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_2)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:StreamType" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_3)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Resolution" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("Resolution", Model.Model.resolution, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:Resolution") })
+                    @Html.ValidationMessage("Resolution", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:FrameRate" })</label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBox("FrameRate", Model.Model.FrameRate, new { @placeholder = await LanguageHelper.GetLanguageText("BODY:TABLE:FrameRate") })
+                    @Html.ValidationMessage("FrameRate", "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">SDK</label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_4)
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:EnableRecording" })</label>
+                <div class="col-sm-8">
+                    <label class="block">
+                        @Html.CheckBox("EnableRecording", Model.Model.EnableRecording, new { @class = "ace input-lg" })
+                        <span class="lbl"> </span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:IsFaceRecognize" })</label>
+                <div class="col-sm-8">
+                    <label class="line-height-250">
+                        @Html.CheckBox("IsFaceRecognize", Model.Model.IsFaceRecognize, new { @class = "ace input-lg" })
+                        <span class="lbl"> </span>
+                    </label>
+                </div>
+            </div>*@
+
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:INACTIVE" }) </label>
+                <div class="col-sm-8">
+                    <label class="block">
+                        @Html.CheckBox("Inactive", Model.Model.Inactive, new { @class = "ace input-lg" })
+                        <span class="lbl"> </span>
+                    </label>
+                </div>
+            </div>*@
+
+
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = controller,
+          ActionName = action,
+          RecordId = "",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = null
+      })
+
+        }
+    </div>
+</div>
+

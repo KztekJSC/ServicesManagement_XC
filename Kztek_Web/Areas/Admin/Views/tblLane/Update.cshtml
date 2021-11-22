@@ -1,0 +1,33 @@
+﻿
+@model Kztek_Model.Models.tblLane_Submit
+
+@await Html.PartialAsync("Partial_Action", new Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tblLane_Submit>() {
+    Model = Model,
+    Controller = "tblLane",
+    Action = "Update",
+    Page = 1,
+    Data_Select_1 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.camera_LPR_1,
+    Data_Select_2 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.camera_LPR_2,
+    Data_Select_3 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.camera_Panorama_1,
+    Data_Select_4 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.camera_Panorama_2
+
+})
+@section scripts{
+<script src="~/modules/Parking/tblLaneController.js"></script>
+<script>
+        $(document).ready(function () {
+            @*tblLaneController.ShowCam('@Model.C1','@Model.C2','@Model.C3','@Model.C4','@Model.C5','@Model.C6');
+
+            $("#LaneType").change(function () {
+
+                tblLaneController.ShowCam('@Model.C1','@Model.C2','@Model.C3','@Model.C4','@Model.C5','@Model.C6');
+            })
+
+              $("#PCID").change(function () {
+              tblLaneController.ShowCam('@Model.C1','@Model.C2','@Model.C3','@Model.C4','@Model.C5','@Model.C6');
+              });
+
+             $("#LaneType").val('@Model.LaneType');*@
+        });
+</script>
+}

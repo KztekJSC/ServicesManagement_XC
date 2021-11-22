@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <ReleaseVersion>1.0.2</ReleaseVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.UnitOfWork" Version="3.1.0" />
+
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kztek_Core\Kztek_Core.csproj" />
+    <ProjectReference Include="..\Kztek_Model\Kztek_Model.csproj" />
+    <ProjectReference Include="..\Kztek_Library\Kztek_Library.csproj" />
+  </ItemGroup>
+
+</Project>

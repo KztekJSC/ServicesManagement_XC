@@ -1,0 +1,160 @@
+﻿@using Kztek_Library.Helpers
+@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tblPC>
+
+@{
+  
+    ViewBag.Title = await Component.InvokeAsync("Language", new { path = "BODY:TITLE:tblPC" });
+    var controller = "tblPC";
+    string selected = (string)ViewBag.selectedIdValue;
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Index", controller, FormMethod.Get, new { id = "frmPC" }))
+    {
+        @Html.Hidden("group", (string)ViewBag.groupValue)
+        @Html.Hidden("selectedId", selected)
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="@await LanguageHelper.GetLanguageText("BODY:SEARCH:KEYWORD")" class="form-control" />
+        </div>
+       
+        <div class="col-md-6 col-lg-6 col-xs-12 col-sm-12 divboxmd">
+            <button class="btn btn-white btn-primary" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await LanguageHelper.GetLanguageText("BODY:BUTTON:SEARCH") </button>
+            <a href='@Url.Action("Index", controller)' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                @await LanguageHelper.GetLanguageText("BODY:BUTTON:RESET")
+            </a>
+        </div>
+    }
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+           ControllerName = controller,
+           ActionName = "Create",
+           RecordId = "",
+           model = new { AreaCode = ViewBag.AreaCodeValue },
+           Auth_Value = authModel
+       })
+    </div>
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-left">@await LanguageHelper.GetLanguageText("COMPUTER:ComputerName")</th>
+                    <th class="text-left hidden-480">@await LanguageHelper.GetLanguageText("COMPUTER:IPAdd")</th>               
+                    <th class="text-left hidden-480">@await LanguageHelper.GetLanguageText("COMPUTER:Description")</th>                  
+                    <th class="text-left" width="80"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        <tr class="">
+                            <td class="text-left">
+                                @item.pc_Name
+                            </td>
+
+                            <td class="text-left hidden-480">
+                                @item.ip_Address
+                            </td>
+
+                           
+                            <td class="text-left hidden-480">
+                                @item.description
+                            </td>
+
+                            
+                            <td class="center">
+                                <div class="btn-group">
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+            ControllerName = controller,
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.id, AreaCode = ViewBag.AreaCodeValue },
+            Auth_Value = authModel
+        })
+
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = controller,
+          ActionName = "Delete",
+          RecordId = item.id.ToString(),
+          model = null,
+          Auth_Value = authModel
+      })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!-- /.span -->
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", controller, new
+           {
+               page = x,
+               gate = ViewBag.gateValue,
+               key = ViewBag.keyValue,
+               AreaCode = ViewBag.AreaCodeValue,
+               selectedId = selected
+           }))
+            </div>
+        </div>
+    }
+
+    <input type="hidden" id="Confirm_delete" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:CONFIRM_DELETE" })" />
+    <input type="hidden" id="del_Success" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:SUCCESS" })" />
+    <input type="hidden" id="noti" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:NOTIFICATION" })" />
+
+</div><!-- /.row -->
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+             $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                 bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/Admin/' + '@controller' + '/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+        });
+    </script>
+}

@@ -1,0 +1,26 @@
+﻿@model Kztek_Model.Models.tblPC
+
+@await Html.PartialAsync("Partial_Action", new Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tblPC>()
+{
+    Model = Model,
+    Controller = "tblPC",
+    Action = "Create",
+    Page = 1,
+    //Data_SelectMulti_1 = (Kztek_Library.Models.SelectListModel_Multi)ViewBag.Gates,
+})
+@section scripts{
+    <script src="~/modules/Parking/tblPCController.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Countinue").click(function () {
+                $("#SaveAndCountinue").val('true');
+            });
+
+            $("#BackToList").click(function () {
+                $("#SaveAndCountinue").val('false');
+            });
+        });
+    </script>
+}
+
+

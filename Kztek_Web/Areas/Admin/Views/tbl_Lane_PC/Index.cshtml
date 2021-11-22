@@ -1,0 +1,157 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Lane_PC>
+@using Kztek_Library.Helpers
+
+@{
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+
+    var lPC = (List<Kztek_Model.Models.tblPC>)ViewBag.getPC;
+    var lLane = (List<Kztek_Model.Models.tblLane>)ViewBag.getLane;
+
+}
+
+<div class="page-header">
+    <h1>
+        Danh sách làn-máy tính(<span>@Model.TotalIem</span>)
+    </h1>
+</div>
+
+
+@using (Html.BeginForm("Index", "tbl_Lane_PC", FormMethod.Get, new { id = "frmLane_Pc" }))
+{
+
+
+}
+
+<div class="hr hr-18 dotted hr-24"></div>
+<div class="row">
+    <div class="col-xs-12">
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+           ControllerName = "tbl_Lane_PC",
+           ActionName = "Create",
+           RecordId = "",
+           model = new { },
+           Auth_Value = authModel
+       })
+    </div>
+</div>
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">Máy tính</th>
+
+                    <th class="text-center">Làn</th>
+
+                    <th class="text-center"> </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        <tr class="">
+                            <td class="text-left">
+                                @{
+                                    var objPC = lPC != null ? lPC.FirstOrDefault(n => n.id.ToString().ToLower() == item.pc_ID.ToLower()) : null;
+                                }
+                                @if (objPC != null)
+                                {
+                                    <span>@objPC.pc_Name</span>
+                                }
+
+                            </td>
+                            <td class="text-left">
+                                @{
+                                    var ob = item.lane_ID.Split(',');
+                                    foreach (var item1 in ob)
+                                    {
+                                        var objLane = lLane != null ? lLane.FirstOrDefault(n => n.id.ToString().ToLower() == item1.ToLower()) : null;
+                                        if (objLane != null)
+                                        {
+                                            <span>@objLane.lane_Name <br/></span>
+                                        }
+                                    }
+                                }
+
+
+                            </td>
+
+
+
+                            <td class="center">
+                                <div class="btn-group">
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+            ControllerName = "tbl_Lane_PC",
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.id.ToString() },
+            Auth_Value = authModel
+        })
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = "tbl_Lane_PC",
+          ActionName = "Delete",
+          RecordId = item.id.ToString().ToLower(),
+          model = null,
+          Auth_Value = authModel
+        })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!-- /.span -->
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "tbl_Lane_PC", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               pc = ViewBag.pcValue
+           }))
+            </div>
+        </div>
+    }
+</div><!-- /.row -->
+
+
+<input type="hidden" id="Confirm_delete" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:CONFIRM_DELETE")" />
+<input type="hidden" id="del_Success" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:SUCCESS")" />
+<input type="hidden" id="noti" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:NOTIFICATION")" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/Admin/tbl_Lane_PC/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+        });
+    </script>
+}

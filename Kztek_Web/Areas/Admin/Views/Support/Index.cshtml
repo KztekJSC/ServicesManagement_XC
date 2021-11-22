@@ -1,0 +1,151 @@
+@model Kztek_Library.Models.AdminViewModel
+
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Areas/Admin/Views/Shared/_SupportLayout.cshtml";
+
+}
+
+<style>
+    .table-fixed thead {
+        width: 100%;
+    }
+
+    .table-fixed tbody {
+        height: 400px;
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+        display: block;
+    }
+
+        .table-fixed tbody td, .table-fixed thead > tr > th {
+            float: left;
+            border-bottom-width: 0;
+        }
+</style>
+
+<div class="row">
+    <div class="col-xs-4">
+        <h3 class="header smaller lighter blue">Thông tin hệ thống</h3>
+        <div>
+            @if (Model != null && Model.Config != null)
+            {
+                <p>Tên công ty: <strong>@Model.Config.Company</strong> </p>
+                <p>Tên biểu phí: <strong>@Model.Config.FeeName</strong></p>
+
+                <p>
+                    <label>
+                        <input class="ace" type="checkbox" name="chkAuthInView" @string.Format("{0}", Model.Config.isAuthInView ? "checked" : "") onclick="AuthInView()" />
+                        <span class="lbl">Phân quyền nhóm thẻ</span>
+                    </label>
+                </p>
+
+                <p>
+                    <label>
+                        <input class="ace" type="checkbox" name="chkAutoCapture" @string.Format("{0}", Model.Config.IsAutoCapture ? "checked" : "") onclick="AutoCapture()" />
+                        <span class="lbl">Chụp ảnh tự động</span>
+                    </label>
+                </p>
+            }
+        </div>
+    </div>
+    <div class="col-xs-8">
+        <h3 class="header smaller lighter blue">Danh mục hệ thống</h3>
+        <div style="margin-bottom:10px">
+            <button type="button" class="btn btn-sm btn-success" onclick="saveConfig()">
+                <i class="fa fa-save bigger-120"></i>
+                Cập nhật thay đổi
+            </button>
+        </div>
+        <div style="overflow-y:scroll;height:500px;position:relative">
+            <div id="boxMenuFunction">
+
+                @await Html.PartialAsync("MenuFunctionParent", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function AuthInView() {
+          
+            $.ajax({
+                url: '/Admin/Support/AuthInView',
+                data: { isAuthInView: $("input[name=chkAuthInView]").is(":checked") },
+                type: 'json',
+                //async:false,
+                success: function (data) {
+                    if (data.isSuccess) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+        function AutoCapture() {
+
+            $.ajax({
+                url: '/Admin/Support/AutoCapture',
+                data: { isAutoCapture: $("input[name=chkAutoCapture]").is(":checked") },
+                type: 'json',
+                //async:false,
+                success: function (data) {
+                    if (data.isSuccess) {
+                        toastr.success(data.message);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+
+        function saveConfig() {
+            if (confirm('Bạn chắc chắn muốn cho đơn vị sử dụng các chức năng này?')) {
+                var str = [];
+
+                $("input[name='chkCheckBox']").each(function () {
+                    var cmd = $(this);
+                    var id = cmd.prop("value");
+                    if ($(this).is(":checked")) {
+                        str.push(id);
+                    }
+                });
+
+                $.ajax({
+                    url: '/Admin/Support/saveNewConfig',
+                    data: { str: str },
+                    type: 'json',
+                    async:false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.isSuccess) {
+                            toastr.success(data.message);
+                        } else {
+                            toastr.error(data.message);
+                        }
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            $(".showButton").click(function () {
+                var cmd = $(this);
+                cmd.parent().find('ul li span.showButton').parent().parent().toggle();
+            });
+
+            //Check box
+            $(".chkCheckBox").click(function () {
+                var cmd = $(this);
+                cmd.parent().find('ul li input[type=checkbox]').prop('checked', cmd.is(':checked'));
+            });
+
+        });
+    </script>
+}
+

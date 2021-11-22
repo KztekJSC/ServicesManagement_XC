@@ -1,0 +1,13 @@
+﻿
+@model Kztek_Model.Models.tblCamera
+
+@await Html.PartialAsync("Partial_Action", new Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tblCamera>() {
+    Model = Model,
+    Controller = "tblCamera",
+    Action = "Update",
+    Page = 1,
+    Data_Select_1 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.PCs,
+    Data_Select_2 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.CameraType,
+    Data_Select_3 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.StreamType,
+    Data_Select_4 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.SDK
+})

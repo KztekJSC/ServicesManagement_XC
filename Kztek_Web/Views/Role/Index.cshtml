@@ -1,0 +1,122 @@
+@model List<Kztek_Model.Models.Role>
+@using Kztek_Library.Helpers
+
+@{
+    ViewBag.Title = "Danh sách vai trò";
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
+}
+
+<div class="page-header">
+    <h1>
+        @await Component.InvokeAsync("Language", new { path = "BODY:TITLE:Role" })
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+            ControllerName = "Role",
+            ActionName = "Create",
+            RecordId = "",
+            model = new { AreaCode = ViewBag.AreaCodeValue },
+            Auth_Value = authModel
+        })
+    </div>
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:TITLE" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Status" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" })</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-left">
+                                @item.RoleName
+                            </td>
+
+                            <td class="text-left">
+                                @item.Description
+                            </td>
+
+                            <td class="center">
+                                @if (item.Active == true)
+                                {
+                                    <span class="label label-sm label-success">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ACTIVE" })</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-sm label-warning">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:INACTIVE" })</span>
+                                }
+                            </td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+                ControllerName = "Role",
+                ActionName = "Update",
+                RecordId = "",
+                model = new { id = item.Id, AreaCode = ViewBag.AreaCodeValue },
+                Auth_Value = authModel
+            })
+
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = "Role",
+          ActionName = "Delete",
+          RecordId = item.Id,
+          model = null,
+          Auth_Value = authModel
+      })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<input type="hidden" id="Confirm_delete" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:CONFIRM_DELETE")" />
+<input type="hidden" id="del_Success" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:SUCCESS")" />
+<input type="hidden" id="noti" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:NOTIFICATION")" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/Role/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+        });
+    </script>
+}

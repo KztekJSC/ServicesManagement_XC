@@ -1,0 +1,168 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tblLane>
+@using Kztek_Library.Helpers
+
+@{
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    var l = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.LaneTypes;
+    var lPC = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.PCs;
+}
+
+<div class="page-header">
+    <h1>
+        @await Component.InvokeAsync("Language", new { path = "BODY:TITLE:tblLane" }) (<span>@Model.TotalIem</span>)
+    </h1>
+</div>
+
+
+@using (Html.BeginForm("Index", "tblLane", FormMethod.Get, new { id = "frmFee" }))
+{
+    <div class="row">
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label">  @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" }) </label>
+            <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" />
+        </div>
+
+        @*<div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label">  @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:PCName" }) </label>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.PCs)
+        </div>*@
+
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 divboxmd">
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+     ControllerName = "tblLane",
+     ActionName = "Search",
+     RecordId = "",
+     model = new { AreaCode = ViewBag.AreaCodeValue },
+     Auth_Value = authModel
+ })
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = "tblLane",
+          ActionName = "Reset",
+          RecordId = "",
+          FunctionName = "Index",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = authModel
+      })
+        </div>
+    </div>
+}
+
+<div class="hr hr-18 dotted hr-24"></div>
+<div class="row">
+    <div class="col-xs-12">
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+           ControllerName = "tblLane",
+           ActionName = "Create",
+           RecordId = "",
+           model = new { },
+           Auth_Value = authModel
+       })
+    </div>
+</div>
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" >Mã làn</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:LANE" })</th>
+                   <th class="text-center">Miêu tả</th>
+
+                    <th class="text-center"> </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                <tr class="">
+                    <td class="text-left">
+                        @item.lane_Code
+                    </td>
+                    <td class="text-left">
+                        @item.lane_Name
+                    </td>
+                    <td class="text-left">
+                        @item.description
+                    </td>
+                    <td class="center">
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+    ControllerName = "tblLane",
+    ActionName = "Update",
+    RecordId = "",
+    model = new { id = item.id.ToString() },
+    Auth_Value = authModel
+})
+
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+  ControllerName = "tblLane",
+  ActionName = "Delete",
+  RecordId = item.id.ToString(),
+  model = null,
+  Auth_Value = authModel
+})
+                        </div>
+                    </td>
+                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!-- /.span -->
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "tblLane", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               pc = ViewBag.pcValue
+           }))
+            </div>
+        </div>
+    }
+</div><!-- /.row -->
+
+<input type="hidden" id="Confirm_delete" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:CONFIRM_DELETE")" />
+<input type="hidden" id="del_Success" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:SUCCESS")" />
+<input type="hidden" id="noti" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:NOTIFICATION")" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/Admin/tblLane/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+        });
+    </script>
+}

@@ -1,0 +1,4 @@
+﻿@{
+    var langLst = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.Lstlanguage;
+}
+@await Component.InvokeAsync("SelectList", langLst)

@@ -1,0 +1,197 @@
+﻿
+@using Kztek_Model.Models
+
+@model Kztek_Core.Models.GridModel<tblLog>
+
+@{
+    ViewBag.Title = "Hệ thống";
+    //string groupID = (string)ViewBag.GroupID;
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
+}
+
+<div class="page-header">
+    <h1>
+        @await Component.InvokeAsync("Language", new { path = "BODY:TITLE:tblLog" }) (<span>@Model.TotalIem</span>)
+    </h1>
+</div>
+
+@using (Html.BeginForm("Index", "tblLog", FormMethod.Get))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+    @*@Html.Hidden("group", groupID)*@
+    <div class="row">
+          <div class="col-md-2 col-xs-12 divboxmd">
+                <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" }) </label>           
+                <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" />
+            </div>
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:FROMDATE" })</label>         
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control dtp_input" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:TODATE" })</label>
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control dtp_input" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label">
+                @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" })
+            </label>
+            <div>
+                @await Component.InvokeAsync("MultiSelect", ViewBag.ActionDT)
+                @Html.Hidden("actions")
+            </div>
+        </div>
+       
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label">
+                @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:USER" })
+            </label>
+            <div>
+                @await Component.InvokeAsync("MultiSelect", ViewBag.UserDT)
+                @Html.Hidden("user")
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 divboxmd">
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel() {
+           ControllerName = "tblLog",
+           ActionName = "Search",
+           RecordId = "",
+           model = new { AreaCode = ViewBag.AreaCodeValue },
+           AreaCode = ViewBag.AreaCodeValue,
+     Auth_Value = authModel
+       })
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel() {
+           ControllerName = "tblLog",
+           ActionName = "Reset",
+           RecordId = "",
+           FunctionName = "Index",
+           model = new { AreaCode = ViewBag.AreaCodeValue },
+           AreaCode = ViewBag.AreaCodeValue,
+          Auth_Value = authModel
+       })
+        </div>
+    </div>
+}
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12" style="overflow:auto;">
+        <table id="simple-table" class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ImportDate" }) </th>
+                    <th class="center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ComputerName" }) </th>
+                    <th class="center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Username" }) </th>
+                    <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:SubSystemCode" }) </th>
+                    <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ObjectName" }) </th>
+                    <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" }) </th>
+                    <th class="text-left">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" }) </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        <tr>
+                            <td class="text-left hidden-480">
+                                @Convert.ToDateTime(item.Date).ToString("dd/MM/yyyy HH:mm:ss")
+                            </td>
+
+                            <td class="text-left">
+                                @item.ComputerName
+                            </td>
+
+                            <td class="text-left">
+                                @item.UserName
+                            </td>
+
+                            <td class="text-left hidden-480">
+                                @item.SubSystemCode
+                            </td>
+
+                            <td class="text-left hidden-480">
+                                @item.ObjectName
+                            </td>
+
+                            <td class="text-left hidden-480">
+                                @item.Actions
+                            </td>
+                            <td class="text-left">
+                                @item.Description
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!-- /.span -->
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "tblLog", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               user = ViewBag.UserId,
+               actions = ViewBag.actionsValue,
+               fromdate = ViewBag.fromdateValue,
+               todate = ViewBag.todateValue,
+               group = ViewBag.GroupID,
+               AreaCode = ViewBag.AreaCodeValue
+           }))
+            </div>
+        </div>
+    }
+</div><!-- /.row -->
+@*<input type="hidden" name="_nonSelectedText" value="@DictionaryAction["nonSelect"]" />
+<input type="hidden" name="_allSelectedText" value="@DictionaryAction["allSelect"]" />
+<input type="hidden" name="_nSelectedText" value="@DictionaryAction["nSelect"]" />*@
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+
+
+            $('#ddlactions').change(function () {
+                var str = '';
+                var cmd = $(this);
+                cmd.parent().find('ul.multiselect-container li.active').each(function () {
+                    var _cmd = $(this);
+                    str += _cmd.find('input[type=checkbox]').val() + ',';
+                });
+                $('#actions').val(str);
+            });
+
+            $('#ddluser').change(function () {
+                var str = '';
+                var cmd = $(this);
+                cmd.parent().find('ul.multiselect-container li.active').each(function () {
+                    var _cmd = $(this);
+                    str += _cmd.find('input[type=checkbox]').val() + ',';
+                });
+                $('#user').val(str);
+            });
+        });
+    </script>
+}

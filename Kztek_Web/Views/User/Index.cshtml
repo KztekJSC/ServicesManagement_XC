@@ -1,0 +1,191 @@
+@model Kztek_Core.Models.GridModel<Kztek_Model.Models.User>
+@using Kztek_Library.Helpers
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    var roles = (List<Kztek_Model.Models.Role_Custom>)ViewBag.Roles;
+    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
+}
+
+<div class="page-header">
+    <h1>
+        @await Component.InvokeAsync("Language", new { path = "BODY:TITLE:User" })
+    </h1>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Index", "User", FormMethod.Get, new { id = "frmUser" }))
+    {
+        @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+        @Html.Hidden("export", "0")
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" })" class="form-control" />
+        </div>
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <button class="btn btn-white btn-primary" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("Index", "User",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:RESET" })
+            </a>
+        </div>
+    }
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- <a href='@Url.Action("Create", "User")' class="btn btn-sm btn-success">
+                <i class=" fa fa-plus"></i> Thêm mới
+            </a> -->
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+            ControllerName = "User",
+            ActionName = "Create",
+            RecordId = "",
+            model = new { AreaCode = ViewBag.AreaCodeValue },
+            Auth_Value = authModel
+        })
+
+    </div>
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Username" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Name" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:TypeUser" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:AccessPermission" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Status" })</th>
+                    <th class="text-center">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" })</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                        var lstRole = roles.Where(n => n.UserId == item.Id);
+                        var strRole = lstRole != null && lstRole.Count() > 0 ? string.Join("", lstRole.Select(n => string.Format("{0}", !string.IsNullOrEmpty(n.RoleName) ? string.Format("<p><i class=\"ace-icon fa fa-caret-right\"></i> {0}</p>", n.RoleName) : ""))) : "";                      
+                        <tr>
+                            <td class="text-left">
+                                @item.Username
+                            </td>
+
+                            <td class="text-left">
+                                @item.Name
+                            </td>
+                            <td class="center">
+                                @if (item.Admin == true)
+                                {
+                                    <span class="label label-sm label-danger">Admin</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-sm label-primary">User</span>
+                                }
+                            </td>
+                             <td class="text-left">
+                                 @if (!string.IsNullOrEmpty(strRole))
+                                 {
+                                     @Html.Raw(strRole)
+                                 }
+                              
+                            </td>
+                            <td class="center">
+                                @if (item.Active == true)
+                                {
+                                    <span class="label label-sm label-success">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ACTIVE" })</span>
+                                }
+                                else
+                                {
+                                    <span class="label label-sm label-warning">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:INACTIVE" })</span>
+                                }
+                            </td>
+                            <td class="center">
+                                <div class="btn-group">
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+            ControllerName = "User",
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.Id, AreaCode = ViewBag.AreaCodeValue },
+            Auth_Value = authModel
+        })
+
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = "User",
+          ActionName = "Delete",
+          RecordId = item.Id,
+          model = null,
+          Auth_Value = authModel
+      })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+
+
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "User", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               AreaCode = ViewBag.AreaCodeValue
+           }))
+            </div>
+        </div>
+    }
+</div>
+<input type="hidden" id="Confirm_delete" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:CONFIRM_DELETE")" />
+<input type="hidden" id="del_Success" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:REMOVE:SUCCESS")" />
+<input type="hidden" id="noti" value="@await LanguageHelper.GetLanguageText("MESSAGEREPORT:NOTIFICATION")" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/User/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+
+            $(".btnExport").click(function () {
+                //JSHelper.AJAX_SendRequest('/User/Export', null);
+                $("#export").val("1");
+
+                $("#frmUser").submit();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,89 @@
+﻿
+
+@using Kztek_Library.Helpers
+@model Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tbl_Lane_PC_Custom>
+
+@{
+    var action = Model.Action;
+    var controller = Model.Controller;
+    ViewBag.Title = action.Contains("Create") ? await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:CREATE" })
+        : await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" });
+    int pn = Model.Page;
+    var computername = await Component.InvokeAsync("Language", new { path = "COMPUTER:ComputerName" });
+
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm(action, controller, FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.Hidden("key", (string)ViewBag.keyValue)
+            @Html.Hidden("lanes", Model.Model != null ? Model.Model.lane_ID : "")
+            @Html.Hidden("pcid", Model.Model != null ? Model.Model.pc_ID : "")
+            @Html.Hidden("laneid", Model.Model != null ? Model.Model.lane_ID : "")
+
+
+            @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+            @*@Html.Hidden("gates", Model.Model != null ? Model.Model.GateID : "")*@
+
+            @if (action.Contains("Create"))
+            {
+                @Html.Hidden("SaveAndCountinue", false)
+            }
+            else
+            {
+                @Html.HiddenFor(n => n.Model.id)
+                @Html.Hidden("page", pn)
+            }
+
+
+
+
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> Máy tính </label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_2)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> Làn </label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", Model.Data_Select_1)
+                </div>
+            </div>
+
+
+
+
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = controller,
+          ActionName = action,
+          RecordId = "",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = null
+      })
+
+
+        }
+    </div>
+</div>
+

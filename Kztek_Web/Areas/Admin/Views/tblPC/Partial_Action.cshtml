@@ -1,0 +1,108 @@
+﻿@using Kztek_Library.Helpers
+@model Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.tblPC>
+
+@{
+    var action = Model.Action;
+    var controller = Model.Controller;
+    ViewBag.Title = action.Contains("Create") ? await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:CREATE" })
+        : await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" });
+    int pn = Model.Page;
+    var computername = await Component.InvokeAsync("Language", new { path = "COMPUTER:ComputerName" });
+
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm(action, controller, FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.Hidden("key", (string)ViewBag.keyValue)
+            @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+            @*@Html.Hidden("gates", Model.Model != null ? Model.Model.GateID : "")*@
+          
+            @if (action.Contains("Create"))
+            {
+                @Html.Hidden("SaveAndCountinue", false)
+            }
+            else
+            {
+                @Html.HiddenFor(n => n.Model.id)
+                @Html.Hidden("page", pn)
+            }
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "COMPUTER:ComputerName" }) </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Model.pc_Name, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("COMPUTER:ComputerName") })
+                    @Html.ValidationMessageFor(n => n.Model.pc_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">  @await Component.InvokeAsync("Language", new { path = "COMPUTER:IPAdd" })  </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Model.ip_Address, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("COMPUTER:IPAdd") })
+                    @Html.ValidationMessageFor(n => n.Model.ip_Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">  @await Component.InvokeAsync("Language", new { path = "COMPUTER:Gate" }) </label>
+                <div class="col-sm-4 col-xs-12">
+                    @await Component.InvokeAsync("MultiSelect", Model.Data_SelectMulti_1)
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "COMPUTER:Description" }) </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Model.description, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("COMPUTER:Description") })
+                    @Html.ValidationMessageFor(n => n.Model.description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+           
+          
+           
+
+          
+           
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "COMPUTER:PathVideo" }) </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Model.VideoPath, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("COMPUTER:PathVideo") })
+                    @Html.ValidationMessageFor(n => n.Model.VideoPath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await Component.InvokeAsync("Language", new { path = "COMPUTER:VideoDays" }) </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Model.VideoDays, new { @class = "form-control", @type = "number", @min = "1", @placeholder = await LanguageHelper.GetLanguageText("COMPUTER:VideoDays") })
+
+                </div>
+            </div>*@
+          
+            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = controller,
+          ActionName = action,
+          RecordId = "",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = null
+      })
+
+        }
+    </div>
+</div>
+

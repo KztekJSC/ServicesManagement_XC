@@ -1,0 +1,19 @@
+﻿@model Kztek_Library.Models.ImageFPTModel
+
+<a href="@Model.Image" data-rel="colorbox" title="@Model.Description" class="cboxElement img_box" data-spzoom>
+    <img class="msg-photo" src="@Model.Image" alt="thumb" width="30" height="30" />
+</a>
+
+@*@if (Model.Type.Equals("INOUT"))
+{
+    <a href="@Model.Image.Replace("PLATE","OVERVIEW")" data-rel="colorbox" title="@Model.Description" class="cboxElement img_box" data-spzoom>
+        <img class="msg-photo" src="@Model.Image.Replace("PLATE","OVERVIEW")" alt="thumb" width="30" height="30" />
+    </a>
+}
+
+@if (Model.Type.Equals("HOAPHAT"))
+{
+    <a href="@Model.Image.Replace("bienso","toancanh")" data-rel="colorbox" title="@Model.Description" class="cboxElement img_box" data-spzoom>
+        <img class="msg-photo" src="@Model.Image.Replace("bienso","toancanh")" alt="thumb" width="30" height="30" />
+    </a>
+}*@

@@ -1,0 +1,35 @@
+﻿@*@using Kztek_Model.Models
+@model Kztek_Core.Models.GridModel<tbl_Event_Submit>
+
+@if (Model.Data.Any())
+{
+    foreach (var item in Model.Data)
+    {
+        <tr id="@item.id">
+            <td class="text-center">@item.event_Number</td>
+            <td>
+                @item.plate_Number1
+            </td>
+            <td>
+                @item.customer_Name
+            </td>
+            <td class="center">
+                @item.commodity_Name
+            </td>
+
+            <td>
+                <button class="btn btn-default btnCall" idata="@item.id" idata1="@item.plate_Number1" idat2a="@item.event_Number"> Gọi xe</button>
+            </td>
+
+        </tr>
+    }
+
+    <div class="col-xs-8">
+        <div class="pull-right" id="pageSearch">
+            @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_EventIn", "Report", new
+       {
+           page = x,
+       }))
+        </div>
+    </div>
+}*@

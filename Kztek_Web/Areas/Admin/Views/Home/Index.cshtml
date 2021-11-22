@@ -1,0 +1,99 @@
+﻿
+@*@using Kztek_Model.Models
+@using Kztek_Library.Helpers
+@model List<tbl_Event_Submit>
+<style>
+    .infobox > .infobox-icon > .ace-icon::before {
+        font-size: 60px;
+        width: 82px;
+    }
+
+    .infobox > .infobox-icon > .ace-icon {
+        height: 82px;
+    }
+
+    .infobox > .infobox-icon {
+        width: 85px;
+    }
+</style>
+<div class="row" >
+   <div class="col-xs-12" id="boxService">
+
+   </div>
+
+
+</div>
+<br />
+
+<div class="page-header">
+
+    <h1 style="margin-left: unset;">
+        Danh sách xe chờ dịch vụ trong ngày (<span id="spCountHome">@Model.Count</span> xe)
+    </h1>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="divScroll" style="height:800px;overflow:auto;">
+            <table class="table  table-bordered table-hover" id="tblHome">
+                <thead>
+                    <tr class="headerSort">
+                        <th class="center" width="100">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:SortOrder" })</th>
+                        <th class="text-center" width="300">Giờ vào </th>
+                        <th class="text-center">Biển số </th>
+
+                        <th class="text-center">Khách hàng</th>
+
+                        <th class="text-center">Loại hàng</th>
+
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+                    <tr id="hRow_@item.id">
+                        <td class="text-center">@item.event_Number</td>
+                        <td class="text-center">
+                            @if (!string.IsNullOrEmpty(item.event_DateTime_Gate))
+                            {
+                                @Convert.ToDateTime(item.event_DateTime_Gate).ToString("dd/MM/yyyy HH:mm:ss")
+                            }
+
+                        </td>
+                        <td >
+                            @item.plate_Number1
+                        </td>
+                        <td>
+                            @item.customer_Name
+                        </td>
+                        <td class="center">
+                            @item.commodity_Name
+                        </td>
+
+                    </tr>}
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/modules/Signalr.js"></script>
+    <script src="~/modules/ReportController.js"></script>
+    <script>
+
+
+        $(document).ready(function () {
+
+
+        });
+    </script>
+}*@

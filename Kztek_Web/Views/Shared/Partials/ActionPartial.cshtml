@@ -1,0 +1,96 @@
+@model Kztek_Library.Models.AuthPartialModel
+<!-- Create -->
+@if (Model.Auth_Value.Create_Auth == 1 && Model.ActionName == "Create")
+{
+    <a href='@Url.Action("Create", Model.ControllerName, Model.model)' class="btn btn-white btn-success">
+        <i class=" fa fa-plus"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:CREATE" })
+    </a>
+}
+
+@if (Model.Auth_Value.Update_Auth == 1 && Model.ActionName == "Update")
+{
+    <a href='@Url.Action("Update", Model.ControllerName, Model.model)' class="green" title=" @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" })">
+        <i class="ace-icon fa fa-pencil bigger-120"></i>
+    </a>
+}
+
+@if (Model.Auth_Value.Update_Auth == 1 && Model.ActionName == "Update_V2")
+{
+    <a href='@Url.Action("Update_V2", Model.ControllerName, Model.model)' class="green" title=" @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" })">
+        <i class="ace-icon fa fa-pencil bigger-120"></i>
+    </a>
+}
+
+@if (Model.Auth_Value.Delete_Auth == 1 && Model.ActionName == "Delete")
+{
+    <a href="javascript:void(0)" class="btnDelete red" idata="@Model.RecordId" title=" @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:DELETE" })">
+        <i class="ace-icon fa fa-trash bigger-120"></i>
+    </a>
+}
+
+@if (Model.Auth_Value.Remove_Auth == 1 && Model.ActionName == "Remove")
+{
+    <a href="javascript:void(0)" class="btnRemove red" idata="@Model.RecordId" title="@await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:REMOVE" })">
+        <i class="ace-icon fa fa-remove bigger-120"></i>
+    </a>
+}
+
+@if (Model.ActionName == "Export")
+{
+    <a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+        <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+    </a>
+}
+
+@if (Model.ActionName == "Print")
+{
+    <a href="javascript:void(0)" class="btnPrint btn btn-white btn-primary" idata="@Model.RecordId" title="@await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:Print" })">
+        <i class="ace-icon fa fa-print bigger-120"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:Print" })
+    </a>
+}
+
+@if (Model.ActionName == "Import")
+{
+    <button class="btn btn-primary btn-white btn-bold btnImport" type="button" name="btnImport">
+        <i class="ace-icon fa fa-file"></i>
+        @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:IMPORT" })
+    </button>
+    @*<div class="upload-btn-wrapper" style="position: relative; display: inline-block;">
+            <button class="btn btn-primary btn-white btn-bold btnImport" type="button" name="btnImport">
+                <i class="ace-icon fa fa-file"></i>
+                @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:IMPORT" })
+            </button>
+            <input type="file" style=" font-size: 100px;position: absolute;left: 0;top: 0;opacity: 0;cursor:pointer;" name="FileUpload" />
+        </div>*@
+}
+
+@if (Model.ActionName == "Search")
+{
+    <button class="btn btn-white btn-primary btnSearch" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+}
+
+@if (Model.ActionName == "Search_Excel")
+{
+    <button class="btnFilter btn btn-white btn-primary" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+}
+
+@if (Model.ActionName == "Reset")
+{
+    <a href='@Url.Action(Model.FunctionName, Model.ControllerName,new { AreaCode = Model.AreaCode})' class="btn btn-primary btn-white" type="submit">
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+        @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:RESET" })
+    </a>
+}
+
+@if (Model.Auth_Value.Remove_Auth == 1 && Model.ActionName == "MultiDelete")
+{
+    <a href='javascript:void(0)' class="btn btn-white btn-danger" id="btnMultiDelete">
+        <i class=" fa fa-trash"></i>
+        @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:DELETEMULTI" })
+    </a>
+}
+
+
+
+
+

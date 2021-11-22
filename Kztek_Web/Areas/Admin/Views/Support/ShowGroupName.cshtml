@@ -1,0 +1,27 @@
+﻿@model Kztek_Library.Models.GroupNameModel
+
+@{
+    var name = "";
+
+    if (Model != null && !string.IsNullOrWhiteSpace(Model.GroupList))
+    {
+        
+
+        if (Model.IsSystem)
+        {
+            name += "<span class='label label-info label-sm'> Hệ thống </span> &nbsp;";
+        } else
+        {
+            var groups = Kztek_Library.Helpers.StaticList.GroupMenuList().Where(n => Model.GroupList.Contains(n.ItemValue)).ToList();
+            if (groups.Any())
+            {
+                foreach (var item in groups)
+                {
+                    name += "<span class='label label-sm " + item.Label + "'> " + item.ItemText + " </span> &nbsp;";
+                }
+            }
+        }
+    }
+}
+
+@Html.Raw(name)

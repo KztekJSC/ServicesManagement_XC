@@ -1,0 +1,139 @@
+@model Kztek_Model.Models.MenuFunction_Submit
+@using Kztek_Library.Helpers
+
+@{
+    ViewBag.Title = "Cập nhật menu";
+    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
+}
+
+<div class="page-header">
+    <h1>
+        @await LanguageHelper.GetLanguageText("BODY:BUTTON:UPDATE")
+    </h1>
+</div>
+
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Update", "MenuFunction", FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.HiddenFor(n => n.Id)
+            @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">   @await LanguageHelper.GetLanguageText("MENUFUNCTION:MenuName") <span style="color:red">*</span></label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.MenuName, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("MENUFUNCTION:MenuName") })
+                    @Html.ValidationMessageFor(n => n.MenuName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:ControllerName") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.ControllerName, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("MENUFUNCTION:ControllerName"), @Value = (string)ViewBag.Controller })
+                    @Html.ValidationMessageFor(n => n.ControllerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:ActionName") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.ActionName, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("MENUFUNCTION:ActionName") })
+                    @Html.ValidationMessageFor(n => n.ActionName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:Parent") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.DropDownListFor(n => n.ParentId, new SelectList(ViewBag.Data_MenuFunction, "Id", "MenuName", (string)ViewBag.Parent), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:TypeMenu") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.DropDownListFor(n => n.MenuType, new SelectList(ViewBag.Data_MenuType, "ItemValue", "ItemText", (string)ViewBag.Type), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right">  @await LanguageHelper.GetLanguageText("MENUFUNCTION:Icon") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.Icon, new { @class = "form-control", @placeholder = "fa fa-pie-chart" })
+                    @Html.ValidationMessageFor(n => n.Icon, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:GroupFunction") </label>
+                <div class="col-sm-4 col-xs-12">
+                    @Html.TextBoxFor(n => n.MenuGroupListId, new { @class = "form-control", @placeholder = await LanguageHelper.GetLanguageText("MENUFUNCTION:GroupFunction") })
+                    @Html.ValidationMessageFor(n => n.MenuGroupListId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("MENUFUNCTION:NumericalOrder") </label>
+                <div class="col-sm-2 col-xs-12">
+                    @Html.TextBoxFor(n => n.OrderNumber, new { @class = "form-control", @type = "number", @value = "0" })
+                    @Html.ValidationMessageFor(n => n.OrderNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label no-padding-right"> @await LanguageHelper.GetLanguageText("BODY:TABLE:ACTIVE") </label>
+                <div class="col-sm-8">
+                    <label class="line-height-250">
+                        @Html.CheckBoxFor(n => n.Active, new { @class = "ace" })
+                        <span class="lbl"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="ace-settings-container" id="ace-settings-container" style="position: fixed; top: 155px;">
+                <div class="btn btn-app btn-xs btn-grey ace-settings-btn open" id="ace-settings-btn">
+                    <i class="ace-icon fa fa-cog bigger-130"></i>
+                </div>
+
+                <div class="ace-settings-box clearfix open" id="ace-settings-box">
+                    <!-- /.pull-left -->
+                    <div class="bg-rightbox">
+                        <div class="clearfix lineButton">
+                            <div class="col-md-12 input-group">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    @await LanguageHelper.GetLanguageText("BODY:BUTTON:SAVE_EXIT")
+                                </button>
+                                <a href='@Url.Action("Index", new {AreaCode = ViewBag.AreaCodeValue})' class="btn btn-yellow">
+                                    <i class="ace-icon fa fa-chevron-circle-left bigger-110"></i>
+                                    @await LanguageHelper.GetLanguageText("BODY:BUTTON:BACKTOLIST")
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.pull-left -->
+                </div><!-- /.ace-settings-box -->
+
+                @await Html.PartialAsync("GroupMenuPartial")
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+}

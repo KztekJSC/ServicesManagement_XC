@@ -1,0 +1,358 @@
+﻿{
+  "MenuGroups": {
+    "Access": {
+      "en": "Access control",
+      "vi": "Kiểm soát vào ra"
+    },
+    "Parking": {
+      "en": "Smart parking",
+      "vi": "Bãi xe thông minh"
+    },
+    "Locker": {
+      "en": "Smart locker",
+      "vi": "Tủ thông minh"
+    },
+    "Resident": {
+      "en": "Building's service",
+      "vi": "Dịch vụ tòa nhà"
+    } 
+  },
+
+  "Home": {
+    "Index": {
+      "en": "Home",
+      "vi": "Bàn làm việc"
+    }
+  },
+  "tblCard": {
+    "Index": {
+      "en": "Card's List",
+      "vi": "Danh sách thẻ"
+    }
+  },
+  "tblCustomer": {
+    "Index": {
+      "en": "Customer's List",
+      "vi": "Danh sách khách hàng"
+    }
+  },
+  "tblCardGroup": {
+    "Index": {
+      "en": "Card's Group",
+      "vi": "Danh mục thẻ"
+    }
+  },
+  "tblCustomerGroup": {
+    "Index": {
+      "en": "Customer's Group",
+      "vi": "Danh mục khách hàng"
+    }
+  },
+  "tblPC": {
+    "Index": {
+      "en": "Computers",
+      "vi": "Máy tính"
+    }
+  },
+  "tblController": {
+    "Index": {
+      "en": "Controllers",
+      "vi": "Bộ điều khiển"
+    }
+  },
+  "tblAccessControllerGroup": {
+    "Index": {
+      "en": "Controller's Group",
+      "vi": "Nhóm bộ điều khiển"
+    }
+  },
+  "tblDoor": {
+    "Index": {
+      "en": "Doors",
+      "vi": "Cửa"
+    }
+  },
+  "tblTimezone": {
+    "Index": {
+      "en": "Timezones",
+      "vi": "Khung giờ"
+    }
+  },
+  "tblLevel": {
+    "Index": {
+      "en": "Levels",
+      "vi": "Phân quyền truy cập"
+    }
+  },
+  "Upload": {
+    "Index": {
+      "en": "Upload / Delete",
+      "vi": "Nạp / hủy"
+    }
+  },
+  "User": {
+    "Index": {
+      "en": "Users",
+      "vi": "Người dùng"
+    },
+    "Create": {
+      "en": "Create",
+      "vi": "Thêm mới"
+    },
+    "Update": {
+      "en": "Update",
+      "vi": "Cập nhật"
+    }
+  },
+  "Role": {
+    "Index": {
+      "en": "Roles",
+      "vi": "Vai trò, quyền hạn"
+    },
+    "Create": {
+      "en": "Create",
+      "vi": "Thêm mới"
+    },
+    "Update": {
+      "en": "Update",
+      "vi": "Cập nhật"
+    }
+  },
+  "MenuFunction": {
+    "Index": {
+      "en": "Menus",
+      "vi": "Danh mục hệ thống"
+    },
+    "Create": {
+      "en": "Create",
+      "vi": "Thêm mới"
+    },
+    "Update": {
+      "en": "Update",
+      "vi": "Cập nhật"
+    }
+  },
+
+  "controller_81478553": {
+    "action_81478553": {
+      "en": "Reports",
+      "vi": "Báo cáo"
+    }
+  },
+ 
+  "controller_67797447": {
+    "action_67797447": {
+      "en": "Card management",
+      "vi": "Quản lý thẻ"
+    }
+  },
+
+  "controller_55844880": {
+    "action_55844880": {
+      "en": "Customer management",
+      "vi": "Quản lý khách hàng"
+    }
+  },
+
+  "controller_71080602": {
+    "action_71080602": {
+      "en": "Categories",
+      "vi": "Danh mục"
+    }
+  },
+
+  "controller_81507875": {
+    "action_81507875": {
+      "en": "Setups",
+      "vi": "Cài đặt"
+    }
+  },
+
+  "Controller_96015492": {
+    "action_96015492": {
+      "en": "Communicating",
+      "vi": "Giao tiếp"
+    }
+  },
+
+  "controller_35537716": {
+    "action_35537716": {
+      "en": "Systems",
+      "vi": "Hệ thống"
+    }
+  },
+
+  "tblSystemConfig": {
+    "Index": {
+      "en": "System configuration",
+      "vi": "Tham số hệ thống"
+    }
+  },
+
+  "tblLog": {
+    "Index": {
+      "en": "System log",
+      "vi": "Nhật ký hệ thống"
+    }
+  },
+
+  "tblGate": {
+    "Index": {
+      "en": "Gates",
+      "vi": "Cổng"
+    }
+  },
+
+  "tblLane": {
+    "Index": {
+      "en": "Lanes",
+      "vi": "Làn vào/ra"
+    }
+  },
+
+  "tblLED": {
+    "Index": {
+      "en": "Leds",
+      "vi": "Led hiển thị"
+    }
+  },
+
+  "tblFtpAccount": {
+    "Index": {
+      "en": "Fpt connection",
+      "vi": "Kết nối FPT"
+    }
+  },
+
+  "tblFee": {
+    "Index": {
+      "en": "Fees",
+      "vi": "Phí thuê bao"
+    }
+  },
+
+  "tblBlackList": {
+    "Index": {
+      "en": "Blacklisted Plates",
+      "vi": "Biển số đen"
+    }
+  },
+
+  "controller_43820046": {
+    "action_43820046": {
+      "en": "Extend Card",
+      "vi": "Gia hạn thẻ"
+    }
+  },
+
+  "ActiveCardDateActive": {
+    "Index": {
+      "en": "Card Activation",
+      "vi": "Kích hoạt thẻ"
+    }
+  },
+
+  "OrderActiveCard": {
+    "Index": {
+      "en": "Invoice list",
+      "vi": "Danh sách hóa đơn"
+    }
+  },
+
+  "ActiveCardList": {
+    "Index": {
+      "en": "History Extend Card",
+      "vi": "DS đã gia hạn"
+    }
+  },
+
+  "controller_84330865": {
+    "action_84330865": {
+      "en": "Charts",
+      "vi": "Biểu đồ"
+    }
+  },
+
+  "controller_93393965": {
+    "action_93393965": {
+      "en": "Vehicles In",
+      "vi": "Xe trong bãi"
+    }
+  },
+
+  "controller_65558701": {
+    "action_65558701": {
+      "en": "Vehicles In/Out",
+      "vi": "Xe vào ra"
+    }
+  },
+
+  "controller_108250286": {
+    "action_108250286": {
+      "en": "Daily Cards Income",
+      "vi": "Thu tiền thẻ lượt"
+    }
+  },
+
+  "controller_69053990": {
+    "action_69053990": {
+      "en": "Collect Monthly Card Fee",
+      "vi": "Thu tiền thẻ tháng"
+    }
+  },
+
+  "controller_112087670": {
+    "action_112087670": {
+      "en": "Turn in/out vehicles for free",
+      "vi": "Lượt vào / ra miễn phí"
+    }
+  },
+
+  "controller_69624132": {
+    "action_69624132": {
+      "en": "Card Processing",
+      "vi": "Xử lý thẻ"
+    }
+  },
+
+  "Report": {
+
+    "ReportIn": {
+      "en": "Current Vehicles In",
+      "vi": "Xe trong bãi hiện tại"
+    },
+
+    "ReportEventOut": {
+      "en": "Events Out",
+      "vi": "Sự kiện vào/ra"
+    },
+    "ReportEventIn": {
+      "en": "Events In",
+      "vi": "Sự kiện xe vào"
+    },
+    "ReportEventUnknownOut": {
+      "en": "Events Unknown",
+      "vi": "Sự kiện nhiễu"
+    },
+    "ReportEventUnknownIn": {
+      "en": "Events Unknown In",
+      "vi": "Sự kiện nhiễu vào"
+    },
+    "ReportOpenOut": {
+      "en": "Open car",
+      "vi": "Lượt vào ra bãi xỉ"
+    },
+    "ReportPrivateOut": {
+      "en": "Box truck",
+      "vi": "Lượt xe kín"
+    },
+    "ReportEventXi": {
+      "en": "",
+      "vi": "Lượt xe chở xỉ"
+    },
+    "ReportUnRegistered": {
+      "en": "",
+      "vi": "Xe chưa đăng ký"
+    }
+  }
+}

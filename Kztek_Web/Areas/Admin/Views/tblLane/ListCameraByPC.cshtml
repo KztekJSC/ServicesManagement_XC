@@ -1,0 +1,8 @@
+﻿@model List<Kztek_Model.Models.tblCamera>
+
+
+@{
+    string name = string.Format("C{0}", ViewBag.Number);
+}
+
+@Html.DropDownList(name, new SelectList(Model, "CameraID", "CameraName", ViewBag.selectedCamera), ViewBag.Choose, new { @class = "form-control" })
