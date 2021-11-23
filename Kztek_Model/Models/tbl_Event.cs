@@ -51,10 +51,13 @@ namespace Kztek_Model.Models
         public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
         public string ParkingPosition  { get; set; }//Vị trí đỗ
         public bool IsDeleted { get; set; } //true là xóa
+        public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+        public decimal Cost { get; set; }//Giá trả cho công nhân
     }
 
     public class tbl_Event_POST
     {
+        public string ID { get; set; } //id sự kiện
         public string Service { get; set; } //Dịch vụ
         public string Code { get; set; } //Mã đăng ký
         public int EventType { get; set; } //Trạng thái
@@ -71,5 +74,7 @@ namespace Kztek_Model.Models
         public string Description { get; set; }
         public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
         public string ParkingPosition { get; set; }//Vị trí đỗ
+        public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+        public decimal Cost { get; set; }//Giá trả cho công nhân
     }
 }

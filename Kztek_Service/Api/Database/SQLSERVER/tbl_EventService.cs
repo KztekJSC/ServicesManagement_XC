@@ -44,6 +44,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 ProductType = model.ProductType,
                 ProductGroup = model.ProductGroup,
                 EventType = model.EventType,
+                PaymentStatus = model.PaymentStatus,
+                Cost = model.Cost,
+                IsDeleted = false,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
                 StartDate = DateTime.MinValue,
@@ -52,6 +55,11 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             var result = await _tbl_EventRepository.Add(obj);
 
+            if (result.isSuccess)
+            {
+                result = new MessageReport(true, obj.Id);
+            }
+
             return result;
         }
 
@@ -59,7 +67,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetById(model.Code);
+            var obj = await GetById(model.ID);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
@@ -87,6 +95,11 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             result = await _tbl_EventRepository.Update(obj);
 
+            if (result.isSuccess)
+            {
+                result = new MessageReport(true, obj.Id);
+            }
+
             return result;
         }
 
@@ -101,7 +114,14 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 return result;
             }
 
-            result = await _tbl_EventRepository.Remove(obj);
+            obj.IsDeleted = true;
+
+            result = await _tbl_EventRepository.Update(obj);
+
+            if (result.isSuccess)
+            {
+                result = new MessageReport(true, "Thành công");
+            }
 
             return result;
         }
