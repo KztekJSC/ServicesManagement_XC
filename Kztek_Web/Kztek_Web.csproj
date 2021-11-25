@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Kztek.LedController">
-      <HintPath>C:\Users\KZTEK\Downloads\Kztek.LedController.dll</HintPath>
+      <HintPath>..\..\Kztek.LedController.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

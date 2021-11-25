@@ -1,0 +1,167 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.Group>
+
+@{
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+}
+
+<div class="page-header">
+    <h1>
+       Danh sách tổ (<span>@Model.TotalIem</span>)
+    </h1>
+</div>
+
+
+@using (Html.BeginForm("Index", "Group", FormMethod.Get, new { id = "frmGroup" }))
+{
+    <div class="row">
+        <div class="col-md-2 col-xs-12 divboxmd">
+            <label class="control-label">  @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" }) </label>
+            <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" />
+        </div>
+
+        @*<div class="col-md-2 col-xs-12 divboxmd">
+                <label class="control-label">  @await Component.InvokeAsync("Language", new { path = "BODY:TABLE:PCName" }) </label>
+                @await Component.InvokeAsync("ChosenSelect", ViewBag.PCs)
+            </div>*@
+
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 divboxmd">
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+     ControllerName = "Group",
+     ActionName = "Search",
+     RecordId = "",
+     model = new { AreaCode = ViewBag.AreaCodeValue },
+     Auth_Value = authModel
+ })
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = "Group",
+          ActionName = "Reset",
+          RecordId = "",
+          FunctionName = "Index",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = authModel
+      })
+        </div>
+    </div>
+}
+
+<div class="hr hr-18 dotted hr-24"></div>
+<div class="row">
+    <div class="col-xs-12">
+        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+        {
+           ControllerName = "Group",
+           ActionName = "Create",
+           RecordId = "",
+           model = new { },
+           Auth_Value = authModel
+       })
+    </div>
+</div>
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">Mã tổ</th>
+                    <th class="text-center">Tổ</th>
+                    <th class="text-center">Mô tả</th>                  
+                    <th class="text-center" width="80"> </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    foreach (var item in Model.Data)
+                    {
+                <tr class="">
+                    <td class="text-left">
+                        @item.Code
+                    </td>
+                    <td class="text-left">
+                        @item.Name
+                    </td>
+
+                    <td class="text-left">
+                        @item.Description
+                    </td>
+                   
+
+                    <td class="center">
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+    ControllerName = "Group",
+    ActionName = "Update",
+    RecordId = "",
+    model = new { id = item.Id },
+    Auth_Value = authModel
+})
+
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+  ControllerName = "Group",
+  ActionName = "Delete",
+  RecordId = item.Id,
+  model = null,
+  Auth_Value = authModel
+})
+                        </div>
+                    </td>
+                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div><!-- /.span -->
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "tblCamera", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               pc = ViewBag.pcValue
+           }))
+            </div>
+        </div>
+    }
+</div><!-- /.row -->
+
+<input type="hidden" id="Confirm_delete" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:CONFIRM_DELETE" })" />
+<input type="hidden" id="del_Success" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:SUCCESS" })" />
+<input type="hidden" id="noti" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:NOTIFICATION" })" />
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".btnDelete").click(function () {
+                var cmd = $(this);
+                var id = cmd.attr('idata');
+
+                bootbox.confirm($("#Confirm_delete").val(), function (result) {
+                    if (result) {
+                        JSHelper.AJAX_Delete('/Admin/Group/Delete', id)
+                            .success(function (response) {
+                                if (response.isSuccess) {
+                                    cmd.parent().parent().parent().fadeOut();
+                                    toastr.success($("#del_Success").val(), $("#noti").val())
+                                } else {
+                                    toastr.error(response.Message)
+                                }
+                            });
+                    }
+                })
+            });
+        });
+    </script>
+}
