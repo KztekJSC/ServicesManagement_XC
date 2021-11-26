@@ -1,0 +1,249 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@using Kztek_Library.Models
+@using Kztek_Library.Helpers
+
+@{
+    ViewBag.Title = "Xe chờ xác nhận";
+    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
+    var checkbytype = (string)ViewBag.isFilterByTimeIn;
+}
+
+<div class="page-header">
+    <h1>
+
+        @ViewBag.Title (@Model.TotalIem)
+    </h1>
+</div>
+
+
+@using (Html.BeginForm("Index", "Service", FormMethod.Get, new { id = "frmService" }))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+    @Html.Hidden("chkExport", "0")
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ khóa
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" })" class="form-control" />
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Trạng thái sự kiện </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+
+        </div>
+    </div>
+    <div class="row">
+        @*<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+                Từ ngày:
+                <div class="input-group">
+                    @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+
+                </div>
+            </div>*@
+
+        @*<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+                Đến ngày:
+                <div class="input-group">
+                    @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+            </div>*@
+
+
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <br />
+            <button class="btn btn-white btn-primary btnSearch" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("Index", "Service",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Reset
+            </a>
+            <a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+            </a>
+
+        </div>
+    </div>
+}
+
+
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table  table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Mã đăng kí dịch vụ</th>
+                    <th class="text-center">
+                        Trạng thái
+                    </th>
+                    <th class="text-center">
+                        Xe VN
+                    </th>
+                    <th class="text-center">
+                        Xe CN
+                    </th>
+                    <th class="text-center">Loại hàng </th>
+                    <th class="text-center">Khối lượng hàng</th>
+                    <th class="text-center">Loại xe</th>
+                    <th class="text-center">Nhóm hàng hóa</th>
+                    <th class="text-center">Dịch vụ</th>
+                    <th class="text-center">Giá dịch vụ</th>
+                    <th class="text-center">Phụ thu</th>
+                    <th class="text-center">Ghi chú </th>
+                    <th class="text-center">Tổ bốc xếp</th>
+                    <th class="text-center">Xử lý</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (Model.Data.Any())
+                {
+                    var count = 0;
+                    foreach (var item in Model.Data)
+                    {
+                        count++;
+
+                        <tr>
+                            <td class="text-center">
+                                @count
+                            </td>
+                            <td class="text-left">
+                                @item.ServiceCode
+                            </td>
+
+                            <td class="text-center">
+
+                                @if (item.EventType == 0)
+                                {
+                                    <span class="label label-sm label-info">Chờ xác nhận</span>
+                                }
+                                else if (item.EventType == 1)
+                                {
+                                    <span class="label label-sm label-success">Đã xác nhận</span>
+                                }
+
+
+
+                            </td>
+                            <td class="center">
+                                @item.PlateVN
+                            </td>
+                            <td class="center">
+                                @item.PlateCN
+                            </td>
+                            <td class="center">
+                                @item.ProductType
+                            </td>
+                            <td class="center">
+                                @item.Weight
+                            </td>
+                            <td class="center">
+                                @item.VehicleType
+                            </td>
+                            <td class="center">
+                                @item.ProductGroup
+                            </td>
+                            <td class="center">
+                                @item.Service
+                            </td>
+                            <td class="center">
+                                @item.Price.ToString("###,###.##")
+                            </td>
+                            <td class="center">
+                                @item.SubPrice.ToString("###,###.##")
+                            </td>
+                            <td class="center">
+                                @item.Description
+                            </td>
+                            <td class="center">
+                                @{
+                                    var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                                    if (obj != null)
+                                    {
+                                        <span>@obj.Name</span>
+                                    }
+                                }
+                            </td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+            ControllerName = "Service",
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.Id },
+            Auth_Value = authModel
+        })
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = "Service",
+          ActionName = "Delete",
+          RecordId = item.Id,
+          model = null,
+          Auth_Value = authModel
+        })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (Model.Data.Any())
+    {
+        <div class="col-xs-12">
+            <div class="pull-right">
+
+
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Service", new
+           {
+               page = x,
+               key = ViewBag.keyValue,
+               //fromdate = ViewBag.fromdateValue,
+               //todate = ViewBag.todateValue,
+               StatusID = ViewBag.StatusID,
+               AreaCode = ViewBag.AreaCodeValue,
+
+           }))
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".btnExport").click(function () {
+
+                $("#chkExport").val("1");
+
+                $("#frmReport").submit();
+            });
+
+            //$(".btnSearch").click(function () {
+
+            //    $("#frmReport").submit();
+            //});
+        });
+    </script>
+}

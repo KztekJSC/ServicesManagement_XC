@@ -25,9 +25,9 @@ namespace Kztek_Library.Helpers
         public static List<SelectListModel> ListStatus()
         {
             var list = new List<SelectListModel> {
-                                        new SelectListModel { ItemValue = "0", ItemText = "Xe mới vào cổng"},
-                                        new SelectListModel { ItemValue = "1", ItemText = "Xe đã làm thủ tục giấy tờ"},
-                                        new SelectListModel { ItemValue = "2", ItemText = "Xe đã xuất hàng"}
+                                        new SelectListModel { ItemValue = "0", ItemText = "Chờ xác nhận"},
+                                        new SelectListModel { ItemValue = "1", ItemText = "Đã xác nhận"},
+                                        //new SelectListModel { ItemValue = "2", ItemText = "Xe đã xuất hàng"}
                                     };
             return list;
         }

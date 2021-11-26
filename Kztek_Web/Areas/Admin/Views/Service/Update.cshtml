@@ -1,0 +1,149 @@
+﻿
+
+@model Kztek_Model.Models.tbl_Event
+
+@{
+
+    ViewBag.Title = "Thông tin xe làm dịch vụ";
+
+
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+<style>
+
+    .offset-md-3 {
+        margin-left: 400px;
+    }
+
+    .ragge {
+        margin-left: 200px;
+    }
+</style>
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm("Update", "Service", FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @*@Html.Hidden("LaneID", Model.Model.id.ToString())*@
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Xe Việt Nam </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "biển số xe VN"@*, @disabled = "disabled"*@ })
+                    @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Xe Trung Quốc </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ"@*, @disabled = "disabled"*@ })
+                    @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Loại hàng </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("ProductType", Model.ProductType, new { @class = "form-control", @placeholder = "Loại hàng" })
+                    @Html.ValidationMessage("ProductType", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Khối lượng hàng </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Weight", Model.Weight, new { @class = "form-control", @placeholder = "Khối lượng" })
+                    @Html.ValidationMessage("Weight", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Loại xe </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe" })
+                    @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Số trang </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang" })
+                    @Html.ValidationMessage("ServiceCode", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Nhóm hàng hóa </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("ProductGroup", Model.ProductGroup, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
+                    @Html.ValidationMessage("ProductGroup", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Dịch vụ</label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Service", Model.Service, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
+                    @Html.ValidationMessage("Service", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Giá DV</label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Price", Model.Price, new { @class = "form-control", @placeholder = "Giá DV" })
+                    @Html.ValidationMessage("Price", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Phụ thu</label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("SubPrice", Model.SubPrice, new { @class = "form-control", @placeholder = "Phụ thu" })
+                    @Html.ValidationMessage("SubPrice", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Tổ bốc xếp</label>
+                <div class="col-sm-3 col-xs-12">
+                    @await Component.InvokeAsync("ChosenSelect", ViewBag.AllGroup)
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Ghi chú</label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Description", Model.Description, new { @class = "form-control", @placeholder = "Miêu tả" })
+                    @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">*@
+            <div class="row">
+                <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
+                    <div class="offset-md-3 col-md-9 text-nowrap">
+                        <button class="btn btn-warning btn-bold px-4" type="submit">
+                            <i class="fa fa-check mr-1"></i>
+                            Xác nhận
+                        </button>
+
+                        <button class="btn ragge btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="reset">
+                            <i class="fa fa-undo mr-1"></i>
+                            Hủy bỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+

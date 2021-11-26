@@ -84,7 +84,22 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Vehi
 BEGIN
 	ALTER TABLE [Vehicle] ADD Weight int NOT NULL DEFAULT 0
 END
-
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'Cost')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD Cost decimal not null DEFAULT 0
+END
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ParkingPosition')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD ParkingPosition varchar(250) null
+END
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'PaymentStatus')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD PaymentStatus varchar(10) default('0')
+END
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ServiceCode')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD ServiceCode varchar(250) null
+END
 IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'adf03611-dae6-42c6-8a8f-0aebbc35b7b5')
 BEGIN
 INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('adf03611-dae6-42c6-8a8f-0aebbc35b7b5', N'Sự kiện xe kín','Report','1','ReportPrivateOut','','fa fa-caret-right','81478553','1','0','4','','','12878956','0')

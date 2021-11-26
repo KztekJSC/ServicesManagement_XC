@@ -40,6 +40,13 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(result);
         }
 
+        public async Task<List<Group>> GetAll()
+        {
+            var query =  from n in _GroupRepository.Table
+                        select n;
+            return await Task.FromResult( query.ToList());
+        }
+
         public async Task<GridModel<Group>> GetAllCustomPagingByFirst(string key, string pc, int pageNumber, int pageSize)
         {
             var query = from n in _GroupRepository.Table

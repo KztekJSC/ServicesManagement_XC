@@ -16,5 +16,7 @@ namespace Kztek_Service.Admin
         Task<MessageReport> DeleteById(string id);
         Task<tbl_Event> GetById(string id);
         Task<MessageReport> Update(tbl_Event oldObj);
+        public Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate);
+        Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "");
     }
 }

@@ -15,5 +15,6 @@ namespace Kztek_Service.Admin
         Task<Group> GetById(string id);
         Task<MessageReport> Update(Group oldObj);
         Task<MessageReport> Create(Group model);
+        Task<List<Group>> GetAll();
     }
 }
