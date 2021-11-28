@@ -46,13 +46,16 @@ namespace Kztek_Model.Models
 
         public DateTime StartDate { get; set; } //Ngày bắt đầu công việc
         public DateTime EndDate { get; set; } //Ngày kết thúc công việc
+        public DateTime DivisionDate { get; set; } //Ngày phân tổ
         public string ImageVN { get; set; } //ảnh xe Việt Nam
         public string ImageCN { get; set; } //ảnh xe Trung Quốc
         public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
-        public string ParkingPosition  { get; set; }//Vị trí đỗ
+        public string ParkingPosition { get; set; }//Vị trí đỗ
         public bool IsDeleted { get; set; } //true là xóa
         public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
         public decimal Cost { get; set; }//Giá trả cho công nhân
+        public string PackageNumber { get; set; }//Số kiện
+        public string Quantity { get; set; }//Số lượng
     }
 
     public class tbl_Event_POST

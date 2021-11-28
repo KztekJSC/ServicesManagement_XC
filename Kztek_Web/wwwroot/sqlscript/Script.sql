@@ -100,6 +100,19 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_
 BEGIN
 	ALTER TABLE [tbl_Event] ADD ServiceCode varchar(250) null
 END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'PackageNumber')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD PackageNumber varchar(250) null
+END
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'Quantity')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD Quantity varchar(10) null
+END
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'DivisionDate')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD DivisionDate Datetime not null  default('2021-01-01 00:00:00.000')
+END
 IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'adf03611-dae6-42c6-8a8f-0aebbc35b7b5')
 BEGIN
 INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('adf03611-dae6-42c6-8a8f-0aebbc35b7b5', N'Sự kiện xe kín','Report','1','ReportPrivateOut','','fa fa-caret-right','81478553','1','0','4','','','12878956','0')

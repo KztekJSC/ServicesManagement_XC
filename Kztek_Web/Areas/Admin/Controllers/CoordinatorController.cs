@@ -9,17 +9,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Kztek_Web.Areas.Admin.Controllers
 {
     [Area(AreaConfig.Admin)]
-    public class ServiceController : Controller
+    public class CoordinatorController : Controller
     {
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
-        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
+        public CoordinatorController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
         {
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
@@ -54,12 +53,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             #region Giao diện
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate);
             ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
             ViewBag.StatusID = StatusID;
             ViewBag.Groups = await _GroupService.GetAll();
-            ViewBag.keyValue = key;          
+            ViewBag.keyValue = key;
             ViewBag.AreaCodeValue = AreaCode;
             return View(gridModel);
             #endregion
@@ -117,19 +116,15 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(oldObj);
             }
 
+         
             oldObj.PlateVN = model.PlateVN;
-            oldObj.PlateCN = model.PlateCN;
-            oldObj.ProductType = model.ProductType;
+            oldObj.PlateCN = model.PlateCN;         
             oldObj.Weight = model.Weight;
+            oldObj.PackageNumber = model.PackageNumber;
             oldObj.VehicleType = model.VehicleType;
             oldObj.ServiceCode = model.ServiceCode;
-            oldObj.ProductGroup = model.ProductGroup;
-            oldObj.Service = model.Service;
-            oldObj.Price = model.Price;
-            oldObj.ServiceCode = model.ServiceCode;
-            oldObj.SubPrice = model.SubPrice;
-            oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
-            oldObj.Description = model.Description;
+            oldObj.EventType = 5;
+            oldObj.ModifiedDate = DateTime.Now;
 
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
@@ -147,6 +142,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(model);
             }
         }
+   
+
+        #endregion Cập nhật
         #region Xóa
 
         /// <summary>
@@ -173,11 +171,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
 
         #endregion Xóa
+
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
         {
             var list = await GetAllGroup();
 
-          
+
 
             var model = new SelectListModel_Chosen
             {
@@ -203,9 +202,5 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
-      
-        #endregion Cập nhật
-
-
     }
 }

@@ -80,8 +80,172 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return model;
         }
 
-        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+        public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
+            var sb = new StringBuilder();
+            sb.AppendLine("SELECT * FROM (");
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
+            sb.AppendLine("FROM(");
+            sb.AppendLine("  select * from [tbl_Event]");
+            sb.AppendLine("WHere 1 =1 and (EventType = 3 OR EventType = 4 OR EventType = 5 )");
+            if (!string.IsNullOrEmpty(key))
+            {
+                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+            }
+
+
+            //event Code
+            if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
+            {
+                var t = statusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            sb.AppendLine(")as a");
+            sb.AppendLine(") as C1");
+            sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
+            var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+
+
+            // Tính tổng
+            sb.Clear();
+            sb.AppendLine("SELECT COUNT(*) TotalCount");
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1 and (  EventType = 3 OR EventType = 4 OR EventType = 5)");
+
+            if (!string.IsNullOrEmpty(key))
+            {
+                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+            }
+
+
+            //event Code
+            if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
+            {
+                var t = statusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            var _total = DatabaseHelper.ExcuteCommandToModel<TotalPagingModel>(sb.ToString());
+
+            var model = GridModelHelper<tbl_Event>.GetPage(listData, page, pageSize, _total.TotalCount);
+
+            return await Task.FromResult(model);
+        }
+
+        public async Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SELECT * FROM (");
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
+            sb.AppendLine("FROM(");
+            sb.AppendLine("  select * from [tbl_Event]");
+            sb.AppendLine("WHere 1 =1 and (EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5)");
+            if (!string.IsNullOrEmpty(key))
+            {
+                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+            }
+
+
+            //event Code
+            if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
+            {
+                var t = statusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            sb.AppendLine(")as a");
+            sb.AppendLine(") as C1");
+            sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
+            var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+
+
+            // Tính tổng
+            sb.Clear();
+            sb.AppendLine("SELECT COUNT(*) TotalCount");
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1 and ( EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5)");
+           
+            if (!string.IsNullOrEmpty(key))
+            {
+                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+            }
+
+
+            //event Code
+            if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
+            {
+                var t = statusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            var _total = DatabaseHelper.ExcuteCommandToModel<TotalPagingModel>(sb.ToString());
+
+            var model = GridModelHelper<tbl_Event>.GetPage(listData, page, pageSize, _total.TotalCount);
+
+            return await Task.FromResult(model);
+        }
+
+        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+         {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));

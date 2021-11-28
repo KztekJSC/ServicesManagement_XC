@@ -9,17 +9,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Kztek_Web.Areas.Admin.Controllers
 {
     [Area(AreaConfig.Admin)]
-    public class ServiceController : Controller
+    public class ConfirmedGroupController : Controller
     {
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
-        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
+        public ConfirmedGroupController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
         {
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
@@ -54,12 +53,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             #region Giao diện
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 20, StatusID, fromdate, todate);
             ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
             ViewBag.StatusID = StatusID;
             ViewBag.Groups = await _GroupService.GetAll();
-            ViewBag.keyValue = key;          
+            ViewBag.keyValue = key;
             ViewBag.AreaCodeValue = AreaCode;
             return View(gridModel);
             #endregion
@@ -117,20 +116,18 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(oldObj);
             }
 
+
             oldObj.PlateVN = model.PlateVN;
             oldObj.PlateCN = model.PlateCN;
-            oldObj.ProductType = model.ProductType;
             oldObj.Weight = model.Weight;
+            oldObj.PackageNumber = model.PackageNumber;
             oldObj.VehicleType = model.VehicleType;
             oldObj.ServiceCode = model.ServiceCode;
-            oldObj.ProductGroup = model.ProductGroup;
-            oldObj.Service = model.Service;
-            oldObj.Price = model.Price;
-            oldObj.ServiceCode = model.ServiceCode;
-            oldObj.SubPrice = model.SubPrice;
-            oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
-            oldObj.Description = model.Description;
-
+            oldObj.ModifiedDate = DateTime.Now;
+            oldObj.ProductType = model.ProductType;
+            oldObj.ParkingPosition = model.ParkingPosition;
+            oldObj.Quantity = model.Quantity;
+            oldObj.EndDate = DateTime.Now;
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
 
@@ -147,37 +144,15 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(model);
             }
         }
-        #region Xóa
-
-        /// <summary>
-        /// Xóa
-        /// </summary>
-        /// <modified>
-        /// Author              Date            Comments
-        /// TrungNQ             01/09/2017      Tạo mới
-        /// </modified>
-        /// <param name="id">Id bản ghi</param>
-        /// <returns></returns>
-
-        [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var result = await _tbl_EventService.DeleteById(id);
-            if (result.isSuccess)
-            {
-                await LogHelper.WriteLog(id, ActionConfig.Delete, id, HttpContext);
-            }
-
-            return Json(result);
-        }
 
 
-        #endregion Xóa
+        #endregion Cập nhật
+
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
         {
             var list = await GetAllGroup();
 
-          
+
 
             var model = new SelectListModel_Chosen
             {
@@ -203,9 +178,5 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
-      
-        #endregion Cập nhật
-
-
     }
 }

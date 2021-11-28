@@ -18,7 +18,7 @@
 </div>
 
 
-@using (Html.BeginForm("Index", "Service", FormMethod.Get, new { id = "frmService" }))
+@using (Html.BeginForm("Index", "Coordinator", FormMethod.Get, new { id = "frmService" }))
 {
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
     @Html.Hidden("chkExport", "0")
@@ -41,13 +41,13 @@
         <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
             <br />
             <button class="btn btn-white btn-primary btnSearch" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
-            <a href='@Url.Action("Index", "Service",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+            <a href='@Url.Action("Index", "Coordinator",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
                 Reset
             </a>
             @*<a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
-                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
-            </a>*@
+                    <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+                </a>*@
 
         </div>
     </div>
@@ -104,15 +104,22 @@
 
                             <td class="text-center">
 
-                                @if (item.EventType == 0)
+                                @if (item.EventType == 2)
                                 {
-                                    <span class="label label-sm label-info">Chờ xác nhận</span>
+                                    <span class="label label-sm label-info">Chưa phân tổ</span>
                                 }
-                                else if (item.EventType == 1)
+                                else if (item.EventType == 3)
                                 {
-                                    <span class="label label-sm label-success">Đã xác nhận</span>
+                                    <span class="label label-sm label-success">Đã phân tổ</span>
                                 }
-
+                                else if (item.EventType == 4)
+                                {
+                                    <span class="label label-sm label-danger">Đang thực hiện</span>
+                                }
+                                else if (item.EventType == 5)
+                                {
+                                    <span class="label label-sm label-default">Hoàn thành</span>
+                                }
 
 
                             </td>
@@ -159,7 +166,7 @@
                                 <div class="btn-group">
                                     @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
                                     {
-            ControllerName = "Service",
+            ControllerName = "Coordinator",
             ActionName = "Update",
             RecordId = "",
             model = new { id = item.Id },
@@ -168,7 +175,7 @@
 
                                     @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
                                     {
-          ControllerName = "Service",
+          ControllerName = "Coordinator",
           ActionName = "Delete",
           RecordId = item.Id,
           model = null,
@@ -188,7 +195,7 @@
             <div class="pull-right">
 
 
-                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Service", new
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Coordinator", new
            {
                page = x,
                key = ViewBag.keyValue,
