@@ -1,5 +1,6 @@
 ﻿using Kztek_Core.Models;
 using Kztek_Data.Repository;
+using Kztek_Library.Helpers;
 using Kztek_Model.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Kztek_Service.Api.Database.SQLSERVER
 {
-    public class tbl_EventService
+    public class tbl_EventService : Itbl_EventService
     {
         private Itbl_EventRepository _tbl_EventRepository;
 
@@ -21,47 +22,93 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             return await _tbl_EventRepository.GetOneById(id);
         }
+        public async Task<tbl_Event> GetOneByBBInfo(string tableName,string id)
+        {
+            var query = from n in _tbl_EventRepository.Table
+                        where !n.IsDeleted && n.BB_Table == tableName && n.BB_Id == id
+                        select n;
+
+            return await Task.FromResult(query.FirstOrDefault());
+        }
+
+        public async Task UpdateVehicleIn(API_VehicleStatus obj)
+        {
+            var query = new StringBuilder();
+            query.AppendLine("Update tbl_Event");
+            query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
+            query.AppendLine(string.Format("{0} = 1,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe vào
+            query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN",obj.image)); //ảnh xe
+            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",obj.time)); //thời gian vào
+            query.AppendLine("where IsDeleted = 0 and EventType = 1");
+            query.AppendLine(string.Format("and {0} = 0", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe chưa vào
+            query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
+
+            var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
+
+            SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+        }
+
+        public async Task UpdateVehicleOut(API_VehicleStatus obj)
+        {
+            var query = new StringBuilder();
+            query.AppendLine("Update tbl_Event");
+            query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
+            query.AppendLine(string.Format("{0} = 2,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe ra
+            query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN", obj.image)); //ảnh
+            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeOutVN" : "TimeOutCN", obj.time)); //thời gian ra
+            query.AppendLine("where IsDeleted = 0 and EventType = 5");
+            query.AppendLine(string.Format("and {0} = 1", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe đã vào
+            query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
+
+            var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
+
+            SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+        }
 
         public async Task<MessageReport> Create(tbl_Event_POST model)
         {
+            var a = Convert.ToDateTime(model.timeInVN);
             var obj = new tbl_Event()
             {
                 Id = Guid.NewGuid().ToString(),
-                Code = model.Code,
-                PlateVN = model.PlateVN,
-                ImageVN = model.ImageVN,
-                TimeInVN = !string.IsNullOrEmpty(model.TimeInVN) ? Convert.ToDateTime(model.TimeInVN) : DateTime.MinValue,
-                TimeOutVN = DateTime.MinValue,
-                VehicleStatusVN = !string.IsNullOrEmpty(model.TimeInVN) ? 1 : 0,
+                Code = model.code,
+                PlateVN = model.plateVN,
+                ImageVN = model.imageVN,
+                TimeInVN = !string.IsNullOrEmpty(model.timeInVN) ? Convert.ToDateTime(model.timeInVN) : DateTime.MaxValue,
+                TimeOutVN = DateTime.MaxValue,
+                VehicleStatusVN = !string.IsNullOrEmpty(model.timeInVN) ? 1 : 0,
 
-                PlateCN = model.PlateCN,
-                ImageCN = model.ImageCN,
-                TimeInCN = !string.IsNullOrEmpty(model.TimeInCN) ? Convert.ToDateTime(model.TimeInCN) : DateTime.MinValue,
-                TimeOutCN = DateTime.MinValue,
-                VehicleStatusCN = !string.IsNullOrEmpty(model.TimeInCN) ? 1 : 0,
+                PlateCN = model.plateCN,
+                ImageCN = model.imageCN,
+                TimeInCN = !string.IsNullOrEmpty(model.timeInCN) ? Convert.ToDateTime(model.timeInCN) : DateTime.MaxValue,
+                TimeOutCN = DateTime.MaxValue,
+                VehicleStatusCN = !string.IsNullOrEmpty(model.timeInCN) ? 1 : 0,
 
-                Description = model.Description,
+                Description = model.description,
   
-                Price = model.Price,
-                SubPrice = model.SubPrice,
-                ServiceCode = model.ServiceCode,
-                Service = model.Service,
+                Price = model.price,
+                SubPrice = model.subPrice,
+                ServiceCode = model.serviceCode,
+                Service = model.service,
 
-                VehicleType = model.VehicleType,
-                Weight = model.Weight,
-                ProductType = model.ProductType,
-                ProductGroup = model.ProductGroup,
+                VehicleType = model.vehicleType,
+                Weight = model.weight,
+                ProductType = model.productType,
+                ProductGroup = model.productGroup,
                 EventType = 1, //chờ xác nhận
-                PaymentStatus = model.PaymentStatus,
+                PaymentStatus = model.paymentStatus,
+
+                BB_Table = model.bb_Table,
+                BB_Id = model.bb_Id,
 
                 Cost = 0,
                 IsDeleted = false,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.MinValue,
-                ConfirmDate = DateTime.MinValue,
-                DivisionDate = DateTime.MinValue,
+                StartDate = DateTime.MaxValue,
+                EndDate = DateTime.MaxValue,
+                ConfirmDate = DateTime.MaxValue,
+                DivisionDate = DateTime.MaxValue,
                 ParkingPosition = "",
                 GroupId = ""           
             };
@@ -70,7 +117,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             if (result.isSuccess)
             {
-                result = new MessageReport(true, obj.Id);
+                result = new MessageReport(true, "Thành công");
             }
 
             return result;
@@ -80,46 +127,57 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetById(model.Code);
+            var obj = await GetOneByBBInfo(model.bb_Table,model.bb_Id);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
-                return await Task.FromResult(result);
+                return result;
             }
 
-            obj.Code = model.Code;
-            obj.ImageCN = model.ImageCN;
-            obj.ImageVN = model.ImageVN;
-            obj.PlateCN = model.PlateCN;
-            obj.PlateVN = model.PlateVN;
-            obj.Description = model.Description;
-            obj.GroupId = "";
-            obj.Price = model.Price;
-            obj.SubPrice = model.SubPrice;
-            obj.ServiceCode = model.ServiceCode;
-            obj.Service = model.Service;
-            obj.ParkingPosition = "";
-            obj.VehicleType = model.VehicleType;
-            obj.Weight = model.Weight;
-            obj.ProductType = model.ProductType;
-            obj.ProductGroup = model.ProductGroup;
+            obj.Service = model.service;
+            obj.Code = model.code;
+
+            obj.PlateVN = model.plateVN;
+            obj.ImageVN = model.imageVN;
+
+            if (!string.IsNullOrEmpty(model.timeInVN))
+            {
+                obj.TimeInVN = Convert.ToDateTime(model.timeInVN);
+            }
+
+            obj.PlateCN = model.plateCN;
+            obj.ImageCN = model.imageCN;
+
+            if (!string.IsNullOrEmpty(model.timeInCN))
+            {
+                obj.TimeInCN = Convert.ToDateTime(model.timeInCN);
+            }
+
+            obj.ProductType = model.productType;
+            obj.Weight = model.weight;
+            obj.VehicleType = model.vehicleType;
+            obj.ProductGroup = model.productGroup;
+            obj.Price = model.price;
+            obj.SubPrice = model.subPrice;
+            obj.ServiceCode = model.serviceCode;
+            obj.PaymentStatus = model.paymentStatus;
             obj.ModifiedDate = DateTime.Now;
 
             result = await _tbl_EventRepository.Update(obj);
 
             if (result.isSuccess)
             {
-                result = new MessageReport(true, obj.Id);
+                result = new MessageReport(true, "Thành công");
             }
 
             return result;
         }
 
-        public async Task<MessageReport> Delete(string id)
+        public async Task<MessageReport> Delete(tbl_Event_POST model)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetById(id);
+            var obj = await GetOneByBBInfo(model.bb_Table, model.bb_Id);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
@@ -133,6 +191,44 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
+            }
+
+            return result;
+        }
+
+        public async Task<MessageReport> VehicleStatusIn(API_VehicleStatus model)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            try
+            {
+                await UpdateVehicleIn(model);
+
+                result = new MessageReport(true, "Thành công");
+            }
+            catch (Exception ex)
+            {
+
+                result = new MessageReport(false, ex.Message);
+            }
+
+            return result;
+        }
+
+        public async Task<MessageReport> VehicleStatusOut(API_VehicleStatus model)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            try
+            {
+                await UpdateVehicleOut(model);
+
+                result = new MessageReport(true, "Thành công");
+            }
+            catch (Exception ex)
+            {
+
+                result = new MessageReport(false, ex.Message);
             }
 
             return result;

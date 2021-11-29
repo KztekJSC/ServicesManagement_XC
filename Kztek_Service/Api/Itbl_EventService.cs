@@ -1,10 +1,8 @@
-﻿using Kztek_Core.Models;
-using Kztek_Model.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Kztek_Core.Models;
+using Kztek_Model.Models;
 
 namespace Kztek_Service.Api
 {
@@ -12,6 +10,9 @@ namespace Kztek_Service.Api
     {
         Task<MessageReport> Create(tbl_Event_POST model);
         Task<MessageReport> Update(tbl_Event_POST model);
-        Task<MessageReport> Delete(string id);
+        Task<MessageReport> Delete(tbl_Event_POST model);
+        Task<MessageReport> VehicleStatusIn(API_VehicleStatus model);
+        Task<MessageReport> VehicleStatusOut(API_VehicleStatus model);
     }
 }
+

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Kztek_Web.Apis
 {
-    [Authorize(Policy = ApiConfig.Auth_Bearer_Mobile)]
+    //[Authorize(Policy = ApiConfig.Auth_Bearer_Mobile)]
     [Route("api/[controller]")]
-    public class tblEventController : Controller
+    public class tbl_EventController : Controller
     {
         private Itbl_EventService _tbl_EventService;
 
-        public tblEventController(Itbl_EventService _tbl_EventService)
+        public tbl_EventController(Itbl_EventService _tbl_EventService)
         {
             this._tbl_EventService = _tbl_EventService;
         }
@@ -27,7 +27,7 @@ namespace Kztek_Web.Apis
         /// <param name="value"> Model thêm mới </param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<MessageReport>> Post([FromBody] tbl_Event_POST value)
+        public async Task<ActionResult<MessageReport>> Post([FromBody]tbl_Event_POST value)
         {
             return await _tbl_EventService.Create(value);
         }
@@ -41,7 +41,7 @@ namespace Kztek_Web.Apis
         /// <param name="value"> Model cập nhật </param>
         /// <returns></returns>
         [HttpPut("update")]
-        public async Task<ActionResult<MessageReport>> Put([FromBody] tbl_Event_POST value)
+        public async Task<ActionResult<MessageReport>> Put([FromBody]tbl_Event_POST value)
         {
             return await _tbl_EventService.Update(value);
         }
@@ -53,10 +53,34 @@ namespace Kztek_Web.Apis
         /// LamHN         23/11/2021      Thêm mới
         /// <param name="id">Id bản ghi</param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<MessageReport>> Delete(string id)
+        [HttpDelete]
+        public async Task<ActionResult<MessageReport>> Delete([FromBody]tbl_Event_POST value)
         {
-            return await _tbl_EventService.Delete(id);
+            return await _tbl_EventService.Delete(value);
+        }
+
+        /// <summary>
+        /// Api cập nhật thông tin xe vào
+        /// </summary>
+        /// Author          Date            Summary
+        /// LamHN         29/11/2021      Thêm mới
+        /// <returns></returns>
+        [HttpPost("xevao")]
+        public async Task<ActionResult<MessageReport>> VehicleIn([FromBody]API_VehicleStatus value)
+        {
+            return await _tbl_EventService.VehicleStatusIn(value);
+        }
+
+        /// <summary>
+        /// Api cập nhật thông tin xe ra
+        /// </summary>
+        /// Author          Date            Summary
+        /// LamHN         29/11/2021      Thêm mới
+        /// <returns></returns>
+        [HttpPost("xera")]
+        public async Task<ActionResult<MessageReport>> VehicleOut([FromBody]API_VehicleStatus value)
+        {
+            return await _tbl_EventService.VehicleStatusOut(value);
         }
     }
 }

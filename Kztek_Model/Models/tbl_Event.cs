@@ -85,26 +85,40 @@ namespace Kztek_Model.Models
         public DateTime DivisionDate { get; set; } //Ngày phân tổ
 
         public DateTime ConfirmDate { get; set; } //Ngày xác nhận
+
+        public string BB_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
+        public string BB_Id { get; set; } //Id dịch vụ của Biển Bạc
     }
 
     public class tbl_Event_POST
     {
-        public string Service { get; set; } //Dịch vụ
-        public string Code { get; set; } //Mã đăng ký
-        public string PlateVN { get; set; } //Biển số xe Việt Nam
-        public string ImageVN { get; set; } //ảnh xe Việt Nam
-        public string TimeInVN { get; set; } //Thời gian vào của xe VN
-        public string PlateCN { get; set; } //Biển số xe Trung Quốc
-        public string ImageCN { get; set; } //ảnh xe Trung Quốc
-        public string TimeInCN { get; set; } //Thời gian vào của xe CN
-        public string ProductType { get; set; } //Loại hàng
-        public int Weight { get; set; } //Khối lượng hàng    
-        public string VehicleType { get; set; } //Loại xe
-        public string ProductGroup { get; set; } //Nhóm hàng
-        public decimal Price { get; set; } //Giá dịch vụ
-        public decimal SubPrice { get; set; } //Phụ thu
-        public string Description { get; set; }
-        public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
-        public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+        public string service { get; set; } //Dịch vụ
+        public string code { get; set; } //Mã đăng ký
+        public string plateVN { get; set; } //Biển số xe Việt Nam
+        public string imageVN { get; set; } //ảnh xe Việt Nam
+        public string timeInVN { get; set; } //Thời gian vào của xe VN
+        public string plateCN { get; set; } //Biển số xe Trung Quốc
+        public string imageCN { get; set; } //ảnh xe Trung Quốc
+        public string timeInCN { get; set; } //Thời gian vào của xe CN
+        public string productType { get; set; } //Loại hàng
+        public decimal weight { get; set; } //Khối lượng hàng    
+        public string vehicleType { get; set; } //Loại xe
+        public string productGroup { get; set; } //Nhóm hàng
+        public decimal price { get; set; } //Giá dịch vụ
+        public decimal subPrice { get; set; } //Phụ thu
+        public string description { get; set; }
+        public string serviceCode { get; set; } //Số trang (mã dịch vụ)
+        public string paymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+        public string bb_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
+        public string bb_Id { get; set; } //Id dịch vụ của Biển Bạc
+    }
+
+    public class API_VehicleStatus
+    {
+        public string plate { get; set; } //Biển số
+        public string type { get; set; } //VN hoặc CN
+        public string time { get; set; } //Thời gian
+        public string vehicleType { get; set; } //Loại xe
+        public string image { get; set; } 
     }
 }
