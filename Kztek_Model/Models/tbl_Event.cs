@@ -59,7 +59,7 @@ namespace Kztek_Model.Models
         public decimal SubPrice { get; set; } //Phụ thu
 
         public string GroupId { get; set; } //Tổ bốc xếp    
-   
+
         public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
 
         public string ParkingPosition { get; set; }//Vị trí đỗ
@@ -70,9 +70,9 @@ namespace Kztek_Model.Models
 
         public decimal Cost { get; set; }//Chi phí cho công nhân
 
-        public string PackageNumber { get; set; }//Số kiện
+        public int PackageNumber { get; set; }//Số kiện
 
-        public string Quantity { get; set; }//Số lượng
+        public int Quantity { get; set; }//Số lượng
 
         public DateTime CreatedDate { get; set; } //Ngày tạo
 
@@ -119,6 +119,6 @@ namespace Kztek_Model.Models
         public string type { get; set; } //VN hoặc CN
         public string time { get; set; } //Thời gian
         public string vehicleType { get; set; } //Loại xe
-        public string image { get; set; } 
+        public string image { get; set; }
     }
 }

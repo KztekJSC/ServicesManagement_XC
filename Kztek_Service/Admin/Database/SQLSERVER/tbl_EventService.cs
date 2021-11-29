@@ -51,7 +51,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
         public async Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "")
         {
-            var data = StaticList.ListStatus();
+            var data = StaticList.ListStatusConfirmGroup();
             var cus = new List<SelectListModel>();
             var lst = data;
             if (lst != null && lst.Count > 0)
@@ -79,6 +79,39 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             };
             return model;
         }
+
+        public async Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "")
+        {
+            var data = StaticList.ListStatusService();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen()
+            {
+                IdSelectList = "StatusID",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+                isMultiSelect = false
+            };
+            return model;
+        }
+
+       
 
         public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
@@ -251,7 +284,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and EventType = 0 OR EventType = 1");
+            sb.AppendLine("WHere 1 =1 and EventType = 1 OR EventType = 2");
             if (!string.IsNullOrEmpty(key))
             {
                 sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));

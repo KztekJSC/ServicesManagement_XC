@@ -33,7 +33,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <di class="col-xs-12">
         @using (Html.BeginForm("Update", "ConfirmedGroup", FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
         {
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -42,21 +42,21 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Mã đăng kí/Số trang </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang" })
+                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang", @disabled = "disabled" })
                     @Html.ValidationMessage("ServiceCode", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Việt Nam </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateVN", Model.PlateVN, new { @class = "form-control", @placeholder = "biển số xe VN"@*, @disabled = "disabled"*@ })
+                    @Html.TextBox("PlateVN", Model.PlateVN, new { @class = "form-control", @placeholder = "biển số xe VN", @disabled = "disabled" })
                     @Html.ValidationMessage("PlateVN", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Trung Quốc </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ"@*, @disabled = "disabled"*@ })
+                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ", @disabled = "disabled" })
                     @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại xe </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe" })
+                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe", @disabled = "disabled" })
                     @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại hàng </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ProductType", Model.ProductType, new { @class = "form-control", @placeholder = "Loại hàng" })
+                    @Html.TextBox("ProductType", Model.ProductType, new { @class = "form-control", @placeholder = "Loại hàng", @disabled = "disabled" })
                     @Html.ValidationMessage("ProductType", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -81,14 +81,14 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Số lượng </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Quantity", Model.Quantity, new { @class = "form-control", @placeholder = "Số lượng" })
+                    @Html.TextBox("Quantity", Model.Quantity, new { @class = "form-control", @placeholder = "Số lượng", @disabled = "disabled" })
                     @Html.ValidationMessage("Quantity", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Vị trí đỗ </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ParkingPosition", Model.ParkingPosition, new { @class = "form-control", @placeholder = "Vị trí đỗ" })
+                    @Html.TextBox("ParkingPosition", Model.ParkingPosition, new { @class = "form-control", @placeholder = "Vị trí đỗ", @disabled = "disabled" })
                     @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -96,12 +96,12 @@
             <div class="row">
                 <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
                     <div class="offset-md-3 col-md-9 text-nowrap">
-                        <button class="btn btn-warning btn-bold px-4" type="submit">
+                        <button class="btn btn-warning btn-bold px-4 btnStart" type="button" idata="@Model.Id">
                             <i class="fa fa-check mr-1"></i>
                             Bắt đầu
                         </button>
 
-                       
+
                         <button class="btn ragge btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" type="submit">
                             <i class="fa fa-check mr-1"></i>
                             Đã làm xong
@@ -111,6 +111,34 @@
             </div>
 
         }
-    </div>
+    </di>
 </div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+          
+
+            $(".btnStart").click(function () {
+                var cmd = $(this);
+                var eventype = 4;
+                var id = cmd.attr('idata');
+                var model = {
+                    eventype: eventype,
+                    id : id,
+                }
+                JSHelper.AJAX_HttpPost('/Admin/ConfirmedGroup/UpdateEvent', model)
+                    .success(function (response) {
+                        if (response.isSuccess) {
+                            window.location.href = "/Admin/ConfirmedGroup/Index";
+                        } else {
+                            toastr.error(response.Message)
+                        }
+                    });
+
+
+            });
+        });
+    </script>
+}
 

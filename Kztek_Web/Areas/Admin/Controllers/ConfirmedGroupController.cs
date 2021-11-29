@@ -1,4 +1,5 @@
-﻿using Kztek_Library.Configs;
+﻿using Kztek_Core.Models;
+using Kztek_Library.Configs;
 using Kztek_Library.Helpers;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
@@ -117,16 +118,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
 
 
-            oldObj.PlateVN = model.PlateVN;
-            oldObj.PlateCN = model.PlateCN;
-            oldObj.Weight = model.Weight;
-            oldObj.PackageNumber = model.PackageNumber;
-            oldObj.VehicleType = model.VehicleType;
-            oldObj.ServiceCode = model.ServiceCode;
-            oldObj.ModifiedDate = DateTime.Now;
-            oldObj.ProductType = model.ProductType;
-            oldObj.ParkingPosition = model.ParkingPosition;
-            oldObj.Quantity = model.Quantity;
+         
             oldObj.EndDate = DateTime.Now;
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
@@ -148,6 +140,21 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #endregion Cập nhật
 
+     
+        public async Task<IActionResult> UpdateEvent(string eventype, string id)
+        {
+            var result = new MessageReport(false, "error");
+            //Kiểm tra
+            var oldObj = await _tbl_EventService.GetById(id);
+            oldObj.EventType = Convert.ToInt32( eventype);
+            oldObj.StartDate = DateTime.Now;
+
+            //Thực hiện cập nhậts
+             result = await _tbl_EventService.Update(oldObj);
+
+           
+            return Json(result);
+        }
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
         {
             var list = await GetAllGroup();

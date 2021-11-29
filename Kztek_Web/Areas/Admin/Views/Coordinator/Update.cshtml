@@ -42,21 +42,21 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Mã đăng kí/Số trang </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang" })
+                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang", @disabled = "disabled" })
                     @Html.ValidationMessage("ServiceCode", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Việt Nam </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateVN", Model.PlateVN, new { @class = "form-control", @placeholder = "biển số xe VN"@*, @disabled = "disabled"*@ })
+                    @Html.TextBox("PlateVN", Model.PlateVN, new { @class = "form-control", @placeholder = "biển số xe VN", @disabled = "disabled" })
                     @Html.ValidationMessage("PlateVN", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Trung Quốc </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ"@*, @disabled = "disabled"*@ })
+                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ", @disabled = "disabled" })
                     @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Số kiện </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PackageNumber", Model.PackageNumber, new { @class = "form-control", @placeholder = "Số kiện" })
+                    @Html.TextBox("PackageNumber", Model.PackageNumber, new { @class = "form-control", @placeholder = "Số kiện", @disabled = "disabled" })
                     @Html.ValidationMessage("PackageNumber", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Khối lượng </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Weight", Model.Weight, new { @class = "form-control", @placeholder = "Khối lượng" })
+                    @Html.TextBox("Weight", Model.Weight, new { @class = "form-control", @placeholder = "Khối lượng", @disabled = "disabled" })
                     @Html.ValidationMessage("Weight", "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -81,7 +81,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại xe </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe" })
+                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe", @disabled = "disabled" })
                     @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
                 </div>
             </div>

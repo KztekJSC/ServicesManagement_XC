@@ -55,7 +55,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             #region Giao diện
 
             var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
-            ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
+            ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
             ViewBag.StatusID = StatusID;
             ViewBag.Groups = await _GroupService.GetAll();
@@ -130,6 +130,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
             oldObj.SubPrice = model.SubPrice;
             oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
             oldObj.Description = model.Description;
+            //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
+            oldObj.CreatedDate = DateTime.Now;
+            oldObj.ModifiedDate = DateTime.Now;
+            //oldObj.TimeInVN =
 
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);

@@ -20,5 +20,6 @@ namespace Kztek_Service.Admin
         Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "");
         Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int v, string statusID, string fromdate, string todate);
         Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int v, string statusID, string fromdate, string todate);
+        Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "");
     }
 }

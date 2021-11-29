@@ -23,13 +23,10 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_
 BEGIN
 	ALTER TABLE [tbl_Event] ADD Cost decimal not null DEFAULT 0
 END
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ParkingPosition')
-BEGIN
-	ALTER TABLE [tbl_Event] ADD ParkingPosition varchar(250) null
-END
+
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'PaymentStatus')
 BEGIN
-	ALTER TABLE [tbl_Event] ADD PaymentStatus varchar(10) default('0')
+	ALTER TABLE [tbl_Event] ADD PaymentStatus varchar(10) default('')
 END
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ServiceCode')
 BEGIN
@@ -38,15 +35,20 @@ END
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'PackageNumber')
 BEGIN
-	ALTER TABLE [tbl_Event] ADD PackageNumber varchar(250) null
+	ALTER TABLE [tbl_Event] ADD PackageNumber int not null default(0)
 END
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'Quantity')
 BEGIN
-	ALTER TABLE [tbl_Event] ADD Quantity varchar(10) null
+	ALTER TABLE [tbl_Event] ADD Quantity int not null default(0)
 END
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'DivisionDate')
 BEGIN
-	ALTER TABLE [tbl_Event] ADD DivisionDate Datetime not null default('2021-01-01 00:00:00.000')
+	ALTER TABLE [tbl_Event] ADD DivisionDate Datetime not null default('1001-01-01')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ParkingPosition')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD ParkingPosition varchar not null default('')
 END
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'VehicleStatusVN')

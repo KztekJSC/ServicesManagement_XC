@@ -80,7 +80,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(string id, int pageNumber = 1)
         {
-            var model = await _tbl_EventService.GetById(id);
+            var model = await _tbl_EventService.GetById(id.ToString());
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             return View(model);
         }
@@ -115,14 +115,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 return View(oldObj);
             }
-
-         
-            oldObj.PlateVN = model.PlateVN;
-            oldObj.PlateCN = model.PlateCN;         
-            oldObj.Weight = model.Weight;
-            oldObj.PackageNumber = model.PackageNumber;
-            oldObj.VehicleType = model.VehicleType;
-            oldObj.ServiceCode = model.ServiceCode;
+  
             oldObj.EventType = 5;
             oldObj.ModifiedDate = DateTime.Now;
 
