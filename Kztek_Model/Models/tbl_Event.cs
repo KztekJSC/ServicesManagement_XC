@@ -16,13 +16,33 @@ namespace Kztek_Model.Models
 
         public string Code { get; set; } //Mã đăng ký
 
-        public int EventType { get; set; } //Trạng thái
+        public int EventType { get; set; } //Trạng thái công việc. 1 - Chờ xác nhận, 2 - Đã xác nhận/Chưa phân tổ, 3 - Đã phân tổ, 4 - Đang thực hiện, 5 - Hoàn thành
 
+        #region Xe VN
         public string PlateVN { get; set; } //Biển số xe Việt Nam
 
+        public int VehicleStatusVN { get; set; } //Trạng thái xe VN. 0 - chưa vào, 1 - xe vào, 2 - xe ra
+
+        public string ImageVN { get; set; } //ảnh xe Việt Nam
+
+        public DateTime TimeInVN { get; set; } //Thời gian vào của xe VN
+        public DateTime TimeOutVN { get; set; } //Thời gian ra của xe VN
+        #endregion
+
+        #region Xe CN
         public string PlateCN { get; set; } //Biển số xe Trung Quốc
 
-        public int Weight { get; set; } //Khối lượng hàng
+        public int VehicleStatusCN { get; set; } //Trạng thái xe Trung Quốc. 0 - chưa vào, 1 - xe vào, 2 - xe ra
+
+        public string ImageCN { get; set; } //Ảnh xe Trung Quốc
+
+        public DateTime TimeInCN { get; set; } //Thời gian vào của xe Trung Quốc
+
+        public DateTime TimeOutCN { get; set; } //Thời gian ra của xe Trung Quốc
+        #endregion
+
+
+        public decimal Weight { get; set; } //Khối lượng hàng
 
         public string ProductType { get; set; } //Loại hàng
 
@@ -30,7 +50,7 @@ namespace Kztek_Model.Models
 
         public string ProductGroup { get; set; } //Nhóm hàng
 
-        public string Description { get; set; }
+        public string Description { get; set; } // ghi chú phát sinh
 
         public string Service { get; set; } //Dịch vụ
 
@@ -38,36 +58,45 @@ namespace Kztek_Model.Models
 
         public decimal SubPrice { get; set; } //Phụ thu
 
-        public string GroupId { get; set; } //Tổ bốc xếp
+        public string GroupId { get; set; } //Tổ bốc xếp    
+   
+        public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
+
+        public string ParkingPosition { get; set; }//Vị trí đỗ
+
+        public bool IsDeleted { get; set; } //true là xóa
+
+        public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+
+        public decimal Cost { get; set; }//Chi phí cho công nhân
+
+        public string PackageNumber { get; set; }//Số kiện
+
+        public string Quantity { get; set; }//Số lượng
 
         public DateTime CreatedDate { get; set; } //Ngày tạo
 
         public DateTime ModifiedDate { get; set; } //Ngày cập nhật
 
         public DateTime StartDate { get; set; } //Ngày bắt đầu công việc
+
         public DateTime EndDate { get; set; } //Ngày kết thúc công việc
+
         public DateTime DivisionDate { get; set; } //Ngày phân tổ
-        public string ImageVN { get; set; } //ảnh xe Việt Nam
-        public string ImageCN { get; set; } //ảnh xe Trung Quốc
-        public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
-        public string ParkingPosition { get; set; }//Vị trí đỗ
-        public bool IsDeleted { get; set; } //true là xóa
-        public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
-        public decimal Cost { get; set; }//Giá trả cho công nhân
-        public string PackageNumber { get; set; }//Số kiện
-        public string Quantity { get; set; }//Số lượng
+
+        public DateTime ConfirmDate { get; set; } //Ngày xác nhận
     }
 
     public class tbl_Event_POST
     {
-        public string ID { get; set; } //id sự kiện
         public string Service { get; set; } //Dịch vụ
         public string Code { get; set; } //Mã đăng ký
-        public int EventType { get; set; } //Trạng thái
         public string PlateVN { get; set; } //Biển số xe Việt Nam
         public string ImageVN { get; set; } //ảnh xe Việt Nam
+        public string TimeInVN { get; set; } //Thời gian vào của xe VN
         public string PlateCN { get; set; } //Biển số xe Trung Quốc
         public string ImageCN { get; set; } //ảnh xe Trung Quốc
+        public string TimeInCN { get; set; } //Thời gian vào của xe CN
         public string ProductType { get; set; } //Loại hàng
         public int Weight { get; set; } //Khối lượng hàng    
         public string VehicleType { get; set; } //Loại xe
@@ -76,8 +105,6 @@ namespace Kztek_Model.Models
         public decimal SubPrice { get; set; } //Phụ thu
         public string Description { get; set; }
         public string ServiceCode { get; set; } //Số trang (mã dịch vụ)
-        public string ParkingPosition { get; set; }//Vị trí đỗ
         public string PaymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
-        public decimal Cost { get; set; }//Giá trả cho công nhân
     }
 }
