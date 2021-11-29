@@ -80,7 +80,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(string id, int pageNumber = 1)
         {
-            var model = await _tbl_EventService.GetById(id);
+            var model = await _tbl_EventService.GetById(id.ToString());
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             return View(model);
         }

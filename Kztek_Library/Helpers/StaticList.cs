@@ -25,8 +25,8 @@ namespace Kztek_Library.Helpers
         public static List<SelectListModel> ListStatusService()
         {
             var list = new List<SelectListModel> {
-                                        new SelectListModel { ItemValue = "0", ItemText = "Chờ xác nhận"},
-                                        new SelectListModel { ItemValue = "1", ItemText = "Đã xác nhận"},
+                                        new SelectListModel { ItemValue = "1", ItemText = "Chờ xác nhận"},
+                                        new SelectListModel { ItemValue = "2", ItemText = "Đã xác nhận"},
                                
                                     };
             return list;
@@ -36,10 +36,10 @@ namespace Kztek_Library.Helpers
         {
             var list = new List<SelectListModel> {
 
-                                        new SelectListModel { ItemValue = "1", ItemText = "Chưa phân tổ"},
-                                        new SelectListModel { ItemValue = "2", ItemText = "Đã phân tổ"},
-                                        new SelectListModel { ItemValue = "3", ItemText = "Đang thực hiện"},
-                                        new SelectListModel { ItemValue = "4", ItemText = "Hoàn thành"}
+                                        new SelectListModel { ItemValue = "2", ItemText = "Chưa phân tổ"},
+                                        new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Hoàn thành"}
                                     };
             return list;
         }

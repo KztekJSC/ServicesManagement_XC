@@ -28,29 +28,42 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             {
                 Id = Guid.NewGuid().ToString(),
                 Code = model.Code,
-                ImageCN = model.ImageCN,
-                ImageVN = model.ImageVN,
-                PlateCN = model.PlateCN,
                 PlateVN = model.PlateVN,
+                ImageVN = model.ImageVN,
+                TimeInVN = !string.IsNullOrEmpty(model.TimeInVN) ? Convert.ToDateTime(model.TimeInVN) : DateTime.MinValue,
+                TimeOutVN = DateTime.MinValue,
+                VehicleStatusVN = !string.IsNullOrEmpty(model.TimeInVN) ? 1 : 0,
+
+                PlateCN = model.PlateCN,
+                ImageCN = model.ImageCN,
+                TimeInCN = !string.IsNullOrEmpty(model.TimeInCN) ? Convert.ToDateTime(model.TimeInCN) : DateTime.MinValue,
+                TimeOutCN = DateTime.MinValue,
+                VehicleStatusCN = !string.IsNullOrEmpty(model.TimeInCN) ? 1 : 0,
+
                 Description = model.Description,
-                GroupId = "",
+  
                 Price = model.Price,
                 SubPrice = model.SubPrice,
                 ServiceCode = model.ServiceCode,
                 Service = model.Service,
-                ParkingPosition = "",
+
                 VehicleType = model.VehicleType,
                 Weight = model.Weight,
                 ProductType = model.ProductType,
                 ProductGroup = model.ProductGroup,
-                EventType = model.EventType,
+                EventType = 1, //chờ xác nhận
                 PaymentStatus = model.PaymentStatus,
-                Cost = model.Cost,
+
+                Cost = 0,
                 IsDeleted = false,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
                 StartDate = DateTime.MinValue,
-                EndDate = DateTime.MinValue
+                EndDate = DateTime.MinValue,
+                ConfirmDate = DateTime.MinValue,
+                DivisionDate = DateTime.MinValue,
+                ParkingPosition = "",
+                GroupId = ""           
             };
 
             var result = await _tbl_EventRepository.Add(obj);
@@ -67,7 +80,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetById(model.ID);
+            var obj = await GetById(model.Code);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
@@ -90,7 +103,6 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             obj.Weight = model.Weight;
             obj.ProductType = model.ProductType;
             obj.ProductGroup = model.ProductGroup;
-            obj.EventType = model.EventType;
             obj.ModifiedDate = DateTime.Now;
 
             result = await _tbl_EventRepository.Update(obj);

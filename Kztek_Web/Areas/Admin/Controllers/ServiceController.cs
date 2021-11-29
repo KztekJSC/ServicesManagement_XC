@@ -130,6 +130,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
             oldObj.SubPrice = model.SubPrice;
             oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
             oldObj.Description = model.Description;
+            //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
+            oldObj.CreatedDate = DateTime.Now;
+            oldObj.ModifiedDate = DateTime.Now;
+            //oldObj.TimeInVN =
 
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);

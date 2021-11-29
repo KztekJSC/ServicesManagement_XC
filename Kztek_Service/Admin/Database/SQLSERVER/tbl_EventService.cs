@@ -284,7 +284,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and EventType = 0 OR EventType = 1");
+            sb.AppendLine("WHere 1 =1 and EventType = 1 OR EventType = 2");
             if (!string.IsNullOrEmpty(key))
             {
                 sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));

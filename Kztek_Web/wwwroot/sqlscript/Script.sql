@@ -88,10 +88,7 @@ IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_
 BEGIN
 	ALTER TABLE [tbl_Event] ADD Cost decimal not null DEFAULT 0
 END
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ParkingPosition')
-BEGIN
-	ALTER TABLE [tbl_Event] ADD ParkingPosition varchar(250) null
-END
+
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'PaymentStatus')
 BEGIN
 	ALTER TABLE [tbl_Event] ADD PaymentStatus varchar(10) default('')
@@ -111,16 +108,47 @@ BEGIN
 END
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'DivisionDate')
 BEGIN
-	ALTER TABLE [tbl_Event] ADD DivisionDate Datetime not null  default('2021-01-01 00:00:00.000')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'adf03611-dae6-42c6-8a8f-0aebbc35b7b5')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('adf03611-dae6-42c6-8a8f-0aebbc35b7b5', N'Sự kiện xe kín','Report','1','ReportPrivateOut','','fa fa-caret-right','81478553','1','0','4','','','12878956','0')
+	ALTER TABLE [tbl_Event] ADD DivisionDate Datetime not null default('1001-01-01')
 END
 
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = '718266a9-21a3-433c-8e8b-c24973bec9be')
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ParkingPosition')
 BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('718266a9-21a3-433c-8e8b-c24973bec9be', N'Sự kiện xe hở','Report','1','ReportOpenOut','','fa fa-caret-right','81478553','1','0','5','','','12878956','0')
+	ALTER TABLE [tbl_Event] ADD ParkingPosition varchar not null default('')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'VehicleStatusVN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD VehicleStatusVN int not null default 0
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'VehicleStatusCN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD VehicleStatusCN int not null default 0
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'TimeInVN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD TimeInVN Datetime not null  default('2021-01-01 00:00:00.000')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'TimeOutVN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD TimeOutVN Datetime not null  default('2021-01-01 00:00:00.000')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'TimeInCN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD TimeInCN Datetime not null  default('2021-01-01 00:00:00.000')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'TimeOutCN')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD TimeOutCN Datetime not null  default('2021-01-01 00:00:00.000')
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_Event' AND COLUMN_NAME = 'ConfirmDate')
+BEGIN
+	ALTER TABLE [tbl_Event] ADD ConfirmDate Datetime not null  default('2021-01-01 00:00:00.000')
 END
 
 IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tblGate' AND COLUMN_NAME = 'IsXi')
@@ -128,41 +156,4 @@ BEGIN
 	ALTER TABLE [tblGate] ADD IsXi bit NOT NULL DEFAULT 0
 END
 
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'f617b240-5352-4d03-82a0-deb7ab49dbb4')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('f617b240-5352-4d03-82a0-deb7ab49dbb4', N'Lượt xe chở xỉ','Report','1','ReportEventXi','','fa fa-caret-right','81478553','1','0','3','','','12878956','0')
-END
 
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = '24497936-479b-4a63-b9a5-697d827b2515')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('24497936-479b-4a63-b9a5-697d827b2515', N'Xe chưa đăng ký','Report','1','ReportUnRegistered','','fa fa-caret-right','81478553','1','0','3','','','12878956','0')
-END
-
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'e07e12cd-3e4a-4129-970b-b95e106aa833')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('e07e12cd-3e4a-4129-970b-b95e106aa833', N'Sự kiện vào/ra','Report','1','ReportVehicleComeInOut','','fa fa-caret-right','81478553','1','0','3','','','12878956','0')
-END
-
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'ff51ce87-d302-4e39-9e2c-0307f5c40276')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('ff51ce87-d302-4e39-9e2c-0307f5c40276', N'Máy tinh /Làn','tbl_Lane_PC','1','Index','','fa fa-caret-right','81507875','1','0','5','','','12878956','0')
-END
-IF NOT EXISTS (SELECT * FROM [dbo].[MenuFunction] WHERE Id = 'a9f2487a-d4a4-4d7d-8faf-daf67ea1033c')
-BEGIN
-INSERT [dbo].[MenuFunction] ([Id], [MenuName], [ControllerName],[MenuType], [ActionName],[Url],[Icon],[ParentId],[Active],[Deleted],[OrderNumber],[Breadcrumb],[Dept],[MenuGroupListId],[isSystem]) VALUES ('ff51ce87-d302-4e39-9e2c-0307f5c40276', N'LED','tblLED','1','Index','','fa fa-caret-right','81507875','1','0','4','','','12878956','0')
-END
-Update [dbo].[MenuFunction]
-set MenuName = N'Lượt xe kín'
-where Id = 'adf03611-dae6-42c6-8a8f-0aebbc35b7b5'
-
-Update [dbo].[MenuFunction]
-set MenuName = N'Lượt xe hở'
-where Id = '718266a9-21a3-433c-8e8b-c24973bec9be'
-
-Update [dbo].[MenuFunction]
-set MenuName = N'Sự kiện nhiễu'
-where Id = 'b099b19f-f5dc-412f-8a97-95558017be44'
-
-Update [dbo].[MenuFunction]
-set MenuName = N'Sự kiện vào/ra'
-where Id = 'e07e12cd-3e4a-4129-970b-b95e106aa833'
