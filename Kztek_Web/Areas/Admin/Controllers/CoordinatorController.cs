@@ -115,14 +115,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 return View(oldObj);
             }
-
-         
-            oldObj.PlateVN = model.PlateVN;
-            oldObj.PlateCN = model.PlateCN;         
-            oldObj.Weight = model.Weight;
-            oldObj.PackageNumber = model.PackageNumber;
-            oldObj.VehicleType = model.VehicleType;
-            oldObj.ServiceCode = model.ServiceCode;
+  
             oldObj.EventType = 5;
             oldObj.ModifiedDate = DateTime.Now;
 
