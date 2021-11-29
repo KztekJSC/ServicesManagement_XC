@@ -31,43 +31,46 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             return await Task.FromResult(query.FirstOrDefault());
         }
 
-        public async Task UpdateVehicleIn(API_VehicleStatus obj)
+        public async Task<bool> UpdateVehicleIn(API_VehicleStatus obj)
         {
             var query = new StringBuilder();
             query.AppendLine("Update tbl_Event");
             query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 1,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe vào
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN",obj.image)); //ảnh xe
-            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",obj.time)); //thời gian vào
+            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss") )); //thời gian vào
             query.AppendLine("where IsDeleted = 0 and EventType = 1");
             query.AppendLine(string.Format("and {0} = 0", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe chưa vào
             query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
 
             var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
 
-            SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+            var check = SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+
+            return await Task.FromResult(check);
         }
 
-        public async Task UpdateVehicleOut(API_VehicleStatus obj)
+        public async Task<bool> UpdateVehicleOut(API_VehicleStatus obj)
         {
             var query = new StringBuilder();
             query.AppendLine("Update tbl_Event");
             query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 2,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe ra
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN", obj.image)); //ảnh
-            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeOutVN" : "TimeOutCN", obj.time)); //thời gian ra
+            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeOutVN" : "TimeOutCN", Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss"))); //thời gian ra
             query.AppendLine("where IsDeleted = 0 and EventType = 5");
             query.AppendLine(string.Format("and {0} = 1", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe đã vào
             query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
 
             var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
 
-            SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+            var check = SqlHelper.ExcuteCommandToBool(connectionString, query.ToString());
+
+            return await Task.FromResult(check);
         }
 
         public async Task<MessageReport> Create(tbl_Event_POST model)
         {
-            var a = Convert.ToDateTime(model.timeInVN);
             var obj = new tbl_Event()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -202,9 +205,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             try
             {
-                await UpdateVehicleIn(model);
+                var check = await UpdateVehicleIn(model);
 
-                result = new MessageReport(true, "Thành công");
+                if (check)
+                {
+                    result = new MessageReport(true, "Thành công");
+                }             
             }
             catch (Exception ex)
             {
@@ -221,9 +227,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             try
             {
-                await UpdateVehicleOut(model);
+                var check = await UpdateVehicleOut(model);
 
-                result = new MessageReport(true, "Thành công");
+                if (check)
+                {
+                    result = new MessageReport(true, "Thành công");
+                }
             }
             catch (Exception ex)
             {

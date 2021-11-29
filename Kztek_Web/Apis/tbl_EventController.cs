@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Kztek_Web.Apis
 {
-    //[Authorize(Policy = ApiConfig.Auth_Bearer_Mobile)]
+    [Authorize(Policy = ApiConfig.Auth_Bearer_Mobile)]
     [Route("api/[controller]")]
     public class tbl_EventController : Controller
     {
@@ -65,7 +65,7 @@ namespace Kztek_Web.Apis
         /// Author          Date            Summary
         /// LamHN         29/11/2021      Thêm mới
         /// <returns></returns>
-        [HttpPost("xevao")]
+        [HttpPost("vehiclein")]
         public async Task<ActionResult<MessageReport>> VehicleIn([FromBody]API_VehicleStatus value)
         {
             return await _tbl_EventService.VehicleStatusIn(value);
@@ -77,7 +77,7 @@ namespace Kztek_Web.Apis
         /// Author          Date            Summary
         /// LamHN         29/11/2021      Thêm mới
         /// <returns></returns>
-        [HttpPost("xera")]
+        [HttpPost("vehicleout")]
         public async Task<ActionResult<MessageReport>> VehicleOut([FromBody]API_VehicleStatus value)
         {
             return await _tbl_EventService.VehicleStatusOut(value);
