@@ -35,7 +35,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var query = new StringBuilder();
             query.AppendLine("Update tbl_Event");
-            query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
+            query.AppendLine(string.Format("Set VehicleType = N'{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 1,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe vào
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN",obj.image)); //ảnh xe
             query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss") )); //thời gian vào
@@ -54,7 +54,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var query = new StringBuilder();
             query.AppendLine("Update tbl_Event");
-            query.AppendLine(string.Format("Set VehicleType = '{0}',", obj.vehicleType));
+            query.AppendLine(string.Format("Set VehicleType = N'{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 2,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe ra
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN", obj.image)); //ảnh
             query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeOutVN" : "TimeOutCN", Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss"))); //thời gian ra
