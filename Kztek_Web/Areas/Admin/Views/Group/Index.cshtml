@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-2 col-xs-12 divboxmd">
             <label class="control-label">  @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" }) </label>
-            <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" />
+            <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" placeholder="Mã tổ | Tên tổ..." />
         </div>
 
         @*<div class="col-md-2 col-xs-12 divboxmd">
@@ -71,7 +71,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Mã tổ</th>
-                    <th class="text-center">Tổ</th>
+                    <th class="text-center">Tên tổ</th>
                     <th class="text-center">Mô tả</th>                  
                     <th class="text-center" width="80"> </th>
                 </tr>

@@ -29,7 +29,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 )
         {
             var datefrompicker = "";
-
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (string.IsNullOrEmpty(fromdate))
             {
                 fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
@@ -54,7 +54,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             #region Giao diện
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 20, StatusID, fromdate, todate);
             ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
             ViewBag.StatusID = StatusID;
@@ -81,7 +81,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(string id, int pageNumber = 1)
         {
-            var model = await _tbl_EventService.GetById(id);
+            var model = await _tbl_EventService.GetByCustomById(id);
+           
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             return View(model);
         }

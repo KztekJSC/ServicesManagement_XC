@@ -1,6 +1,6 @@
 ﻿
 
-@model Kztek_Model.Models.tbl_Event
+@model Kztek_Model.Models.tbl_Event_Cus
 
 @{
 
@@ -17,11 +17,66 @@
 <style>
 
     .offset-md-3 {
-        margin-left: 400px;
+        margin-left: 200px;
     }
 
     .ragge {
         margin-left: 200px;
+    }
+    .btnCancel {
+        background-color: #c00000 !important;
+        border-color: #c00000;
+        display: inline-block;
+        /* margin-bottom: 0;*/
+        font-weight: 400;
+        width: 200px;
+        text-align: center;
+        /*  vertical-align: middle;*/
+        touch-action: manipulation;
+        cursor: pointer;
+        border: 1px solid transparent; 
+        border-radius: 10px 10px;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+      
+        user-select: none;
+        color: #FFF !important;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+        background-image: none !important;
+        border: 5px solid #FFF;
+        position: relative;
+    }
+    .btnService {
+        background-color: #385822 !important;
+        border-color: #385822;
+        border: 1px solid transparent;
+        border-radius: 10px 10px;
+        font-weight: 400;
+        width: 200px;
+        text-align: center;
+        /*  vertical-align: middle;*/
+        touch-action: manipulation;
+        cursor: pointer;
+     
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        /* border-radius: 2px 4px;*/
+
+        user-select: none;
+        color: #FFF !important;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+        background-image: none !important;
+        border: 5px solid #FFF;
+        position: relative;
+    }
+
+    .breadcrumb, .breadcrumb > li > a, .btn {
+        display: inline-block;
+    }
     }
 </style>
 <div class="row">
@@ -43,37 +98,37 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Việt Nam </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "biển số xe VN"@*, @disabled = "disabled"*@ })
-                    @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
+                    @Html.TextBox("plateVN", Model.plateVN, new { @class = "form-control", @placeholder = "biển số xe VN"@*, @disabled = "disabled"*@ })
+                    @Html.ValidationMessage("plateVN", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Xe Trung Quốc </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("PlateCN", Model.PlateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ"@*, @disabled = "disabled"*@ })
-                    @Html.ValidationMessage("PlateCN", "", new { @class = "text-danger" })
+                    @Html.TextBox("plateCN", Model.plateCN, new { @class = "form-control", @placeholder = "Biển số xe TQ"@*, @disabled = "disabled"*@ })
+                    @Html.ValidationMessage("plateCN", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại hàng </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ProductType", Model.ProductType, new { @class = "form-control", @placeholder = "Loại hàng" })
-                    @Html.ValidationMessage("ProductType", "", new { @class = "text-danger" })
+                    @Html.TextBox("productType", Model.productType, new { @class = "form-control", @placeholder = "Loại hàng" })
+                    @Html.ValidationMessage("productType", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Khối lượng hàng </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Weight", Model.Weight, new { @class = "form-control", @placeholder = "Khối lượng" })
-                    @Html.ValidationMessage("Weight", "", new { @class = "text-danger" })
+                    @Html.TextBox("weight", Model.weight, new { @class = "form-control", @placeholder = "Khối lượng" })
+                    @Html.ValidationMessage("weight", "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại xe </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe" })
-                    @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
+                    @Html.TextBox("vehicleType", Model.vehicleType, new { @class = "form-control", @placeholder = "Loại xe" })
+                    @Html.ValidationMessage("vehicleType", "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -81,36 +136,36 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Số trang </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ServiceCode", Model.ServiceCode, new { @class = "form-control", @placeholder = "Số trang" })
-                    @Html.ValidationMessage("ServiceCode", "", new { @class = "text-danger" })
+                    @Html.TextBox("serviceCode", Model.serviceCode, new { @class = "form-control", @placeholder = "Số trang" })
+                    @Html.ValidationMessage("serviceCode", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Nhóm hàng hóa </label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ProductGroup", Model.ProductGroup, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
-                    @Html.ValidationMessage("ProductGroup", "", new { @class = "text-danger" })
+                    @Html.TextBox("productGroup", Model.productGroup, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
+                    @Html.ValidationMessage("productGroup", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Dịch vụ</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Service", Model.Service, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
-                    @Html.ValidationMessage("Service", "", new { @class = "text-danger" })
+                    @Html.TextBox("service", Model.service, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
+                    @Html.ValidationMessage("service", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Giá DV</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Price", Model.Price, new { @class = "form-control", @placeholder = "Giá DV" })
-                    @Html.ValidationMessage("Price", "", new { @class = "text-danger" })
+                    @Html.TextBox("price", Model.price, new { @class = "form-control", @placeholder = "Giá DV" })
+                    @Html.ValidationMessage("price", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Phụ thu</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("SubPrice", Model.SubPrice, new { @class = "form-control", @placeholder = "Phụ thu" })
-                    @Html.ValidationMessage("SubPrice", "", new { @class = "text-danger" })
+                    @Html.TextBox("subPrice", Model.subPrice, new { @class = "form-control", @placeholder = "Phụ thu" })
+                    @Html.ValidationMessage("subPrice", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
@@ -122,20 +177,20 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Ghi chú</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Description", Model.Description, new { @class = "form-control", @placeholder = "Miêu tả" })
-                    @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
+                    @Html.TextArea("description", Model.description, new { @class = "form-control", @placeholder = "Miêu tả" })
+                    @Html.ValidationMessage("description", "", new { @class = "text-danger" })
                 </div>
             </div>
             @*<div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">*@
             <div class="row">
                 <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
                     <div class="offset-md-3 col-md-9 text-nowrap">
-                        <button class="btn btn-warning btn-bold px-4" type="submit">
+                        <button class="btnService  btn-bold px-4" type="submit">
                             <i class="fa fa-check mr-1"></i>
                             Xác nhận
                         </button>
 
-                        <a class="btn ragge btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" href="/Admin/Service/Index">
+                        <a class="btnCancel ragge btn-bold px-4" href="/Admin/Service/Index">
                             <i class="fa fa-undo mr-1"></i>
                             Hủy bỏ
                         </a>

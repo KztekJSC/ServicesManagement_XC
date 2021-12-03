@@ -42,16 +42,67 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(result);
         }
 
-    
+        public async Task<tbl_Event_Cus> GetByCustomById(string id)
+        {
+            var obj = await GetById(id);
+            var model = new tbl_Event_Cus()
+            ;
+            model.Id = obj.Id;
+            model.serviceCode = obj.ServiceCode;
+            model.plateVN = obj.PlateVN;
+            model.plateCN = obj.PlateCN;
+            model.productType = obj.ProductType;
+            model.weight = obj.Weight.ToString();
+            model.vehicleType = obj.ProductType;
+            model.productGroup = obj.ProductGroup;
+            model.service = obj.Service;
+            model.price = obj.Price.ToString("###,###.##");
+            model.subPrice = obj.SubPrice.ToString("###,###.##");
+            model.GroupId = obj.GroupId;
+            model.description = obj.Description;
+            return await Task.FromResult( model);
+        }
 
         public async Task<tbl_Event> GetById(string id)
         {
+ 
             return await _tbl_EventRepository.GetOneById(id);
         }
 
         public async Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "")
         {
             var data = StaticList.ListStatusConfirmGroup();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen()
+            {
+                IdSelectList = "StatusID",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+                isMultiSelect = false
+            };
+            return model;
+        }
+
+        public async Task<SelectListModel_Chosen> GetEventypeCoordination(string id = "", string placeholder = "", string selecteds = "")
+        {
+            var data = StaticList.ListStatusCoordinator();
             var cus = new List<SelectListModel>();
             var lst = data;
             if (lst != null && lst.Count > 0)
@@ -284,10 +335,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and EventType = 1 OR EventType = 2");
+            sb.AppendLine("WHere 1 =1 and ( EventType = 1 OR EventType = 2)");
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("and (ServiceCode LIKE '%{0}%' OR REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", key));
             }
 
           
@@ -322,12 +373,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1  and EventType = 0 OR EventType = 1");
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 1 OR EventType = 2)");
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("and (ServiceCode LIKE '%{0}%' OR  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", key));
             }
-
 
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")

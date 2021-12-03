@@ -16,14 +16,71 @@
 </div>
 <style>
 
+    
     .offset-md-3 {
-        margin-left: 400px;
+        margin-left: 250px;
     }
 
     .ragge {
-        margin-left: 200px;
+        margin-left: 50px;
+    }
+
+    .btnCancel {
+        background-color: #c00000 !important;
+        border-color: #c00000;
+        display: inline-block;
+        /* margin-bottom: 0;*/
+        font-weight: 400;
+        width: 200px;
+        text-align: center;
+        /*  vertical-align: middle;*/
+        touch-action: manipulation;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 10px 10px;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        user-select: none;
+        color: #FFF !important;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+        background-image: none !important;
+        border: 5px solid #FFF;
+        position: relative;
+    }
+
+    .btnService {
+        background-color: #385822 !important;
+        border-color: #385822;
+        border: 1px solid transparent;
+        border-radius: 10px 10px;
+        font-weight: 400;
+        width: 200px;
+        text-align: center;
+        /*  vertical-align: middle;*/
+        touch-action: manipulation;
+        cursor: pointer;
+        white-space: nowrap;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        /* border-radius: 2px 4px;*/
+
+        user-select: none;
+        color: #FFF !important;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
+        background-image: none !important;
+        border: 5px solid #FFF;
+        position: relative;
+    }
+
+    .breadcrumb, .breadcrumb > li > a, .btn {
+        display: inline-block;
+    }
     }
 </style>
+
 <div class="row">
     @if (TempData["Success"] != null)
     {
@@ -90,12 +147,12 @@
             <div class="row">
                 <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
                     <div class="offset-md-3 col-md-9 text-nowrap">
-                        <button class="btn btn-warning btn-bold px-4" type="submit">
+                        <button class="btn btnService btn-bold px-4" type="submit">
                             <i class="fa fa-check mr-1"></i>
                             Xác nhận
                         </button>
 
-                        <a class="btn ragge btn-outline-lightgrey btn-bgc-white btn-bold ml-2 px-4" href="/Admin/Coordinator/Index">
+                        <a class="btn ragge btn-bold btnCancel px-4" href="/Admin/Coordinator/Index">
                             <i class="fa fa-undo mr-1"></i>
                             Hủy bỏ
                         </a>

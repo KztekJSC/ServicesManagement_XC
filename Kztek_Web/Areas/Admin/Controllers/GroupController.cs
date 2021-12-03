@@ -117,9 +117,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpGet]
-        public async Task<IActionResult> Update(string id, int pageNumber = 1)
+        public async Task<IActionResult> Update(string id, string AreaCode = "", int page = 1, string key = "")
         {
             var model = await _GroupService.GetById(id);
+            ViewBag.PN = page;
+            ViewBag.AreaCodeValue = AreaCode;
+            ViewBag.keyValue = key;
 
             return View(model);
         }
@@ -137,15 +140,18 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Update(Group model, int pageNumber = 1)
+        public async Task<IActionResult> Update( Group obj,  string AreaCode = "", int page = 1, string key = "")
         {
-           
+            //
+            ViewBag.keyValue = key;
+            ViewBag.AreaCodeValue = AreaCode;
+            ViewBag.PN = page;
             //Kiểm tra
-            var oldObj = await _GroupService.GetById(model.Id.ToString());
+            var oldObj = await _GroupService.GetById(obj.Id);
             if (oldObj == null)
             {
                 ViewBag.Error = await LanguageHelper.GetLanguageText("MESSAGE:RECORD:NOTEXISTS");
-                return View(model);
+                return View(obj);
             }
            
            
@@ -155,9 +161,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(oldObj);
             }
 
-            oldObj.Id = model.Id;
-            oldObj.Code = model.Code;
-            oldObj.Name = model.Name;
+            oldObj.Id = obj.Id;
+            oldObj.Code = obj.Code;
+            oldObj.Name = obj.Name;
             oldObj.ModifiedDate = DateTime.Now;
           
 
@@ -174,7 +180,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             else
             {
                 ModelState.AddModelError("", result.Message);
-                return View(model);
+                return View(obj);
             }
         }
 

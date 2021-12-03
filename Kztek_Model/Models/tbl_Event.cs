@@ -111,8 +111,34 @@ namespace Kztek_Model.Models
         public string paymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
         public string bb_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
         public string bb_Id { get; set; } //Id dịch vụ của Biển Bạc
-    }
 
+    }
+    public class tbl_Event_Cus
+    {
+        public string Id { get; set; }
+
+    
+        public string service { get; set; } //Dịch vụ
+        public string code { get; set; } //Mã đăng ký
+        public string plateVN { get; set; } //Biển số xe Việt Nam
+        public string imageVN { get; set; } //ảnh xe Việt Nam
+        public string timeInVN { get; set; } //Thời gian vào của xe VN
+        public string plateCN { get; set; } //Biển số xe Trung Quốc
+        public string imageCN { get; set; } //ảnh xe Trung Quốc
+        public string timeInCN { get; set; } //Thời gian vào của xe CN
+        public string productType { get; set; } //Loại hàng
+        public string weight { get; set; } //Khối lượng hàng    
+        public string vehicleType { get; set; } //Loại xe
+        public string productGroup { get; set; } //Nhóm hàng
+        public string price { get; set; } //Giá dịch vụ
+        public string subPrice { get; set; } //Phụ thu
+        public string description { get; set; }
+        public string serviceCode { get; set; } //Số trang (mã dịch vụ)
+        public string paymentStatus { get; set; } // 0: Chưa trả tiền, 1: Đã trả tiền.
+        public string bb_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
+        public string bb_Id { get; set; } //Id dịch vụ của Biển Bạc
+        public string GroupId { get; set; } //Tổ bốc xếp 
+    }
     public class API_VehicleStatus
     {
         public string plate { get; set; } //Biển số

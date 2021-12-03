@@ -36,6 +36,17 @@ namespace Kztek_Library.Helpers
         {
             var list = new List<SelectListModel> {
 
+                                     
+                                        new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Hoàn thành"}
+                                    };
+            return list;
+        }
+        public static List<SelectListModel> ListStatusCoordinator()
+        {
+            var list = new List<SelectListModel> {
+
                                         new SelectListModel { ItemValue = "2", ItemText = "Chưa phân tổ"},
                                         new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},

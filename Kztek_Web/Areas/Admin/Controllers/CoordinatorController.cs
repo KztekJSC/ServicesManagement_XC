@@ -54,7 +54,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             #region Giao diện
 
             var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate);
-            ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
+            ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
             ViewBag.StatusID = StatusID;
             ViewBag.Groups = await _GroupService.GetAll();

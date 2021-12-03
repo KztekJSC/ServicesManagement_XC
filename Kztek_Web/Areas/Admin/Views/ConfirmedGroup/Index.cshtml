@@ -3,7 +3,7 @@
 @using Kztek_Library.Helpers
 
 @{
-    ViewBag.Title = "Tổ xác nhận";
+    ViewBag.Title = "Tổ CN xác nhận";
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
     Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
@@ -86,6 +86,8 @@
                     <th class="text-center">Thời gian kết thúc</th>
                     <th class="text-center">Thời gian phân tổ</th>
                     <th class="text-center">Xử lý</th>
+                    <th class="text-center">Ảnh VN</th>
+                    <th class="text-center">Ảnh CN</th>
                 </tr>
             </thead>
 
@@ -105,25 +107,26 @@
                         @item.ServiceCode
                     </td>
 
+
+
                     <td class="text-center">
 
-                        @if (item.EventType == 2)
-                        {
-                            <span class="label label-sm label-info">Chưa phân tổ</span>
-                        }
-                        else if (item.EventType == 3)
-                        {
-                            <span class="label label-sm label-success">Đã phân tổ</span>
-                        }
-                        else if (item.EventType == 4)
-                        {
-                            <span class="label label-sm label-danger">Đang thực hiện</span>
-                        }
-                        else if (item.EventType == 5)
-                        {
-                            <span class="label label-sm label-default">Hoàn thành</span>
-                        }
+                        @{ 
+                            if (item.EventType == 3)
+                            {
+                        <span class="label label-sm " style="background-color: #fbf3d8">Đã phân tổ</span>
+                            }
+                            else if (item.EventType == 4)
+                            {
+                        <span class="label label-sm " style="background-color: #385822">Đang thực hiện</span>
+                            }
+                            else if (item.EventType == 5)
+                            {
+                        <span class="label label-sm " style="background-color: #c00000 ">Hoàn thành</span>
+                                }
 
+
+                            }
 
                     </td>
                     <td class="center">
@@ -194,6 +197,39 @@
   Auth_Value = authModel
 })
                         </div>
+                    </td>
+                    <td class="center">
+                        <div class="ace-thumbnails clearfix">
+                            @*<img src="~192.168.20.236\Images\Nam_2021\Thang_10\2021_10_16\IN1B7D93F7-7945-449B-8F4A-84EA0386C563\20211016_093747.500_1b7d93f7-7945-449b-8f4a-84ea0386c564.Plate1.jpg" alt="Alternate Text" />*@
+                            @if (!string.IsNullOrWhiteSpace(item.ImageCN))
+                            {
+                                var newobj = new ImageFPTModel
+                                {
+                                    Filename = item.ImageCN,
+                                    Type = "INOUT",
+                                    Description = "Ảnh"
+                                };
+                                @await Component.InvokeAsync("ImageFPT", newobj)
+
+                            }
+                        </div>
+
+                    </td>
+                    <td class="center">
+                        <div class="ace-thumbnails clearfix">
+                            @if (!string.IsNullOrWhiteSpace(item.ImageVN))
+                            {
+                                var newobj = new ImageFPTModel
+                                {
+                                    Filename = item.ImageVN,
+                                    Type = "INOUT",
+                                    Description = "Ảnh"
+                                };
+                                @await Component.InvokeAsync("ImageFPT", newobj)
+
+                            }
+                        </div>
+
                     </td>
                 </tr>
                     }
