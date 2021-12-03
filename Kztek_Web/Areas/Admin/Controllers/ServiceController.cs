@@ -79,10 +79,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpGet]
-        public async Task<IActionResult> Update(string id, int pageNumber = 1)
+        public async Task<IActionResult> Update(string id, int pageNumber = 1, string AreaCode = "")
         {
             var model = await _tbl_EventService.GetByCustomById(id);
-           
+            ViewBag.AreaCodeValue = AreaCode;
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             return View(model);
         }
@@ -99,9 +99,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Update(tbl_Event model, int pageNumber = 1)
+        public async Task<IActionResult> Update(tbl_Event_Cus model, int pageNumber = 1, string AreaCode = "")
         {
-
+            ViewBag.AreaCodeValue = AreaCode;
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             //Kiểm tra
             var oldObj = await _tbl_EventService.GetById(model.Id.ToString());
@@ -117,20 +117,20 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 return View(oldObj);
             }
-
-            oldObj.PlateVN = model.PlateVN;
-            oldObj.PlateCN = model.PlateCN;
-            oldObj.ProductType = model.ProductType;
-            oldObj.Weight = model.Weight;
-            oldObj.VehicleType = model.VehicleType;
-            oldObj.ServiceCode = model.ServiceCode;
-            oldObj.ProductGroup = model.ProductGroup;
-            oldObj.Service = model.Service;
-            oldObj.Price = model.Price;
-            oldObj.ServiceCode = model.ServiceCode;
-            oldObj.SubPrice = model.SubPrice;
+            var s = Convert.ToDecimal(model.price);
+            oldObj.PlateVN = model.plateVN;
+            oldObj.PlateCN = model.plateCN;
+            oldObj.ProductType = model.productType;
+            oldObj.Weight = Convert.ToDecimal( model.weight);
+            oldObj.VehicleType = model.vehicleType;
+            oldObj.ServiceCode = model.serviceCode;
+            oldObj.ProductGroup = model.productGroup;
+            oldObj.Service = model.service;
+            oldObj.Price = Convert.ToDecimal( model.price);
+          
+            oldObj.SubPrice = Convert.ToDecimal(model.subPrice);
             oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
-            oldObj.Description = model.Description;
+            oldObj.Description = model.description;
             //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
             oldObj.CreatedDate = DateTime.Now;
             oldObj.ModifiedDate = DateTime.Now;

@@ -68,3 +68,25 @@
     </div>
 
 }
+
+
+@if (Model.ActionName.Contains("Confirm"))
+{
+    <div class="row">
+        <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
+            <div class="offset-md-3 col-md-9 text-nowrap">
+                <button class="btnService  btn-bold px-4" type="submit">
+                    <i class="fa fa-check mr-1"></i>
+                    Xác nhận
+                </button>
+
+                <a class="btnCancel ragge btn-bold px-4" href="/Admin/Service/Index">
+                    <i class="fa fa-undo mr-1"></i>
+                    Hủy bỏ
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+}

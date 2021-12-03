@@ -173,7 +173,6 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             if (result.isSuccess)
             {
-
                 await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, JsonConvert.SerializeObject(oldObj), HttpContext);
                 return RedirectToAction("Index");
             }
