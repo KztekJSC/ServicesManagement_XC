@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
             Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" })" class="form-control" />
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" Biển số..." class="form-control" />
         </div>
 
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
@@ -82,9 +82,10 @@
                     <th class="text-center">Phụ thu</th>
                     <th class="text-center">Ghi chú </th>
                     <th class="text-center">Tổ bốc xếp</th>
-                    <th class="text-center">Xử lý</th>
+
                     <th class="text-center">Ảnh VN</th>
                     <th class="text-center">Ảnh CN</th>
+                    <th class="text-center"></th>
                 </tr>
             </thead>
 
@@ -164,27 +165,7 @@
                             }
                         }
                     </td>
-                    <td class="center">
-                        <div class="btn-group">
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-    ControllerName = "Coordinator",
-    ActionName = "Update",
-    RecordId = "",
-    model = new { id = item.Id },
-    Auth_Value = authModel
-})
 
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-  ControllerName = "Coordinator",
-  ActionName = "Delete",
-  RecordId = item.Id,
-  model = null,
-  Auth_Value = authModel
-})
-                        </div>
-                    </td>
                     <td class="center">
                         <div class="ace-thumbnails clearfix">
                             @*<img src="~192.168.20.236\Images\Nam_2021\Thang_10\2021_10_16\IN1B7D93F7-7945-449B-8F4A-84EA0386C563\20211016_093747.500_1b7d93f7-7945-449b-8f4a-84ea0386c564.Plate1.jpg" alt="Alternate Text" />*@
@@ -217,6 +198,27 @@
                             }
                         </div>
 
+                    </td>
+                    <td class="center">
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+    ControllerName = "Coordinator",
+    ActionName = "Update",
+    RecordId = "",
+    model = new { id = item.Id },
+    Auth_Value = authModel
+})
+
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+  ControllerName = "Coordinator",
+  ActionName = "Delete",
+  RecordId = item.Id,
+  model = null,
+  Auth_Value = authModel
+})
+                        </div>
                     </td>
                 </tr>
                     }

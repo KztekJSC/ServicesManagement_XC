@@ -180,13 +180,29 @@ namespace Kztek_Web.Areas.Admin.Controllers
         #endregion Xóa
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
         {
-            var list = await GetAllGroup();
+            var data = await GetAllGroup();
 
-          
+         
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = ""
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
 
             var model = new SelectListModel_Chosen
             {
-                Data = list,
+                Data = cus,
                 Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
                 IdSelectList = id,
                 isMultiSelect = false,

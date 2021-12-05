@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
             Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" })" class="form-control" />
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" Biển số..." class="form-control" p/>
         </div>
 
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
@@ -85,9 +85,10 @@
                     <th class="text-center">Thời gian bắt đầu</th>
                     <th class="text-center">Thời gian kết thúc</th>
                     <th class="text-center">Thời gian phân tổ</th>
-                    <th class="text-center">Xử lý</th>
+
                     <th class="text-center">Ảnh VN</th>
                     <th class="text-center">Ảnh CN</th>
+                    <th class="text-center"></th>
                 </tr>
             </thead>
 
@@ -111,22 +112,22 @@
 
                     <td class="text-center">
 
-                        @{ 
+                        @{
                             if (item.EventType == 3)
                             {
-                        <span class="label label-sm " style="background-color: #fbf3d8">Đã phân tổ</span>
+                                <span class="label label-sm " style="background-color: #fbf3d8">Đã phân tổ</span>
                             }
                             else if (item.EventType == 4)
                             {
-                        <span class="label label-sm " style="background-color: #385822">Đang thực hiện</span>
+                                <span class="label label-sm " style="background-color: #385822">Đang thực hiện</span>
                             }
                             else if (item.EventType == 5)
                             {
-                        <span class="label label-sm " style="background-color: #c00000 ">Hoàn thành</span>
-                                }
-
-
+                                <span class="label label-sm " style="background-color: #c00000 ">Hoàn thành</span>
                             }
+
+
+                        }
 
                     </td>
                     <td class="center">
@@ -177,27 +178,7 @@
                     <td class="center">
                         @item.DivisionDate.ToString("dd/MM/yyyy")
                     </td>
-                    <td class="center">
-                        <div class="btn-group">
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-    ControllerName = "ConfirmedGroup",
-    ActionName = "Update",
-    RecordId = "",
-    model = new { id = item.Id },
-    Auth_Value = authModel
-})
 
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-  ControllerName = "ConfirmedGroup",
-  ActionName = "Delete",
-  RecordId = item.Id,
-  model = null,
-  Auth_Value = authModel
-})
-                        </div>
-                    </td>
                     <td class="center">
                         <div class="ace-thumbnails clearfix">
                             @*<img src="~192.168.20.236\Images\Nam_2021\Thang_10\2021_10_16\IN1B7D93F7-7945-449B-8F4A-84EA0386C563\20211016_093747.500_1b7d93f7-7945-449b-8f4a-84ea0386c564.Plate1.jpg" alt="Alternate Text" />*@
@@ -230,6 +211,27 @@
                             }
                         </div>
 
+                    </td>
+                    <td class="center">
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+    ControllerName = "ConfirmedGroup",
+    ActionName = "Update",
+    RecordId = "",
+    model = new { id = item.Id },
+    Auth_Value = authModel
+})
+
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+  ControllerName = "ConfirmedGroup",
+  ActionName = "Delete",
+  RecordId = item.Id,
+  model = null,
+  Auth_Value = authModel
+})
+                        </div>
                     </td>
                 </tr>
                     }
