@@ -65,7 +65,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
             }
-
+             
             if (string.IsNullOrEmpty(todate))
             {
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
