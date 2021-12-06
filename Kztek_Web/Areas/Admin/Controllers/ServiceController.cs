@@ -51,7 +51,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             //    //return View(gridmodel);
             //}
-
+            ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
 
             ViewBag.keyValue = key;  
             
@@ -74,21 +74,19 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
             }
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 3, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 20, StatusID, fromdate, todate);
 
             #region Giao diện
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
-            ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
-            ViewBag.StatusID = StatusID;
-            ViewBag.Groups = await _GroupService.GetAll();
-            ViewBag.keyValue = key;          
-            ViewBag.AreaCodeValue = AreaCode;
-            return View(gridModel);
+
+            ViewBag.Groups = await _GroupService.GetAll();       
+
+            return PartialView(gridModel);
             #endregion
         }
         #endregion
+
         #region Cập nhật
 
         /// <summary>
@@ -180,6 +178,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
      
 
         #endregion Cập nhật
+
         #region Xóa
 
         /// <summary>
@@ -206,6 +205,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
 
         #endregion Xóa
+
         #region DDL
       
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
