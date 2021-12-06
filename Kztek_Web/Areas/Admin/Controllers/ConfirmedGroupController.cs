@@ -24,6 +24,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
         }
+        #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
         public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
 )
@@ -64,6 +65,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return View(gridModel);
             #endregion
         }
+        #endregion
 
         #region Cập nhật
 
@@ -127,7 +129,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             if (result.isSuccess)
             {
 
-                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, JsonConvert.SerializeObject(oldObj), HttpContext);
+                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, "tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext);
                 return RedirectToAction("Index");
             }
             else
@@ -140,7 +142,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #endregion Cập nhật
 
-     
+        #region DDL
         public async Task<IActionResult> UpdateEvent(string eventype, string id)
         {
             var result = new MessageReport(false, "error");
@@ -185,5 +187,6 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
+        #endregion
     }
 }

@@ -62,7 +62,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Partial_Service(string StatusID = "", string key = "", string fromdate = "", string todate = "", int page = 1)
         {
-            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+          
 
             if (string.IsNullOrEmpty(fromdate))
             {
@@ -74,7 +74,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
             }
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
 
             #region Giao diện
 
@@ -165,7 +165,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             if (result.isSuccess)
             {
 
-                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, JsonConvert.SerializeObject(oldObj), HttpContext);
+                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update,"tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext);
                 return RedirectToAction("Index");
             }
             else
@@ -197,7 +197,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var result = await _tbl_EventService.DeleteById(id);
             if (result.isSuccess)
             {
-                await LogHelper.WriteLog(id, ActionConfig.Delete, id, HttpContext);
+                await LogHelper.WriteLog(id, ActionConfig.Delete,"tbl_Event", id, HttpContext);
             }
 
             return Json(result);

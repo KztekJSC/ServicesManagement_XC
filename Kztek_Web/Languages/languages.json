@@ -1093,6 +1093,7 @@
         "en": "ERRORS:",
         "vi": "LỖI:"
       },
+      
       "SUCCESS": {
         "en": "SUCCESSES:",
         "vi": "THÀNH CÔNG:"
@@ -1564,6 +1565,10 @@
     "ERR": {
       "en": "Error occurred please check again",
       "vi": "Có lỗi xảy ra vui lòng kiểm tra lại"
+    },
+    "ERROR1": {
+      "en": "Don't delete':",
+      "vi": "Không được xóa trạng thái hoàn thành:"
     },
     "NON_RECORD": {
       "en": "Data does not exist in the system",

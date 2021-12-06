@@ -23,6 +23,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
         }
+
+        #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
         public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
 )
@@ -63,6 +65,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return View(gridModel);
             #endregion
         }
+
+        #endregion
 
         #region Cập nhật
 
@@ -126,7 +130,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             if (result.isSuccess)
             {
 
-                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, JsonConvert.SerializeObject(oldObj), HttpContext);
+                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update, "tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext);
                 return RedirectToAction("Index");
             }
             else
@@ -138,6 +142,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
    
 
         #endregion Cập nhật
+
         #region Xóa
 
         /// <summary>
@@ -165,6 +170,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #endregion Xóa
 
+        #region DDL
         private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
         {
             var list = await GetAllGroup();
@@ -195,5 +201,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
+
+        #endregion
     }
 }

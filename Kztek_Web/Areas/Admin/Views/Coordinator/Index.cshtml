@@ -249,6 +249,7 @@
 <input type="hidden" id="Confirm_delete" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:CONFIRM_DELETE" })" />
 <input type="hidden" id="del_Success" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:SUCCESS" })" />
 <input type="hidden" id="noti" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:NOTIFICATION" })" />
+<input type="hidden" id="false" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:ERROR1" })" />
 @section scripts{
     <script>
         $(document).ready(function () {
@@ -267,12 +268,18 @@
 
                 bootbox.confirm($("#Confirm_delete").val(), function (result) {
                     if (result) {
-                        JSHelper.AJAX_Delete('/Admin/Service/Delete', id)
+                        JSHelper.AJAX_Delete('/Admin/Coordinator/Delete', id)
                             .success(function (response) {
                                 if (response.isSuccess) {
                                     cmd.parent().parent().parent().fadeOut();
                                     toastr.success($("#del_Success").val(), $("#noti").val())
-                                } else {
+                                
+                                } else if (response.isSuccess == false) {
+                               /*     cmd.parent().parent().parent().fadeOut();*/
+                                    toastr.error( $("#false").val())
+                                }
+                                else {
+                                    
                                     toastr.error(response.Message)
                                 }
                             });

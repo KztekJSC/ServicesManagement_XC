@@ -32,7 +32,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var obj = await GetById(id);
             if (obj != null)
             {
-                return await _tbl_EventRepository.Remove(obj);
+                if (obj.EventType == 5)
+                {
+                    result = new MessageReport(false, await LanguageHelper.GetLanguageText("MESSAGEREPORT:ERROR1"));
+                    return result;
+                }
+                else
+                {
+                    obj.IsDeleted = true;
+                    return await _tbl_EventRepository.Update(obj);
+                }
+
             }
             else
             {
@@ -60,12 +70,12 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             model.subPrice = obj.SubPrice.ToString("###,###.##");
             model.GroupId = obj.GroupId;
             model.description = obj.Description;
-            return await Task.FromResult( model);
+            return await Task.FromResult(model);
         }
 
         public async Task<tbl_Event> GetById(string id)
         {
- 
+
             return await _tbl_EventRepository.GetOneById(id);
         }
 
@@ -162,7 +172,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return model;
         }
 
-       
+
 
         public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
@@ -171,10 +181,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and (EventType = 3 OR EventType = 4 OR EventType = 5 )");
+            sb.AppendLine("WHere 1 =1 and (EventType = 3 OR EventType = 4 OR EventType = 5 ) and  IsDeleted = 0");
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
 
 
@@ -210,10 +225,13 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] where 1 = 1 and (  EventType = 3 OR EventType = 4 OR EventType = 5)");
-
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
 
 
@@ -253,11 +271,18 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and (EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5)");
+            sb.AppendLine("WHere 1 =1 and (EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5) and IsDeleted = 0");
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
+
+
 
 
             //event Code
@@ -292,12 +317,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] where 1 = 1 and ( EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5)");
-           
+
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and ([ServiceCode] LIKE '%{0}%' OR [PlateVN] LIKE '%{0}%' OR [PlateCN] LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
-
 
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
@@ -329,13 +357,13 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         }
 
         public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate)
-         {
+        {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and ( EventType = 1 OR EventType = 2)");
+            sb.AppendLine("WHere 1 =1 and ( EventType = 1 OR EventType = 2) and  IsDeleted = 0");
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -343,9 +371,9 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", keyReplace));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
-           
+
 
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
@@ -379,14 +407,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 1 OR EventType = 2)");
-          
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", keyReplace));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
             }
 
             //event Code
