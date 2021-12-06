@@ -1,19 +1,12 @@
-﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
-@using Kztek_Library.Models
-@using Kztek_Library.Helpers
-
+﻿
 @{
     ViewBag.Title = "Xe đăng kí dịch vụ";
-    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
-    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
-    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
-    var checkbytype = (string)ViewBag.isFilterByTimeIn;
 }
 
 <div class="page-header">
     <h1>
 
-        @ViewBag.Title (@Model.TotalIem)
+        @ViewBag.Title (<span id="spCount">0</span>)
     </h1>
 </div>
 
@@ -24,7 +17,7 @@
     <div class="row">
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
             Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số..." class="form-control"  />
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số..." class="form-control" />
         </div>
 
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
@@ -39,14 +32,14 @@
     <div class="row">
         <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
             <br />
-            <button class="btn btn-white btn-primary btnSearch" type="submit"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <button class="btn btn-white btn-primary btnSearch" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
             <a href='@Url.Action("Index", "Service",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
                 Reset
             </a>
             @*<a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
-                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
-            </a>*@
+                    <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+                </a>*@
 
         </div>
     </div>
@@ -56,220 +49,18 @@
 
 <div class="hr hr-18 dotted hr-24"></div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <table class="table  table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th class="text-center">STT</th>
-                    <th class="text-center">Mã đăng kí dịch vụ</th>
-                    <th class="text-center">
-                        Trạng thái
-                    </th>
-                    <th class="text-center">
-                        Xe VN
-                    </th>
-                    <th class="text-center">
-                        Xe CN
-                    </th>
-                    <th class="text-center">Loại hàng </th>
-                    <th class="text-center">Khối lượng hàng</th>
-                    <th class="text-center">Loại xe</th>
-                    <th class="text-center">Nhóm hàng hóa</th>
-                    <th class="text-center">Dịch vụ</th>
-                    <th class="text-center">Giá dịch vụ</th>
-                    <th class="text-center">Phụ thu</th>
-                    <th class="text-center">Ghi chú </th>
-                    <th class="text-center">Tổ bốc xếp</th>
-                    <th class="text-left">Ảnh CN </th>
-                    <th class="text-left">Ảnh VN </th>
-                    <th class="text-center">Xử lý</th>
-                </tr>
-            </thead>
+<div class="row" id="boxTable">
 
-            <tbody>
-                @if (Model.Data.Any())
-                {
-                    var count = 0;
-                    foreach (var item in Model.Data)
-                    {
-                        count++;
-
-                <tr>
-                    <td class="text-center">
-                        @count
-                    </td>
-                    <td class="text-left">
-                        @item.ServiceCode
-                    </td>
-
-                    <td class="text-center">
-
-                        @if (item.EventType == 1)
-                        {
-                            <span class="label label-sm label-grey">Chờ xác nhận</span>
-                        }
-                        else if (item.EventType == 2)
-                        {
-                            <span class="label label-sm label-grey  "  >Đã xác nhận</span>
-                        }
-
-
-
-                    </td>
-                    <td class="center">
-                        @item.PlateVN
-                    </td>
-                    <td class="center">
-                        @item.PlateCN
-                    </td>
-                    <td class="center">
-                        @item.ProductType
-                    </td>
-                    <td class="center">
-                        @item.Weight
-                    </td>
-                    <td class="center">
-                        @item.VehicleType
-                    </td>
-                    <td class="center">
-                        @item.ProductGroup
-                    </td>
-                    <td class="center">
-                        @item.Service
-                    </td>
-                    <td class="center">
-                        @item.Price.ToString("###,###.##")
-                    </td>
-                    <td class="center">
-                        @item.SubPrice.ToString("###,###.##")
-                    </td>
-                    <td class="center">
-                        @item.Description
-                    </td>
-                    <td class="center">
-                        @{
-                            var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
-                            if (obj != null)
-                            {
-                                <span>@obj.Name</span>
-                            }
-                        }
-                    </td>
-                    <td class="center">
-                        <div class="ace-thumbnails clearfix">
-                            @*<img src="~192.168.20.236\Images\Nam_2021\Thang_10\2021_10_16\IN1B7D93F7-7945-449B-8F4A-84EA0386C563\20211016_093747.500_1b7d93f7-7945-449b-8f4a-84ea0386c564.Plate1.jpg" alt="Alternate Text" />*@
-                            @if (!string.IsNullOrWhiteSpace(item.ImageCN))
-                            {
-                                var newobj = new ImageFPTModel
-                                {
-                                    Filename = item.ImageCN,
-                                    Type = "INOUT",
-                                    Description = "Ảnh"
-                                };
-                                @await Component.InvokeAsync("ImageFPT", newobj)
-
-                            }
-                        </div>
-
-                    </td>
-                    <td class="center">
-                        <div class="ace-thumbnails clearfix">
-                            @if (!string.IsNullOrWhiteSpace(item.ImageVN))
-                            {
-                                var newobj = new ImageFPTModel
-                                {
-                                    Filename = item.ImageVN,
-                                    Type = "INOUT",
-                                    Description = "Ảnh"
-                                };
-                                @await Component.InvokeAsync("ImageFPT", newobj)
-
-                            }
-                        </div>
-
-                    </td>
-                    <td class="center">
-
-                        <div class="btn-group">
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-        ControllerName = "Service",
-        ActionName = "Update",
-        RecordId = "",
-        model = new { id = item.Id },
-        Auth_Value = authModel
-        })
-
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-        ControllerName = "Service",
-        ActionName = "Delete",
-        RecordId = item.Id,
-        model = null,
-        Auth_Value = authModel
-        })
-                        </div>
-                    </td>
-                </tr>
-        }
-    }
-                </tbody>
-                </table>
-            </div>
-    @if (Model.Data.Any())
-    {
-        <div class="col-xs-12">
-            <div class="pull-right">
-
-
-                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Service", new
-           {
-               page = x,
-               key = ViewBag.keyValue,
-               //fromdate = ViewBag.fromdateValue,
-               //todate = ViewBag.todateValue,
-               StatusID = ViewBag.StatusID,
-               AreaCode = ViewBag.AreaCodeValue,
-
-           }))
-            </div>
-        </div>
-    }
 </div>
-<input type="hidden" id="Confirm_delete" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:CONFIRM_DELETE" })" />
-<input type="hidden" id="del_Success" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:SUCCESS" })" />
-<input type="hidden" id="noti" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:NOTIFICATION" })" />
+
+
 @section scripts{
+    <script src="~/modules/ServiceController.js"></script>
+    <script src="~/modules/Signalr.js"></script>
     <script>
         $(document).ready(function () {
 
-            $(".btnExport").click(function () {
 
-                $("#chkExport").val("1");
-
-                $("#frmReport").submit();
-            });
-
-
-            $(".btnDelete").click(function () {
-                var cmd = $(this);
-                var id = cmd.attr('idata');
-
-                bootbox.confirm($("#Confirm_delete").val(), function (result) {
-                    if (result) {
-                        JSHelper.AJAX_Delete('/Admin/Service/Delete', id)
-                            .success(function (response) {
-                                if (response.isSuccess) {
-                                    cmd.parent().parent().parent().fadeOut();
-                                    toastr.success($("#del_Success").val(), $("#noti").val())
-                                } else {
-                                    toastr.error(response.Message)
-                                }
-                            });
-                    }
-                })
-            });
         });
     </script>
 }

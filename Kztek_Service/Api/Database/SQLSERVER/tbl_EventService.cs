@@ -2,6 +2,7 @@
 using Kztek_Data.Repository;
 using Kztek_Library.Helpers;
 using Kztek_Model.Models;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,6 +122,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
+
+                //nếu xe CN và VN đều vào bãi thì loại lại danh sách
+                if(obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+                {
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
+                }
             }
 
             return result;
@@ -194,6 +201,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
+
+                //nếu xóa sự kiện 2 xe đã vào bãi thì loại lại danh sách xác nhận
+                if (obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+                {
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
+                }
             }
 
             return result;
@@ -210,6 +223,8 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 if (check)
                 {
                     result = new MessageReport(true, "Thành công");
+
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
                 }             
             }
             catch (Exception ex)

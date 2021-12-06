@@ -1,0 +1,190 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@using Kztek_Library.Models
+
+@{ 
+    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+}
+
+@Html.Hidden("totalCount",Model.TotalIem)
+
+<div class="col-xs-12">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">Mã đăng kí dịch vụ</th>
+                <th class="text-center">
+                    Trạng thái
+                </th>
+                <th class="text-center">
+                    Xe VN
+                </th>
+                <th class="text-center">
+                    Xe CN
+                </th>
+                <th class="text-center">Loại hàng </th>
+                <th class="text-center">Khối lượng hàng</th>
+                <th class="text-center">Loại xe</th>
+                <th class="text-center">Nhóm hàng hóa</th>
+                <th class="text-center">Dịch vụ</th>
+                <th class="text-center">Giá dịch vụ</th>
+                <th class="text-center">Phụ thu</th>
+                <th class="text-center">Ghi chú </th>
+                <th class="text-center">Tổ bốc xếp</th>
+                <th class="text-left">Ảnh CN </th>
+                <th class="text-left">Ảnh VN </th>
+                <th class="text-center">Xử lý</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Data.Any())
+            {
+                var count = 0;
+                foreach (var item in Model.Data)
+                {
+                    count++;
+
+                    <tr id="sId_@item.Id">
+                        <td class="text-center">
+                            @count
+                        </td>
+                        <td class="text-left">
+                            @item.ServiceCode
+                        </td>
+
+                        <td class="text-center">
+
+                            @if (item.EventType == 1)
+                            {
+                                <span class="label label-sm label-grey">Chờ xác nhận</span>
+                            }
+                            else if (item.EventType == 2)
+                            {
+                                <span class="label label-sm label-grey  ">Đã xác nhận</span>
+                            }
+
+
+
+                        </td>
+                        <td class="center">
+                            @item.PlateVN
+                        </td>
+                        <td class="center">
+                            @item.PlateCN
+                        </td>
+                        <td class="center">
+                            @item.ProductType
+                        </td>
+                        <td class="center">
+                            @item.Weight
+                        </td>
+                        <td class="center">
+                            @item.VehicleType
+                        </td>
+                        <td class="center">
+                            @item.ProductGroup
+                        </td>
+                        <td class="center">
+                            @item.Service
+                        </td>
+                        <td class="center">
+                            @item.Price.ToString("###,###.##")
+                        </td>
+                        <td class="center">
+                            @item.SubPrice.ToString("###,###.##")
+                        </td>
+                        <td class="center">
+                            @item.Description
+                        </td>
+                        <td class="center">
+                            @{
+                                var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+                        </td>
+                        <td class="center">
+                            <div class="ace-thumbnails clearfix">
+                           
+                                @if (!string.IsNullOrWhiteSpace(item.ImageCN))
+                                {
+                                    var newobj = new ImageFPTModel
+                                    {
+                                        Filename = item.ImageCN,
+                                        Type = "INOUT",
+                                        Description = "Ảnh"
+                                    };
+                                    @await Component.InvokeAsync("ImageFPT", newobj)
+
+                                }
+                            </div>
+
+                        </td>
+                        <td class="center">
+                            <div class="ace-thumbnails clearfix">
+                                @if (!string.IsNullOrWhiteSpace(item.ImageVN))
+                                {
+                                    var newobj = new ImageFPTModel
+                                    {
+                                        Filename = item.ImageVN,
+                                        Type = "INOUT",
+                                        Description = "Ảnh"
+                                    };
+                                    @await Component.InvokeAsync("ImageFPT", newobj)
+
+                                }
+                            </div>
+
+                        </td>
+                        <td class="center">
+
+                            <div class="btn-group">
+                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                {
+            ControllerName = "Service",
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.Id },
+            Auth_Value = authModel
+            })
+
+                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                {
+            ControllerName = "Service",
+            ActionName = "Delete",
+            RecordId = item.Id,
+            model = null,
+            Auth_Value = authModel
+            })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.Data.Any())
+{
+    <div class="col-xs-12" id="pagService">
+        <div class="pull-right">
+
+
+            @Html.GeneratePagingFooterAjax(Model.TotalPage,Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Service", "Service", new
+       {
+           page = x,
+           key = ViewBag.keyValue,
+           //fromdate = ViewBag.fromdateValue,
+           //todate = ViewBag.todateValue,
+           StatusID = ViewBag.StatusID,
+           AreaCode = ViewBag.AreaCodeValue,
+
+       }))
+        </div>
+    </div>
+}

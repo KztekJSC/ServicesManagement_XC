@@ -24,12 +24,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
         }
+
+        #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
-)
+        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", string AreaCode = "")
         {
             var datefrompicker = "";
-            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
             if (string.IsNullOrEmpty(fromdate))
             {
                 fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
@@ -44,26 +45,42 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-            //if (chkExport.Equals("1"))
-            //{
-            //    await ExportFile(key, sort, page, 20, StatusID, isCheckByTime, fromdate, todate, this.HttpContext);
-
-            //    //return View(gridmodel);
-            //}
-
-
-            #region Giao diện
-
-            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 20, StatusID, fromdate, todate);
+          
             ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
+
             ViewBag.StatusID = StatusID;
-            ViewBag.Groups = await _GroupService.GetAll();
-            ViewBag.keyValue = key;          
+
+            ViewBag.keyValue = key;  
+            
             ViewBag.AreaCodeValue = AreaCode;
-            return View(gridModel);
-            #endregion
+
+            return View();
         }
+
+        public async Task<IActionResult> Partial_Service(string StatusID = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        {
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
+            if (string.IsNullOrEmpty(fromdate))
+            {
+                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
+            }
+
+            if (string.IsNullOrEmpty(todate))
+            {
+                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
+            }
+
+            var gridModel = await _tbl_EventService.GetPagingInOut(keyReplace, page, 3, StatusID, fromdate, todate);
+
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
+
+            ViewBag.Groups = await _GroupService.GetAll();
+
+            return PartialView(gridModel);
+        }
+
+        #endregion
 
         #region Cập nhật
 
