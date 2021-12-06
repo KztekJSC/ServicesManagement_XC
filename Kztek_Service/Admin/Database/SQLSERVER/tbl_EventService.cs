@@ -336,12 +336,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
             sb.AppendLine("WHere 1 =1 and ( EventType = 1 OR EventType = 2)");
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and (ServiceCode LIKE '%{0}%' OR REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", keyReplace));
             }
+           
 
-          
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
             {
@@ -374,9 +379,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 1 OR EventType = 2)");
+          
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+            }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("and (ServiceCode LIKE '%{0}%' OR  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", keyReplace));
             }
 
             //event Code
