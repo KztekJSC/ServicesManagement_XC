@@ -3,7 +3,7 @@
 @using Kztek_Library.Helpers
 
 @{
-    ViewBag.Title = "Hoàn thành dịch vụ";
+    ViewBag.Title = "ĐP xác nhận";
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
     Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
@@ -113,7 +113,7 @@
                         }
                         else if (item.EventType == 3)
                         {
-                            <span class="label label-sm " style="background-color: #fbf3d8">Đã phân tổ</span>
+                            <span class="label label-sm " style="background-color: #fbf3d8 ; color:black">Đã phân tổ</span>
                         }
                         else if (item.EventType == 4)
                         {

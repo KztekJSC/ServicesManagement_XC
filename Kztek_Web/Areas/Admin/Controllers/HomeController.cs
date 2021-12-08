@@ -49,9 +49,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //LanguageHelper.GetLang(sessionValue);
 
             ViewBag.Groups = await _GroupService.GetaSelectModelChoseGroup(selecteds: Groupid);
-
-            ViewBag.keyValue = key;
-
+            ViewBag.keyValue = key; 
             ViewBag.AreaCodeValue = AreaCode;
 
             return View();
@@ -75,9 +73,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
             #region Giao diện
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
-
+            ViewBag.Groupid = Groupid;
             ViewBag.Groups = await _GroupService.GetAll();
-
+           
             return PartialView(gridModel);
             #endregion
         }
