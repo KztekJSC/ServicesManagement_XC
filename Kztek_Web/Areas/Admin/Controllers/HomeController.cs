@@ -27,26 +27,59 @@ namespace Kztek_Web.Areas.Admin.Controllers
        
         private readonly IHubContext<SignalServer> _context;
         private Itbl_EventService _tbl_EventService;
+        private IGroupService _GroupService;
+        private IHomeService _HomeService;
 
-        public HomeController(IHubContext<SignalServer> context, Itbl_EventService _tbl_EventService)
+        public HomeController(IHubContext<SignalServer> context, Itbl_EventService _tbl_EventService, IGroupService _GroupService, IHomeService _HomeService)
         {
             _context = context;
+            this._HomeService = _HomeService;
             this._tbl_EventService = _tbl_EventService;
+            this._GroupService = _GroupService;
         }
 
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(string Groupid = "", string key = "", int page = 1, string AreaCode = "")
         {
-            //kiểm tra session xem có lưu ngôn ngữ không nếu có thì lấy không mặc định là "vi"
-            string sessionValue = HttpContext.Session.GetString(SessionConfig.Kz_Language);
-            if (string.IsNullOrWhiteSpace(sessionValue))
-                sessionValue = HttpContext.Request.Cookies[CookieConfig.Kz_LanguageCookie];
-            sessionValue = String.IsNullOrEmpty(sessionValue) ? "vi" : sessionValue;
-            LanguageHelper.GetLang(sessionValue);
+            ////kiểm tra session xem có lưu ngôn ngữ không nếu có thì lấy không mặc định là "vi"
+            //string sessionValue = HttpContext.Session.GetString(SessionConfig.Kz_Language);
+            //if (string.IsNullOrWhiteSpace(sessionValue))
+            //    sessionValue = HttpContext.Request.Cookies[CookieConfig.Kz_LanguageCookie];
+            //sessionValue = String.IsNullOrEmpty(sessionValue) ? "vi" : sessionValue;
+            //LanguageHelper.GetLang(sessionValue);
 
-          
+            ViewBag.Groups = await _GroupService.GetaSelectModelChoseGroup(selecteds: Groupid);
+
+            ViewBag.keyValue = key;
+
+            ViewBag.AreaCodeValue = AreaCode;
 
             return View();
+        }
+        public async Task<IActionResult> Partial_Service(string Groupid = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        {
+
+
+            if (string.IsNullOrEmpty(fromdate))
+            {
+                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
+            }
+
+            if (string.IsNullOrEmpty(todate))
+            {
+                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
+            }
+
+            var gridModel = await _HomeService.GetPagingInOut(key, page, 20, Groupid, fromdate, todate);
+
+            #region Giao diện
+
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
+
+            ViewBag.Groups = await _GroupService.GetAll();
+
+            return PartialView(gridModel);
+            #endregion
         }
         public async Task<IActionResult> Partial_TopService()
         {

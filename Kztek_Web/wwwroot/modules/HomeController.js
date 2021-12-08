@@ -6,6 +6,18 @@
             }
         });
     });
+ 
+    $('body').on('click', '#pagService li a', function () {
+        var cmd = $(this);
+        var _page = cmd.attr('idata');
+
+        HomeController.PartialService(_page);
+
+        return false;
+    })
+    $('body').on('click', '.btnSearch', function () {
+        HomeController.PartialService(1);
+    })
 
     $("#langCode_Parking").on("change", function () {
         var langCode = $("#langCode_Parking").val();
@@ -38,5 +50,20 @@ var HomeController = {
                 toastr.error(response.message);
             }
         });
-    }
+    },
+    PartialService: function (page) {
+        var obj = {
+            key: $("input[name=key]").val(),
+            GroupId: $("#GroupId").val(),
+            page: page
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Home/Partial_Service', obj)
+            .done(function (data) {
+                $('#boxTable').html('');
+                $('#boxTable').html(data);
+
+                //$("#spCount").text($("#totalCount").val());
+            });
+    },
 }

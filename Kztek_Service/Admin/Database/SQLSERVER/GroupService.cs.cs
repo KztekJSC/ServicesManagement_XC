@@ -1,6 +1,7 @@
 ﻿using Kztek_Core.Models;
 using Kztek_Data.Repository;
 using Kztek_Library.Helpers;
+using Kztek_Library.Models;
 using Kztek_Model.Models;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,37 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var model = GridModelHelper<Group>.GetPage(pageList.OrderByDescending(n => n.Name).ToList(), pageNumber, pageSize, pageList.TotalItemCount, pageList.PageCount);
 
             return await Task.FromResult(model);
+        }
+
+        public async Task<SelectListModel_Chosen> GetaSelectModelChoseGroup(string id = "", string placeholder = "", string selecteds = "")
+        {
+            var data = await GetAll();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.Name,
+                    ItemValue = n.Id
+                }));
+            }
+
+            var model = new SelectListModel_Chosen()
+            {
+                IdSelectList = "GroupId",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+                isMultiSelect = false
+            };
+            return model;
         }
 
         public async Task<Group> GetById(string id)

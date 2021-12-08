@@ -1,99 +1,92 @@
 ﻿
-@*@using Kztek_Model.Models
-@using Kztek_Library.Helpers
-@model List<tbl_Event_Submit>
-<style>
-    .infobox > .infobox-icon > .ace-icon::before {
-        font-size: 60px;
-        width: 82px;
-    }
-
-    .infobox > .infobox-icon > .ace-icon {
-        height: 82px;
-    }
-
-    .infobox > .infobox-icon {
-        width: 85px;
-    }
-</style>
-<div class="row" >
-   <div class="col-xs-12" id="boxService">
-
-   </div>
-
-
-</div>
-<br />
+@{
+    ViewBag.Title = "Thông tin xe làm dịch vụ";
+}
 
 <div class="page-header">
+    <h1>
 
-    <h1 style="margin-left: unset;">
-        Danh sách xe chờ dịch vụ trong ngày (<span id="spCountHome">@Model.Count</span> xe)
+        @ViewBag.Title
     </h1>
 </div>
 
-<br />
+@using (Html.BeginForm("Index", "Home", FormMethod.Get, new { id = "frmService" }))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="divScroll" style="height:800px;overflow:auto;">
-            <table class="table  table-bordered table-hover" id="tblHome">
-                <thead>
-                    <tr class="headerSort">
-                        <th class="center" width="100">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:SortOrder" })</th>
-                        <th class="text-center" width="300">Giờ vào </th>
-                        <th class="text-center">Biển số </th>
-
-                        <th class="text-center">Khách hàng</th>
-
-                        <th class="text-center">Loại hàng</th>
-
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model != null && Model.Count > 0)
-                    {
-                        foreach (var item in Model)
-                        {
-                    <tr id="hRow_@item.id">
-                        <td class="text-center">@item.event_Number</td>
-                        <td class="text-center">
-                            @if (!string.IsNullOrEmpty(item.event_DateTime_Gate))
-                            {
-                                @Convert.ToDateTime(item.event_DateTime_Gate).ToString("dd/MM/yyyy HH:mm:ss")
-                            }
-
-                        </td>
-                        <td >
-                            @item.plate_Number1
-                        </td>
-                        <td>
-                            @item.customer_Name
-                        </td>
-                        <td class="center">
-                            @item.commodity_Name
-                        </td>
-
-                    </tr>}
-                    }
-                </tbody>
-            </table>
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ khóa
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số|Loại hàng..." class="form-control" />
         </div>
 
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Tổ </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.Groups)
+
+        </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <br />
+            <button class="btn btn-white btn-primary btnSearch" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("Index", "Home",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Reset
+            </a>
+         
+
+        </div>
+    </div>
+}
+
+
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row" id="boxTable">
 
 </div>
 
+
 @section scripts{
-    <script src="~/modules/Signalr.js"></script>
-    <script src="~/modules/ReportController.js"></script>
+   
+    @*<script src="~/modules/HomeController.js"></script>*@
     <script>
+        function PartialService(page) {
 
+            var obj = {
+                key: $("input[name=key]").val(),
+                StatusID: $("#StatusID").val(),
+                page: page
+            };
 
+            JSHelper.AJAX_LoadDataPOST('/Admin/Home/Partial_Service', obj)
+                .done(function (data) {
+                    $('#boxTable').html('');
+                    $('#boxTable').html(data);
+
+                    $("#spCount").text($("#totalCount").val());
+                });
+        };
+     
         $(document).ready(function () {
+            PartialService(1);
+            $('body').on('click', '#pagService li a', function () {
+                var cmd = $(this);
+                var _page = cmd.attr('idata');
 
+                PartialService(_page);
+
+                return false;
+            });
+            $('body').on('click', '.btnSearch', function () {
+                PartialService(1);
+            });
 
         });
     </script>
-}*@
+}

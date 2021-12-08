@@ -1,0 +1,111 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@using Kztek_Library.Models
+
+@{
+    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+}
+
+@*@Html.Hidden("totalCount", Model.TotalIem)*@
+
+<div class="col-xs-12">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">STT</th>
+
+                <th class="text-center">
+                    Xe VN
+                </th>
+                <th class="text-center">
+                    Xe TQ
+                </th>
+                <th class="text-center">Loại hàng </th>
+                <th class="text-center">Dịch vụ </th>
+                <th class="text-center">Tổ bốc xếp</th>
+                <th class="text-center">Trạng thái</th>
+               
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Data.Any())
+            {
+                var count = 0;
+                foreach (var item in Model.Data)
+                {
+                    count++;
+
+            <tr id="sId_@item.Id">
+                <td class="text-center">
+                    @count
+                </td>
+
+
+
+                <td class="center">
+                    @item.PlateVN
+                </td>
+                <td class="center">
+                    @item.PlateCN
+                </td>
+                <td class="center">
+                    @item.ProductType
+                </td>
+
+
+                <td class="center">
+                    @item.Service
+                </td>
+
+
+                <td class="center">
+                    @{
+                        var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                        if (obj != null)
+                        {
+                            <span>@obj.Name</span>
+                        }
+                    }
+                </td>
+                <td class="text-center">
+
+                    @if (item.EventType == 3)
+                    {
+                        <span class="label label-sm " style="background-color: #c00000 ">Chưa thực hiện</span>
+                    }
+                    else if (item.EventType == 4)
+                    {
+                        <span class="label label-sm   " style="background-color: #385822">Đang thực hiện</span>
+                    }
+
+
+
+                </td>
+
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.Data.Any())
+{
+    <div class="col-xs-12" id="pagService">
+        <div class="pull-right">
+
+
+            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Service", "Home", new
+       {
+           page = x,
+           key = ViewBag.keyValue,
+           //fromdate = ViewBag.fromdateValue,
+           //todate = ViewBag.todateValue,
+           Groupid = ViewBag.Groupid,
+           AreaCode = ViewBag.AreaCodeValue,
+
+       }))
+        </div>
+    </div>
+}
