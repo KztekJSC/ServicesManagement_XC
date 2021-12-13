@@ -35,7 +35,7 @@
                 <th class="text-center">Tổ bốc xếp</th>
                 <th class="text-left">Ảnh CN </th>
                 <th class="text-left">Ảnh VN </th>
-                <th class="text-center">Xử lý</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
 
@@ -59,11 +59,11 @@
 
                             @if (item.EventType == 1)
                             {
-                                <span class="label label-sm label-grey">Chờ xác nhận</span>
+                                <span class="label label-grey">Chờ xác nhận</span>
                             }
                             else if (item.EventType == 2)
                             {
-                                <span class="label label-sm label-grey  ">Đã xác nhận</span>
+                                <span class="label label-yellow ">Đã xác nhận</span>
                             }
 
 

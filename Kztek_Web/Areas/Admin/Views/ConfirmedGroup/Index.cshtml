@@ -58,7 +58,7 @@
 <div class="hr hr-18 dotted hr-24"></div>
 
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12" style="overflow-y:auto;">
         <table class="table  table-bordered table-hover">
             <thead>
                 <tr>
@@ -82,9 +82,9 @@
                     <th class="text-center">Phụ thu</th>
                     <th class="text-center">Ghi chú </th>
                     <th class="text-center">Tổ bốc xếp</th>
-                    <th class="text-center">Thời gian bắt đầu</th>
-                    <th class="text-center">Thời gian kết thúc</th>
-                    <th class="text-center">Thời gian phân tổ</th>
+                    <th class="text-center">T/G bắt đầu</th>
+                    <th class="text-center">T/G kết thúc</th>
+                    <th class="text-center">T/G phân tổ</th>
 
                     <th class="text-center">Ảnh VN</th>
                     <th class="text-center">Ảnh CN</th>
@@ -115,15 +115,15 @@
                         @{
                             if (item.EventType == 3)
                             {
-                                <span class="label label-sm " style="background-color: #fbf3d8; color: black">Đã phân tổ</span>
+                                <span class="label label-yellow">Đã phân tổ</span>
                             }
                             else if (item.EventType == 4)
                             {
-                                <span class="label label-sm " style="background-color: #385822">Đang thực hiện</span>
+                                <span class="label" style="background-color: #385822">Đang thực hiện</span>
                             }
                             else if (item.EventType == 5)
                             {
-                                <span class="label label-sm " style="background-color: #c00000 ">Hoàn thành</span>
+                                <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
                             }
 
 
@@ -170,13 +170,25 @@
                         }
                     </td>
                     <td class="center">
-                        @item.StartDate.ToString("dd/MM/yyyy")
+                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        {
+                            @item.StartDate.ToString("dd/MM/yyyy")
+                        }
+
                     </td>
                     <td class="center">
-                        @item.EndDate.ToString("dd/MM/yyyy")
+                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        {
+                            @item.EndDate.ToString("dd/MM/yyyy")
+                        }
+
                     </td>
                     <td class="center">
-                        @item.DivisionDate.ToString("dd/MM/yyyy")
+                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        {
+                            @item.DivisionDate.ToString("dd/MM/yyyy")
+                        }
+
                     </td>
 
                     <td class="center">
