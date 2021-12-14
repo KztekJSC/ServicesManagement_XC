@@ -177,14 +177,14 @@
 
                     </td>
                     <td class="center">
-                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        @if (item.EndDate.Date != DateTime.MaxValue.Date)
                         {
                             @item.EndDate.ToString("dd/MM/yyyy")
                         }
 
                     </td>
                     <td class="center">
-                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        @if (item.DivisionDate.Date != DateTime.MaxValue.Date)
                         {
                             @item.DivisionDate.ToString("dd/MM/yyyy")
                         }
