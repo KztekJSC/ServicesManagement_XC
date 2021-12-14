@@ -124,8 +124,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
 
-            ViewBag.Groups = await _GroupService.GetAll();       
-
+            ViewBag.Groups = await _GroupService.GetAll();
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
             return PartialView(gridModel);
            
         }

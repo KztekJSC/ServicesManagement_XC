@@ -145,22 +145,21 @@
 
                             <div class="btn-group">
                                 @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                                {
-            ControllerName = "Service",
-            ActionName = "Update",
-            RecordId = "",
-            model = new { id = item.Id },
-            Auth_Value = authModel
-            })
-
-                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                                {
-            ControllerName = "Service",
-            ActionName = "Delete",
-            RecordId = item.Id,
-            model = null,
-            Auth_Value = authModel
-            })
+                           {
+                               ControllerName = "Coordinator",
+                               ActionName = "Update",
+                               RecordId = "",
+                               model = new { id = item.Id },
+                               Auth_Value = authModel
+                           })
+                              @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                              {
+          ControllerName = "Service",
+          ActionName = "Delete",
+          RecordId = item.Id,
+          model = null,
+          Auth_Value = authModel
+          })
                             </div>
                         </td>
                     </tr>
