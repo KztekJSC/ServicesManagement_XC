@@ -6,8 +6,6 @@
     ViewBag.Title = "Tổ công nhân xác nhận";
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
-    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
-    var checkbytype = (string)ViewBag.isFilterByTimeIn;
 }
 
 <div class="page-header">
@@ -174,21 +172,36 @@
                         {
                             @item.StartDate.ToString("dd/MM/yyyy")
                         }
+                        else if (item.StartDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                        {
+                            <span></span>
+                        }
+
 
                     </td>
                     <td class="center">
-                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
-                        {
-                            @item.EndDate.ToString("dd/MM/yyyy")
+                        @{
+                            if (item.EndDate.Date != DateTime.MaxValue.Date)
+                            {
+                                @item.EndDate.ToString("dd/MM/yyyy")
+                            }
+
+                            else if (item.EndDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                            {
+                                <span></span>
+                            }
                         }
 
                     </td>
                     <td class="center">
-                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        @if (item.DivisionDate.Date != DateTime.MaxValue.Date)
                         {
                             @item.DivisionDate.ToString("dd/MM/yyyy")
                         }
-
+                        else if (item.DivisionDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                        {
+                            <span></span>
+                        }
                     </td>
 
                     <td class="center">
@@ -260,11 +273,9 @@
                 @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "ConfirmedGroup", new
            {
                page = x,
-               key = ViewBag.keyValue,
-               //fromdate = ViewBag.fromdateValue,
-               //todate = ViewBag.todateValue,
+               key = ViewBag.keyValue,           
                StatusID = ViewBag.StatusID,
-               AreaCode = ViewBag.AreaCodeValue,
+           
 
            }))
             </div>

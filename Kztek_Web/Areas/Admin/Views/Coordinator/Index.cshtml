@@ -6,8 +6,8 @@
     ViewBag.Title = "Điều phối xác nhận";
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
-    Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
-    var checkbytype = (string)ViewBag.isFilterByTimeIn;
+  
+   
 }
 
 <div class="page-header">
@@ -235,11 +235,9 @@
                 @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Coordinator", new
            {
                page = x,
-               key = ViewBag.keyValue,
-               //fromdate = ViewBag.fromdateValue,
-               //todate = ViewBag.todateValue,
+               key = ViewBag.keyValue,           
                StatusID = ViewBag.StatusID,
-               AreaCode = ViewBag.AreaCodeValue,
+             
 
            }))
             </div>

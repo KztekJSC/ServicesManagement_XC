@@ -181,7 +181,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and (EventType = 3 OR EventType = 4 OR EventType = 5 ) and  IsDeleted = 0");
+            sb.AppendLine("WHere 1 =1 and EventType IN(3,4,5)  and  IsDeleted = 0");
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -224,7 +224,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1 and (  EventType = 3 OR EventType = 4 OR EventType = 5)");
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1 and EventType IN(3,4,5)");
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
@@ -268,10 +268,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) as RowNumber,a.*", "EventType"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  SELECT * FROM [tbl_Event]");
-            sb.AppendLine("WHERE 1 =1 and (EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5) AND IsDeleted = 0");
+            sb.AppendLine("WHERE 1 =1 and  EventType IN (2,3,4,5) AND IsDeleted = 0");
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -316,7 +316,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1 AND ( EventType = 2 OR EventType = 3 OR EventType = 4 OR EventType = 5) AND IsDeleted = 0");
+            sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1 AND EventType IN (2,3,4,5) AND IsDeleted = 0");
 
             if (!string.IsNullOrEmpty(keyReplace))
             {

@@ -177,11 +177,9 @@
             @Html.GeneratePagingFooterAjax(Model.TotalPage,Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Service", "Service", new
        {
            page = x,
-           key = ViewBag.keyValue,
-           //fromdate = ViewBag.fromdateValue,
-           //todate = ViewBag.todateValue,
+           key = ViewBag.keyValue,       
            StatusID = ViewBag.StatusID,
-           AreaCode = ViewBag.AreaCodeValue,
+         
 
        }))
         </div>
