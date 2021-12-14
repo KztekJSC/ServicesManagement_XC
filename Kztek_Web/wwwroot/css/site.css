@@ -1080,3 +1080,46 @@ ol {
 .text-180 {
     font-size: 1.8em !important;
 }
+
+.SubTab .nav-tabs > li.active > a {
+    background: #fff;
+    color: #393939;
+}
+
+.SubTab .nav-tabs > li > a {
+    box-shadow: none;
+    border-radius: 5px 5px 0 0 !important;
+    border-color: #42a1dc;
+}
+
+.SubTab .nav-tabs > li.active > a, .SubTab .nav-tabs > li.active > a:hover {
+    box-shadow: none;
+    border-color: #1672ab #C5D0DC transparent;
+}
+
+.SubTab .nav-tabs > li > a {
+    padding: 5px 6px 5px;
+}
+
+.SubTab .nav-tabs > li {
+    margin-right: 2px;
+}
+
+    .SubTab .nav-tabs > li > a {
+        background-color: #1672ab;
+        color: #fff;
+    }
+
+.SubTab .nav-tabs {
+    background: #42a1dc;
+    border-radius: 5px 5px 0 0;
+    padding-top: 1px;
+}
+
+.hideTabContent {
+    min-height:unset!important;
+}
+
+.trItem{
+    cursor:pointer;
+}

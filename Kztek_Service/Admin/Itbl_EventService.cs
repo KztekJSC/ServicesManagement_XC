@@ -30,5 +30,18 @@ namespace Kztek_Service.Admin
         /// </summary>
         /// <returns></returns>
         Task<List<tbl_Event>> GetListType2();
+
+        /// <summary>
+        /// Đếm số lượng dịch vụ đã giao của từng tổ
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Model_ServiceByGroup>> GetCountServiceByGroup();
+
+        /// <summary>
+        /// Danh sách chi tiết dịch vụ được giao của tổ
+        /// </summary>
+        /// <param name="groupid"></param>
+        /// <returns></returns>
+        Task<List<tbl_Event>> GetListServiceByGroup(string groupid);
     }
 }

@@ -7,7 +7,7 @@
     {
         count++;
 
-        <tr id="sId_@item.Id">
+        <tr>
             <td class="text-center">
                 @count
             </td>
@@ -26,8 +26,9 @@
             </td>
 
             <td class="center">
-
-             
+                <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
+                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>
                
             </td>
         </tr>

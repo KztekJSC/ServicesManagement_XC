@@ -1,4 +1,5 @@
-﻿using Kztek_Library.Configs;
+﻿using Kztek_Core.Models;
+using Kztek_Library.Configs;
 using Kztek_Library.Helpers;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
@@ -103,8 +104,6 @@ namespace Kztek_Web.Areas.Admin.Controllers
             
             ViewBag.AreaCodeValue = AreaCode;
 
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
-
             return View();
         }
 
@@ -125,7 +124,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
 
             ViewBag.Groups = await _GroupService.GetAll();
+
+
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
+
             return PartialView(gridModel);
            
         }
@@ -252,7 +254,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Phân tổ
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Assignment(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
+        public async Task<IActionResult> Assignment()
         {
 
 
@@ -266,6 +268,53 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return PartialView(list);
         }
 
+        public async Task<IActionResult> Partial_Group()
+        {
+            var list = await _tbl_EventService.GetCountServiceByGroup();
+
+            ViewBag.Group = await GetAllGroup();
+
+            return PartialView(list);
+        }
+        public async Task<IActionResult> Partial_GroupDetail(string id)
+        {
+            var list = await _tbl_EventService.GetListServiceByGroup(id);
+
+            ViewBag.Id = id;
+
+            return PartialView(list);
+        }
+
+        public async Task<IActionResult> Modal_Assign(string id)
+        {
+            var objService = await _tbl_EventService.GetById(id);
+
+            ViewBag.Group = await GetAllGroup();
+
+            return PartialView(objService);
+        }
+
+        public async Task<IActionResult> SaveAssign(string id,string groupid)
+        {
+            var result = new MessageReport(false,"Có lỗi xảy ra!");
+
+            var objService = await _tbl_EventService.GetById(id);
+
+            if(objService != null)
+            {
+                objService.GroupId = groupid;
+
+                objService.EventType = 3; //đã phân tổ
+
+                result = await _tbl_EventService.Update(objService);
+            }
+            else
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+            }
+
+            return Json(result);
+        }
         #endregion
     }
 }

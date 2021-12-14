@@ -147,4 +147,11 @@ namespace Kztek_Model.Models
         public string vehicleType { get; set; } //Loại xe
         public string image { get; set; }
     }
+
+    public class Model_ServiceByGroup
+    {
+        public string GroupId { get; set; } //Biển số
+        public int Number { get; set; } //VN hoặc CN
+     
+    }
 }
