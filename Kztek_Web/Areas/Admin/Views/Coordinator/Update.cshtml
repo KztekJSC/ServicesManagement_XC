@@ -25,16 +25,16 @@
         margin-left: 50px;
     }
 
-    .btnCancel {
+    /*.btnCancel {
         background-color: #c00000 !important;
         border-color: #c00000;
-        display: inline-block;
+        display: inline-block;*/
         /* margin-bottom: 0;*/
-        font-weight: 400;
+        /*font-weight: 400;
         width: 200px;
-        text-align: center;
+        text-align: center;*/
         /*  vertical-align: middle;*/
-        touch-action: manipulation;
+        /*touch-action: manipulation;
         cursor: pointer;
         border: 1px solid transparent;
         border-radius: 10px 10px;
@@ -57,23 +57,23 @@
         border-radius: 10px 10px;
         font-weight: 400;
         width: 200px;
-        text-align: center;
+        text-align: center;*/
         /*  vertical-align: middle;*/
-        touch-action: manipulation;
+        /*touch-action: manipulation;
         cursor: pointer;
         white-space: nowrap;
         padding: 6px 12px;
         font-size: 14px;
-        line-height: 1.42857143;
+        line-height: 1.42857143;*/
         /* border-radius: 2px 4px;*/
 
-        user-select: none;
+        /*user-select: none;
         color: #FFF !important;
         text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
         background-image: none !important;
         border: 5px solid #FFF;
         position: relative;
-    }
+    }*/
 
     .breadcrumb, .breadcrumb > li > a, .btn {
         display: inline-block;
@@ -142,21 +142,20 @@
                     @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
                 </div>
             </div>
-          
-          
-            <div class="row">
-                <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
-                    <div class="offset-md-3 col-md-9 text-nowrap">
-                        <button class="btn btnService btn-bold px-4" type="submit">
-                            <i class="fa fa-check mr-1"></i>
-                            Xác nhận
-                        </button>
 
-                        <a class="btn ragge btn-bold btnCancel px-4" href="/Admin/Coordinator/Index">
-                            <i class="fa fa-undo mr-1"></i>
-                            Hủy bỏ
-                        </a>
-                    </div>
+           
+            <div class="row">
+                <div class="col-md-offset-3 col-md-8">
+                    <button class="btn btn-success btnService" type="submit">
+                        <i class="fa fa-check mr-1"></i>
+                        Xác nhận
+                    </button>
+
+                    <a class="btn btn-danger btnCancel" href="/Admin/Coordinator/Index">
+                        <i class="fa fa-undo mr-1"></i>
+                        Hủy bỏ
+                    </a>
+                   
                 </div>
             </div>
 
