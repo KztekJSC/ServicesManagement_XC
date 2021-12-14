@@ -25,60 +25,12 @@
         margin-left: 50px;
     }
 
-    .btnCancel {
-        background-color: #c00000 !important;
-        border-color: #c00000;
-        display: inline-block;
-        /* margin-bottom: 0;*/
-        font-weight: 400;
-        width: 200px;
-        text-align: center;
-        /*  vertical-align: middle;*/
-        touch-action: manipulation;
-        cursor: pointer;
-        border: 1px solid transparent;
-        border-radius: 10px 10px;
-        white-space: nowrap;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        user-select: none;
-        color: #FFF !important;
-        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-        background-image: none !important;
-        border: 5px solid #FFF;
-        position: relative;
-    }
-
-    .btnService {
-        background-color: #385822 !important;
-        border-color: #385822;
-        border: 1px solid transparent;
-        border-radius: 10px 10px;
-        font-weight: 400;
-        width: 200px;
-        text-align: center;
-        /*  vertical-align: middle;*/
-        touch-action: manipulation;
-        cursor: pointer;
-        white-space: nowrap;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        /* border-radius: 2px 4px;*/
-
-        user-select: none;
-        color: #FFF !important;
-        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-        background-image: none !important;
-        border: 5px solid #FFF;
-        position: relative;
-    }
+   
 
     .breadcrumb, .breadcrumb > li > a, .btn {
         display: inline-block;
     }
-    }
+    
 </style>
 
 <div class="row">
@@ -149,16 +101,16 @@
                     @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
                 </div>
             </div>
-
+            
             <div class="row">
                 <div class="col-md-offset-3 col-md-8">
-                    <button class="btn btn-success btnService btnStart" type="button" idata="@Model.Id">
+                    <button class=" btnService btnStart" type="button" idata="@Model.Id">
                         <i class="fa fa-check mr-1"></i>
                         Bắt đầu
                     </button>
 
 
-                    <button class="btn btn-danger btnCancel" type="submit">
+                    <button class=" btnCancel" type="submit">
                         <i class="fa fa-check mr-1"></i>
                         Đã làm xong
                     </button>
