@@ -117,6 +117,11 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 GroupId = ""           
             };
 
+            if(obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+            {
+                obj.EventType = 2; //Đã xác nhận nếu 2 xe đều vào bãi
+            }
+
             var result = await _tbl_EventRepository.Add(obj);
 
             if (result.isSuccess)
@@ -124,7 +129,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 result = new MessageReport(true, "Thành công");
 
                 //nếu xe CN và VN đều vào bãi thì loại lại danh sách
-                if(obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+                if(obj.EventType == 2)
                 {
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
                 }

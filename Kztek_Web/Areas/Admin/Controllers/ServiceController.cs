@@ -305,6 +305,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
                 objService.EventType = 3; //đã phân tổ
 
+                objService.DivisionDate = DateTime.Now;
+
                 result = await _tbl_EventService.Update(objService);
             }
             else
