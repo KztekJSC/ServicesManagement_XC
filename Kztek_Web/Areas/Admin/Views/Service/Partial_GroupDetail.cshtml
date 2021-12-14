@@ -1,0 +1,55 @@
+﻿@model List<Kztek_Model.Models.tbl_Event>
+
+<tr class="showDetailBox-child-@ViewBag.Id trHide bgRowColor">
+    <td colspan="3">
+        <!--Tab detail-->
+        <div class="tabbable SubTab">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab1-@ViewBag.Id" aria-expanded="true">
+                        Chi tiết
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content clearfix hideTabContent">
+
+
+                <div id="tab1-@ViewBag.Id" class="tab-pane fade active in">
+                    <table class="col-sm-9 col-xs-12 table table-bordered table-striped" id="tblLot" style="margin-top:15px">
+                        <thead>
+                            <tr>
+
+                                <th>Dịch vụ</th>
+                                <th>Loại hàng</th>
+                                <th>Nhóm hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Count > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@item.Service</td>
+                                        <td>@item.ProductType</td>
+                                        <td>@item.ProductGroup</td>
+                                        
+                                    </tr>
+                                }
+
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+

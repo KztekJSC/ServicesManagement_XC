@@ -3,58 +3,59 @@
     ViewBag.Title = "Điều phối tổ thực hiện dịch vụ";
 }
 
-<div class="page-header">
-    <h1>
+<div id="boxModal">
 
-        @ViewBag.Title 
-    </h1>
 </div>
 
-<div class="hr hr-18 dotted hr-24"></div>
-
 <div class="row">
-    <div class="col-xs-8">
-        <h4>Danh sách dịch vụ chưa thực hiện</h4>
-        <table class="table  table-bordered table-hover" id="tblVehicle">
-            <thead>
-                <tr>
-                    <th class="text-center">STT</th>
+    <div class="col-xs-8" >
+        <h3 class="header smaller lighter blue">Danh sách chưa phân tổ</h3>
+        <div style="height:700px;overflow:auto">
+            <table class="table  table-bordered table-hover" id="tblVehicle">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
 
-                    <th class="text-center">
-                        Xe VN
-                    </th>
-                    <th class="text-center">
-                        Xe CN
-                    </th>
-                    <th class="text-center">Mã dịch vụ</th>
-                    <th class="text-center">Dịch vụ</th>
+                        <th class="text-center">
+                            Xe VN
+                        </th>
+                        <th class="text-center">
+                            Xe CN
+                        </th>
+                        <th class="text-center">Mã dịch vụ</th>
+                        <th class="text-center">Dịch vụ</th>
 
-                    <th class="text-center"></th>
-                </tr>
-            </thead>
+                        <th class="text-center">Phân tổ</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-            </tbody>
-        </table>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+       
     </div>
 
     <div class="col-xs-4">
-        <h4>Thông tin tổ thực hiện dịch vụ</h4>
-        <table class="table  table-bordered table-hover" id="tblGroup">
-            <thead>
-                <tr>
-                    <th class="text-center">STT</th>
-                    <th class="text-center">Tổ thực hiện</th>
+        <h3 class="header smaller lighter blue">Danh sách tổ thực hiện dịch vụ</h3>
+        <div style="height:700px;overflow:auto">
+            <table class="table  table-bordered table-hover" id="tblGroup">
+                <thead>
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Tổ thực hiện</th>
 
-                    <th class="text-center">
-                        Số lượng dịch vụ
-                    </th>
-                </tr>
-            </thead>
+                        <th class="text-center">
+                            Số lượng dịch vụ
+                        </th>
+                    </tr>
+                </thead>
 
-            <tbody>
-            </tbody>
-        </table>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+      
     </div>
 </div>
 
@@ -64,8 +65,9 @@
     <script src="~/modules/Signalr.js"></script>
     <script>
         $(document).ready(function () {
+            ServiceController.PartialVehicle();
 
-            
+            ServiceController.PartialGroup();
         });
     </script>
 }

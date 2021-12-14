@@ -70,7 +70,7 @@
             }
             else
             {
-				<li class='@string.Format("{0}", (( Model.ControllerName.Equals(item.ControllerName) && Model.ActionName.Equals(item.ActionName)) || Model.ControllerName.Equals(item.ControllerName))? "active" : "")'>
+				<li class='@string.Format("{0}", (( Model.ControllerName.Equals(item.ControllerName) && Model.ActionName.Equals(item.ActionName)))? "active" : "")'>
 					@if(item.isSystem){
 <a href='@Url.Action(item.ActionName, item.ControllerName, new { Area = "", AreaCode = Model.AreaCode })'>
                         <i class="menu-icon @item.Icon"></i>

@@ -468,7 +468,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "StartDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 
@@ -478,6 +478,36 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine(") AS a");
 
+
+            var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+
+            return await Task.FromResult(listData);
+        }
+
+        public async Task<List<Model_ServiceByGroup>> GetCountServiceByGroup()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT GroupId, Count(Id) as Number FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 = 1 AND EventType IN(3,4) AND  IsDeleted = 0");
+
+            sb.AppendLine("Group By GroupId");
+
+            var listData = DatabaseHelper.ExcuteCommandToList<Model_ServiceByGroup>(sb.ToString());
+
+            return await Task.FromResult(listData);
+        }
+
+        public async Task<List<tbl_Event>> GetListServiceByGroup(string groupid)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT * FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 = 1 AND EventType IN(3,4) AND  IsDeleted = 0");
+
+            sb.AppendLine(string.Format("AND GroupId = '{0}'", groupid));
 
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
 

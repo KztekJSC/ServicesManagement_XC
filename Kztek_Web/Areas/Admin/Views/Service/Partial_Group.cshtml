@@ -1,22 +1,31 @@
-﻿@model List<Kztek_Model.Models.tbl_Event>
+﻿@model List<Kztek_Model.Models.Model_ServiceByGroup>
+
+@{ 
+    var groups = (List<Kztek_Library.Models.SelectListModel>)ViewBag.Group;
+}
 
 @if (Model != null && Model.Count > 0)
 {
     var count = 0;
-    foreach (var item in Model)
+    foreach (var item in Model.OrderBy(n => n.Number))
     {
         count++;
 
-        <tr id="sId_@item.Id">
+        var objGroup = groups.FirstOrDefault(n => n.ItemValue == item.GroupId);
+
+        <tr class="trItem" idata="@item.GroupId">
             <td class="text-center">
                 @count
             </td>
 
             <td class="center">
-                @item.GroupId
+                @if(objGroup != null)
+                {
+                    @objGroup.ItemText
+                }
             </td>
             <td class="center">
-               
+               @item.Number
             </td>
            
         </tr>
