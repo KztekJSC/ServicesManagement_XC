@@ -50,4 +50,26 @@ var ServiceController = {
                 $("#spCount").text($("#totalCount").val());
             });
     },
+    PartialVehicle: function () {
+        var obj = {
+           
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Vehicle', obj)
+            .done(function (data) {
+                $('#tblVehicle tbody').html('');
+                $('#tblVehicle tbody').html(data);
+            });
+    },
+    PartialGroup: function () {
+        var obj = {
+
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Group', obj)
+            .done(function (data) {
+                $('#tblGroup tbody').html('');
+                $('#tblGroup tbody').html(data);
+            });
+    },
 }

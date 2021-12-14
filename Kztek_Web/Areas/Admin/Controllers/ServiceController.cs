@@ -24,10 +24,61 @@ namespace Kztek_Web.Areas.Admin.Controllers
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
         }
+
+
+        #region DDL
+
+        private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
+        {
+            var data = await GetAllGroup();
+
+
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = ""
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen
+            {
+                Data = cus,
+                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
+                IdSelectList = id,
+                isMultiSelect = false,
+                Selecteds = selecteds
+            };
+
+            return model;
+        }
+        public async Task<List<SelectListModel>> GetAllGroup()
+        {
+            var list = new List<SelectListModel> { };
+            var lst = await _GroupService.GetAll();
+            if (lst.Any())
+            {
+                foreach (var item in lst)
+                {
+                    list.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });
+                }
+            }
+            return list;
+        }
+        #endregion
+
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
-)
+        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
         {
             var datefrompicker = "";
            
@@ -45,17 +96,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-            //if (chkExport.Equals("1"))
-            //{
-            //    await ExportFile(key, sort, page, 20, StatusID, isCheckByTime, fromdate, todate, this.HttpContext);
-
-            //    //return View(gridmodel);
-            //}
+           
             ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
 
             ViewBag.keyValue = key;  
             
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
 
             return View();
         }
@@ -76,14 +124,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
 
-            #region Giao diện
-
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
-
             ViewBag.Groups = await _GroupService.GetAll();       
 
             return PartialView(gridModel);
-            #endregion
+           
         }
         #endregion
 
@@ -206,54 +250,22 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #endregion Xóa
 
-        #region DDL
-      
-        private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
+        #region Phân tổ
+        [CheckSessionCookie(AreaConfig.Admin)]
+        public async Task<IActionResult> Assignment(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
         {
-            var data = await GetAllGroup();
 
 
-            var cus = new List<SelectListModel>();
-            var lst = data;
-            if (lst != null && lst.Count > 0)
-            {
-                cus.Add(new SelectListModel()
-                {
-                    ItemText = "---- Lựa chọn ----",
-                    ItemValue = ""
-                });
-
-                cus.AddRange(data.Select(n => new SelectListModel()
-                {
-                    ItemText = n.ItemText,
-                    ItemValue = n.ItemValue
-                }));
-            }
-
-            var model = new SelectListModel_Chosen
-            {
-                Data = cus,
-                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
-                IdSelectList = id,
-                isMultiSelect = false,
-                Selecteds = selecteds
-            };
-
-            return model;
+            return View();
         }
-        public async Task<List<SelectListModel>> GetAllGroup()
+
+        public async Task<IActionResult> Partial_Vehicle()
         {
-            var list = new List<SelectListModel> { };
-            var lst = await _GroupService.GetAll();
-            if (lst.Any())
-            {
-                foreach (var item in lst)
-                {
-                    list.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });
-                }
-            }
-            return list;
+            var list = await _tbl_EventService.GetListType2();
+
+            return PartialView(list);
         }
+
         #endregion
     }
 }

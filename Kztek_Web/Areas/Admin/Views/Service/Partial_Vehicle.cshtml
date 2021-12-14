@@ -1,0 +1,35 @@
+﻿@model List<Kztek_Model.Models.tbl_Event>
+
+@if (Model != null && Model.Count > 0)
+{
+    var count = 0;
+    foreach (var item in Model)
+    {
+        count++;
+
+        <tr id="sId_@item.Id">
+            <td class="text-center">
+                @count
+            </td>
+            
+            <td class="center">
+                @item.PlateVN
+            </td>
+            <td class="center">
+                @item.PlateCN
+            </td>
+            <td class="text-left">
+                @item.ServiceCode
+            </td>      
+            <td class="center">
+                @item.Service
+            </td>
+
+            <td class="center">
+
+             
+               
+            </td>
+        </tr>
+    }
+}

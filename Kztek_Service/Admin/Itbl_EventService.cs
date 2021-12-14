@@ -23,5 +23,12 @@ namespace Kztek_Service.Admin
         Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "");
         Task<tbl_Event_Cus> GetByCustomById(string id);
         Task<SelectListModel_Chosen> GetEventypeCoordination(string id = "", string placeholder = "", string selecteds = "");
+
+        /// <summary>
+        /// Danh sách dịch vụ đã xác nhận
+        /// Dùng cho giao diện phân tổ
+        /// </summary>
+        /// <returns></returns>
+        Task<List<tbl_Event>> GetListType2();
     }
 }

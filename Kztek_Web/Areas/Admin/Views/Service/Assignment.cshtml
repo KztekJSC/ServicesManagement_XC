@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Điều phối tổ thực hiện dịch vụ";
+}
+
+<div class="page-header">
+    <h1>
+
+        @ViewBag.Title 
+    </h1>
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="row">
+    <div class="col-xs-8">
+        <h4>Danh sách dịch vụ chưa thực hiện</h4>
+        <table class="table  table-bordered table-hover" id="tblVehicle">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+
+                    <th class="text-center">
+                        Xe VN
+                    </th>
+                    <th class="text-center">
+                        Xe CN
+                    </th>
+                    <th class="text-center">Mã dịch vụ</th>
+                    <th class="text-center">Dịch vụ</th>
+
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-xs-4">
+        <h4>Thông tin tổ thực hiện dịch vụ</h4>
+        <table class="table  table-bordered table-hover" id="tblGroup">
+            <thead>
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Tổ thực hiện</th>
+
+                    <th class="text-center">
+                        Số lượng dịch vụ
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/modules/ServiceController.js"></script>
+    <script src="~/modules/Signalr.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            
+        });
+    </script>
+}

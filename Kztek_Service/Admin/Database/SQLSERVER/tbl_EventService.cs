@@ -358,16 +358,23 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
         public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine("SELECT * FROM (");
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
-            sb.AppendLine("FROM(");
-            sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and ( EventType = 1 OR EventType = 2) and  IsDeleted = 0");
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT * FROM (");
+
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "StartDate"));
+
+            sb.AppendLine("FROM(");
+
+            sb.AppendLine("SELECT * FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
@@ -397,20 +404,26 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
                 }
             }
-            sb.AppendLine(")as a");
-            sb.AppendLine(") as C1");
+
+            sb.AppendLine(") AS a");
+
+            sb.AppendLine(") AS C1");
+
             sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
+
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
 
 
             // Tính tổng
             sb.Clear();
+
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 1 OR EventType = 2)");
+
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1  AND EventType IN (1,2) AND  IsDeleted = 0");
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
@@ -425,7 +438,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 {
                     var count = 0;
 
-                    sb.AppendLine("and ([EventType] IN ( ");
+                    sb.AppendLine("AND ([EventType] IN ( ");
 
                     foreach (var item in t)
                     {
@@ -444,6 +457,31 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var model = GridModelHelper<tbl_Event>.GetPage(listData, page, pageSize, _total.TotalCount);
 
             return await Task.FromResult(model);
+        }
+
+        /// <summary>
+        /// Danh sách dịch vụ đã xác nhận
+        /// Dùng cho giao diện phân tổ
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<tbl_Event>> GetListType2()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "StartDate"));
+
+            sb.AppendLine("FROM(");
+
+            sb.AppendLine("SELECT * FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 = 1 AND EventType = 2 AND  IsDeleted = 0");
+
+            sb.AppendLine(") AS a");
+
+
+            var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+
+            return await Task.FromResult(listData);
         }
 
         public async Task<MessageReport> Update(tbl_Event oldObj)
