@@ -26,8 +26,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         }
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
-)
+        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
         {
             var datefrompicker = "";
 
@@ -45,25 +44,28 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-            //if (chkExport.Equals("1"))
-            //{
-            //    await ExportFile(key, sort, page, 20, StatusID, isCheckByTime, fromdate, todate, this.HttpContext);
 
-            //    //return View(gridmodel);
-            //}
-
-
-            #region Giao diện
-
-            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 20, StatusID, fromdate, todate);
             ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
-            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
+
             ViewBag.StatusID = StatusID;
-            ViewBag.Groups = await _GroupService.GetAll();
+
             ViewBag.keyValue = key;
+
             ViewBag.AreaCodeValue = AreaCode;
-            return View(gridModel);
-            #endregion
+
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("ConfirmedGroup", this.HttpContext);
+
+            return View();
+        }
+
+        public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1)
+        {
+            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 2, StatusID, "", "");
+
+           
+
+            return PartialView(gridModel);
+
         }
         #endregion
 

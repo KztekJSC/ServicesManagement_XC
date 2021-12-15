@@ -101,7 +101,8 @@ namespace Kztek_Web.Controllers
                 Name = user.Name,
                 Username = user.Username,
                 Avatar = user.UserAvatar,
-                isAdmin = user.Admin
+                isAdmin = user.Admin,
+                GroupIds = user.GroupIds,
             };
 
 

@@ -56,6 +56,7 @@ namespace Kztek_Model.Models
         public string UserAvatar { get; set; }
 
         public Nullable<DateTime> DateCreated { get; set; }
+        public string GroupIds { get; set; }
     }
 
     public class User_Submit
@@ -83,6 +84,7 @@ namespace Kztek_Model.Models
         public List<Role> Data_Role { get; set; } = new List<Role>();
 
         public string Avatar { get; set; } = "";
+        public string GroupIds { get; set; }
     }
 
     //public class User_Selected

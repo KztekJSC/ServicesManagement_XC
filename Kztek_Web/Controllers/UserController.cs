@@ -27,14 +27,47 @@ namespace Kztek_Web.Controllers
     {
         private IUserService _UserService;
         private IRoleService _RoleService;
+        private IGroupService _GroupService;
         private IHostingEnvironment _hostingEnvironment;
 
-        public UserController(IUserService _UserService, IRoleService _RoleService, IHostingEnvironment _hostingEnvironment)
+        public UserController(IUserService _UserService, IRoleService _RoleService, IGroupService _GroupService, IHostingEnvironment _hostingEnvironment)
         {
             this._UserService = _UserService;
             this._RoleService = _RoleService;
+            this._GroupService = _GroupService;
             this._hostingEnvironment = _hostingEnvironment;
         }
+
+        #region DDL
+        public async Task<SelectListModel_Multi> GetGroup_Multi(string selecteds = "", string id = "ddlGroup")
+        {
+            //Khai báo danh sách
+            var lst = new List<SelectListModel>();
+
+            var list = await _GroupService.GetAll();
+
+            //Kiểm tra có dữ liệu chưa
+            if (list.Any())
+            {
+                foreach (var item in list.ToList())
+                {
+                    //Nếu có thì duyệt tiếp để lưu vào list
+                    lst.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });
+
+                }
+            }
+
+            var a = new SelectListModel_Multi
+            {
+                Placeholder = "",
+                IdSelectList = id,
+                Selecteds = !string.IsNullOrEmpty(selecteds) ? selecteds : "",
+                Data = lst
+            };
+
+            return await Task.FromResult(a);
+        }
+        #endregion
 
         [CheckSessionCookie]
         public async Task<IActionResult> Index(string key= "",int page = 1, string export = "0", string AreaCode = "")
@@ -99,15 +132,19 @@ namespace Kztek_Web.Controllers
             model.Data_Role = await _RoleService.GetAllActiveOrder();
             ViewBag.AreaCodeValue = AreaCode;
 
+            ViewBag.Group = await GetGroup_Multi(model.GroupIds);
+
             return View(model);
         }
 
         [CheckSessionCookie]
         [HttpPost]
-        public async Task<IActionResult> Create(User_Submit model, bool SaveAndCountinue = false, string AreaCode = "")
+        public async Task<IActionResult> Create(User_Submit model, bool SaveAndCountinue = false, string AreaCode = "",string groupids = "")
         {
             model.Data_Role = await _RoleService.GetAllActiveOrder();
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.Group = await GetGroup_Multi(model.GroupIds);
 
             if (!ModelState.IsValid)
             {
@@ -143,7 +180,8 @@ namespace Kztek_Web.Controllers
                 PasswordSalat = Guid.NewGuid().ToString(),
                 Name = model.Name,
                 Username = model.Username,
-                Admin = model.isAdmin
+                Admin = model.isAdmin,
+                GroupIds = model.isAdmin ? "" : groupids
             };
 
             if (!string.IsNullOrWhiteSpace(model.RoleIds))
@@ -199,15 +237,20 @@ namespace Kztek_Web.Controllers
             model.Data_Role = await _RoleService.GetAllActiveOrder();
             ViewBag.AreaCodeValue = AreaCode;
 
+            ViewBag.Group = await GetGroup_Multi(model.GroupIds);
+
             return View(model);
         }
 
         [CheckSessionCookie]
         [HttpPost]
-        public async Task<IActionResult> Update(User_Submit model, string AreaCode = "")
+        public async Task<IActionResult> Update(User_Submit model, string AreaCode = "", string groupids = "")
         {
             model.Data_Role = await _RoleService.GetAllActiveOrder();
+
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.Group = await GetGroup_Multi(model.GroupIds);
 
             if (!ModelState.IsValid)
             {
@@ -233,6 +276,7 @@ namespace Kztek_Web.Controllers
             oldObj.Name = model.Name;
             oldObj.Username = model.Username;
             oldObj.Admin = model.isAdmin;
+            oldObj.GroupIds = oldObj.Admin ? "" : groupids;
 
             //Kiểm tra mật khẩu mới
             if (!string.IsNullOrWhiteSpace(model.Password))

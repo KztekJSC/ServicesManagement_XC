@@ -11,5 +11,6 @@ namespace Kztek_Library.Models
         public bool isAdmin { get; set; }
 
         public string Avatar { get; set; }
+        public string GroupIds { get; set; }
     }
 }

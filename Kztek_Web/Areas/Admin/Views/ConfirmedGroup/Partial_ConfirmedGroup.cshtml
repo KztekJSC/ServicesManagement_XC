@@ -1,0 +1,135 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@using Kztek_Library.Models
+
+@{
+    
+}
+
+@Html.Hidden("totalCount", Model.TotalIem)
+
+<div class="col-xs-12">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center" width="140"></th>
+                <th class="text-center">
+                    Trạng thái
+                </th>
+                <th class="text-center">
+                    Xe VN
+                </th>
+                <th class="text-center">
+                    Xe CN
+                </th>
+                <th class="text-center">Loại hàng </th>
+
+                <th class="text-center">Nhóm hàng</th>
+                <th class="text-center">Dịch vụ</th>
+
+
+                <th class="text-center">Bắt đầu</th>
+                <th class="text-center">Kết thúc</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Data.Any())
+            {
+                var count = 0;
+                foreach (var item in Model.Data)
+                {
+                    count++;
+                    <tr>
+                        <td class="center">
+                            <button class="btn btn-xs btn-primary" style="background-color:#085AA2!important ">
+
+                                Bắt đầu
+                            </button>
+                            <button class="btn btn-xs btn-danger btn-end" style="background-color:#C43119 !important ">
+
+                                Kết thúc
+                            </button>
+                        </td>
+                        <td class="text-center">
+
+                            @{
+                                if (item.EventType == 3)
+                                {
+                                    <span class="label label-yellow">Đã phân tổ</span>
+                                }
+                                else if (item.EventType == 4)
+                                {
+                                    <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                                }
+                                else if (item.EventType == 5)
+                                {
+                                    <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                                }
+
+
+                            }
+
+                        </td>
+                        <td class="center">
+                            @item.PlateVN
+                        </td>
+                        <td class="center">
+                            @item.PlateCN
+                        </td>
+                        <td class="center">
+                            @item.ProductType
+                        </td>
+
+                        <td class="center">
+                            @item.ProductGroup
+                        </td>
+                        <td class="center">
+                            @item.Service
+                        </td>
+
+
+                        <td class="center">
+                            @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                            {
+                                @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
+                            }
+
+                        </td>
+                        <td class="center">
+
+                            @{
+                                if (item.EndDate.Date != DateTime.MaxValue.Date)
+                                {
+                                    @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
+                                }
+
+                            }
+                        </td>
+
+
+                    </tr>
+
+
+                }
+
+
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.Data.Any())
+{
+    <div class="col-xs-12" id="pagConfGroup">
+        <div class="pull-right">
+
+            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_ConfirmedGroup", "ConfirmedGroup", new
+    {
+        page = x,
+        key = ViewBag.keyValue,
+        StatusID = ViewBag.StatusID,
+
+
+    }))
+        </div>
+    </div>
+}
