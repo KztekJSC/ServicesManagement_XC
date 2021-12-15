@@ -70,7 +70,17 @@
             }
             else
             {
-				<li class='@string.Format("{0}", (( Model.ControllerName.Equals(item.ControllerName) && Model.ActionName.Equals(item.ActionName)) || ( Model.ControllerName.Equals(item.ControllerName) && (Model.ActionName.Equals("Update") || Model.ActionName.Equals("Create"))))? "active" : "")'>
+                bool isActive = Model.ControllerName.Equals(item.ControllerName) && Model.ActionName.Equals(item.ActionName) ? true : false;
+
+                if(Model.ActionName.Equals("Update") || Model.ActionName.Equals("Create"))
+                {
+                    if (Model.ControllerName.Equals(item.ControllerName) && item.ActionName.Equals("Index"))
+                    {
+                        isActive = true;
+                    }
+                }
+
+				<li class='@string.Format("{0}", isActive ? "active" : "")'>
 					@if(item.isSystem){
 <a href='@Url.Action(item.ActionName, item.ControllerName, new { Area = "", AreaCode = Model.AreaCode })'>
                         <i class="menu-icon @item.Icon"></i>
