@@ -32,7 +32,7 @@
                 <th class="text-center">Giá dịch vụ</th>
                 <th class="text-center">Phụ thu</th>
                 <th class="text-center">Ghi chú </th>
-                <th class="text-center">Tổ bốc xếp</th>
+                @*<th class="text-center">Tổ bốc xếp</th>*@
                 <th class="text-left">Ảnh CN </th>
                 <th class="text-left">Ảnh VN </th>
                 <th class="text-center"></th>
@@ -99,7 +99,7 @@
                         <td class="center">
                             @item.Description
                         </td>
-                        <td class="center">
+                        @*<td class="center">
                             @{
                                 var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
                                 if (obj != null)
@@ -107,7 +107,7 @@
                                     <span>@obj.Name</span>
                                 }
                             }
-                        </td>
+                        </td>*@
                         <td class="center">
                             <div class="ace-thumbnails clearfix">
                            
