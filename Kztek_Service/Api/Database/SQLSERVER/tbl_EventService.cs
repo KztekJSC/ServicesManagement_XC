@@ -14,10 +14,11 @@ namespace Kztek_Service.Api.Database.SQLSERVER
     public class tbl_EventService : Itbl_EventService
     {
         private Itbl_EventRepository _tbl_EventRepository;
-
-        public tbl_EventService(Itbl_EventRepository _tbl_EventRepository)
+        private IServiceRepository _ServiceRepository;
+        public tbl_EventService(Itbl_EventRepository _tbl_EventRepository, IServiceRepository _ServiceRepository)
         {
             this._tbl_EventRepository = _tbl_EventRepository;
+            this._ServiceRepository = _ServiceRepository;
         }
         public async Task<tbl_Event> GetById(string id)
         {
@@ -59,7 +60,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             query.AppendLine(string.Format("{0} = 2,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe ra
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN", obj.image)); //ảnh
             query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeOutVN" : "TimeOutCN", Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss"))); //thời gian ra
-            query.AppendLine("where IsDeleted = 0 and EventType = 5");
+            query.AppendLine("where IsDeleted = 0 and EventType = 6");
             query.AppendLine(string.Format("and {0} = 1", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe đã vào
             query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
 
@@ -122,6 +123,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 obj.EventType = 2; //Đã xác nhận nếu 2 xe đều vào bãi
             }
 
+            //Lấy id dịch vụ từ db
+            var idService = await GetIdService(obj.Service,obj.ServiceCode);
+
+            //gán lại id dịch vụ
+            obj.Service = idService;
+
             var result = await _tbl_EventRepository.Add(obj);
 
             if (result.isSuccess)
@@ -150,6 +157,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             }
 
             obj.Service = model.service;
+            obj.ServiceCode = model.serviceCode;
             obj.Code = model.code;
 
             obj.PlateVN = model.plateVN;
@@ -173,10 +181,15 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             obj.VehicleType = model.vehicleType;
             obj.ProductGroup = model.productGroup;
             obj.Price = model.price;
-            obj.SubPrice = model.subPrice;
-            obj.ServiceCode = model.serviceCode;
+            obj.SubPrice = model.subPrice;           
             obj.PaymentStatus = model.paymentStatus;
             obj.ModifiedDate = DateTime.Now;
+
+            //Lấy id dịch vụ từ db
+            var idService = await GetIdService(obj.Service, obj.ServiceCode);
+
+            //gán lại id dịch vụ
+            obj.Service = idService;
 
             result = await _tbl_EventRepository.Update(obj);
 
@@ -262,5 +275,62 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             return result;
         }
+
+        #region Service
+        public async Task<MessageReport> Create(Service model)
+        {
+            return await _ServiceRepository.Add(model);
+        }
+
+        public async Task<string> GetIdService(string name, string code)
+        {
+            string id = "";
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                name = name.Trim();
+
+                code = code.Trim();
+
+                //lấy service theo tên
+                var query = from n in _ServiceRepository.Table
+                            where n.Name == name
+                            select n;
+
+                var objService = query.FirstOrDefault();
+
+                //null thì tạo mới
+                if (objService == null)
+                {
+                    objService = new Service
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now,
+                        Code = code,
+                        Name = name,
+                    };
+
+                    var check = await _ServiceRepository.Add(objService);
+
+                    if (check.isSuccess)
+                    {
+                        id = objService.Id;
+                    }
+                }
+                else
+                {
+                    id = objService.Id;
+                }
+            }
+
+            return await Task.FromResult(id);
+        }
+
+        public async Task<Service> GetServiceById(string id)
+        {
+            return await _ServiceRepository.GetOneById(id);
+        }
+        #endregion
     }
 }
