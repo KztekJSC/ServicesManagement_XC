@@ -52,7 +52,7 @@
                             @count
                         </td>
                         <td class="text-left">
-                            @item.ServiceCode
+                            @item.Code
                         </td>
 
                         <td class="text-center">
@@ -146,7 +146,7 @@
                             <div class="btn-group">
                                 @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
                            {
-                               ControllerName = "Coordinator",
+                               ControllerName = "Service",
                                ActionName = "Update",
                                RecordId = "",
                                model = new { id = item.Id },

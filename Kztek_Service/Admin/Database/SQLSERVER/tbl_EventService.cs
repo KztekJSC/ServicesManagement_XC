@@ -178,7 +178,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) as RowNumber,a.*", "EventType"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
             sb.AppendLine("WHere 1 =1 and EventType IN(3,4,5)  and  IsDeleted = 0");
@@ -364,7 +364,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("SELECT * FROM (");
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "StartDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 

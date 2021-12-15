@@ -5,7 +5,7 @@
 @{
 
     ViewBag.Title = "Thông tin xe làm dịch vụ";
-    var controller = "Coordinator";
+    var controller = "Service";
     var action = "Confirm";
 
 }
@@ -18,11 +18,11 @@
 <style>
 
     .offset-md-3 {
-        margin-left: 300px;
+        margin-left: 400px;
     }
 
     .ragge {
-        margin-left: 100px;
+        margin-left: 60px;
     }
 
    
@@ -134,16 +134,22 @@
                     @Html.ValidationMessage("description", "", new { @class = "text-danger" })
                 </div>
             </div>
-         
 
-            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-            {
-          ControllerName = controller,
-          ActionName = action,
-          RecordId = "",
-          model = new { AreaCode = ViewBag.AreaCodeValue },
-          Auth_Value = null
-      })
+            <div class="row">
+                <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
+                    <div class="offset-md-3 col-md-9 text-nowrap">
+                        <button class="btnService  btn-bold px-4" type="submit" >
+                            <i class="fa fa-check mr-1"></i>
+                            Xác nhận
+                        </button>
+                        <a href='@Url.Action("Index", controller, Model)' class="btnCancel ragge btn-bold px-4">
+                            <i class="fa fa-undo mr-1"></i>
+                            Huỷ bỏ
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         }
     </div>
 </div>
