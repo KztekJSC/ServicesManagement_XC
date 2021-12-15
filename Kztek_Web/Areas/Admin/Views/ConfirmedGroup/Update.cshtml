@@ -104,13 +104,13 @@
           
                 <div class="row">
                     <div class="col-md-offset-3 col-md-8">
-                        <button class=" btnService btnStart " type="button" idata="@Model.Id"  @string.Format("{0}",( Model.EventType == 4 || Model.EventType == 5  ) ? "disabled" :  "" ) >
+                        <button class=" btnService btnStart " type="button" idata="@Model.Id"  @string.Format("{0}",( Model.EventType == 4 || Model.EventType == 5  ||  Model.EventType == 6) ? "disabled" :  "" ) >
                             <i class="fa fa-check mr-1"></i>
                             Bắt đầu
                         </button>
 
 
-                        <button class=" btnCancel  " type="submit"  @string.Format("{0}",( Model.EventType == 3 || Model.EventType == 5  ) ? "disabled" :  "" )>
+                        <button class=" btnCancel  " type="submit"  @string.Format("{0}",( Model.EventType == 3 || Model.EventType == 5  ||  Model.EventType == 6) ? "disabled" :  "" )>
                             <i class="fa fa-check mr-1"></i>
                             Đã làm xong
                         </button>

@@ -124,6 +124,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
          
             oldObj.EndDate = DateTime.Now;
+            oldObj.EventType = 6;
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
 
