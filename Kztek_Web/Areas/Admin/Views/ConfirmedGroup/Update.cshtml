@@ -18,11 +18,11 @@
 
 
     .offset-md-3 {
-        margin-left: 400px;
+        margin-left: -20px;
     }
 
     .ragge {
-        margin-left: 50px;
+        margin-left: 40px;
     }
 
    
@@ -101,20 +101,77 @@
                     @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col-md-offset-3 col-md-8">
-                    <button class=" btnService btnStart" type="button" idata="@Model.Id">
-                        <i class="fa fa-check mr-1"></i>
-                        Bắt đầu
-                    </button>
+            if (Model.EventType == 5)
+            {
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-8">
+                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id" disabled="disabled">
+                            <i class="fa fa-check mr-1"></i>
+                            Bắt đầu
+                        </button>
 
 
-                    <button class=" btnCancel" type="submit">
-                        <i class="fa fa-check mr-1"></i>
-                        Đã làm xong
-                    </button>
+                        <button class=" btnCancel ragge " type="submit" disabled="disabled">
+                            <i class="fa fa-check mr-1"></i>
+                            Đã làm xong
+                        </button>
+                    </div>
                 </div>
+            }
+            if (Model.EventType == 4)
+            {
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-8">
+                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id" disabled="disabled">
+                            <i class="fa fa-check mr-1"></i>
+                            Bắt đầu
+                        </button>
+
+
+                        <button class=" btnCancel ragge " type="submit">
+                            <i class="fa fa-check mr-1"></i>
+                            Đã làm xong
+                        </button>
+                    </div>
+                </div>
+            }
+            if (Model.EventType == 3)
+            {
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-8">
+                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id">
+                            <i class="fa fa-check mr-1"></i>
+                            Bắt đầu
+                        </button>
+
+
+                        <button class=" btnCancel ragge" type="submit" disabled="disabled">
+                            <i class="fa fa-check mr-1"></i>
+                            Đã làm xong
+                        </button>
+                    </div>
+                </div>
+            }
+            <div class="ace-settings-container" id="ace-settings-container" style="position: fixed; top: 155px;">
+                <div class="btn btn-app btn-xs btn-grey ace-settings-btn open" id="ace-settings-btn">
+                    <i class="ace-icon fa fa-cog bigger-130"></i>
+                </div>
+
+                <div class="ace-settings-box clearfix open" id="ace-settings-box">
+                    <!-- /.pull-left -->
+                    <div class="bg-rightbox">
+                        <div class="clearfix lineButton">
+                            <div class="col-md-12 input-group">
+
+                                <a href='@Url.Action("Index", "ConfirmedGroup",Model )' class="btn btn-yellow">
+                                    <i class="ace-icon fa fa-chevron-circle-left bigger-110"></i>
+                                    @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:BACKTOLIST" })
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.pull-left -->
+                </div><!-- /.ace-settings-box -->
             </div>
 
         }

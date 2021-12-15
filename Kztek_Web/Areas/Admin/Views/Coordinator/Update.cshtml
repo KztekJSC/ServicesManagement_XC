@@ -6,7 +6,7 @@
 
     ViewBag.Title = "Xác nhận hoàn thành dịch vụ";
 
-    var controller = "Co";
+    var controller = "Coordinator";
     var action = "Confirm";
 
 }
@@ -20,61 +20,13 @@
 
 
     .offset-md-3 {
-        margin-left: 300px;
+        margin-left: 400px;
     }
 
     .ragge {
-        margin-left: 200px;
-    }
-    .btnCancel {
-        background-color: #c00000 !important;
-        border-color: #c00000;
-        display: inline-block;
-        /* margin-bottom: 0;*/
-        font-weight: 400;
-        width: 200px;
-        text-align: center;
-        /*  vertical-align: middle;*/
-        touch-action: manipulation;
-        cursor: pointer;
-        border: 1px solid transparent;
-        border-radius: 10px 10px;
-        white-space: nowrap;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        user-select: none;
-        color: #FFF !important;
-        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-        background-image: none !important;
-        border: 5px solid #FFF;
-        position: relative;
+        margin-left: 80px;
     }
 
-    .btnService {
-        background-color: #385822 !important;
-        border-color: #385822;
-        border: 1px solid transparent;
-        border-radius: 10px 10px;
-        font-weight: 400;
-        width: 200px;
-        text-align: center;
-        /*  vertical-align: middle;*/
-        touch-action: manipulation;
-        cursor: pointer;
-        white-space: nowrap;
-        padding: 6px 12px;
-        font-size: 14px;
-        line-height: 1.42857143;
-        /* border-radius: 2px 4px;*/
-
-        user-select: none;
-        color: #FFF !important;
-        text-shadow: 0 -1px 0 rgb(0 0 0 / 25%);
-        background-image: none !important;
-        border: 5px solid #FFF;
-        position: relative;
-    }
 
     .breadcrumb, .breadcrumb > li > a, .btn {
         display: inline-block;
@@ -144,16 +96,24 @@
                 </div>
             </div>
 
-
-
-            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            if (Model.EventType == 5)
             {
-          ControllerName = controller,
-          ActionName = action,
-          RecordId = "",
-          model = new { AreaCode = ViewBag.AreaCodeValue },
-          Auth_Value = null
-      })
+
+            }
+            <div class="row">
+                <div class="mt-5 border-t-1 bgc-secondary-l4 brc-secondary-l2 py-35 mx-n25">
+                    <div class="offset-md-3 col-md-9 text-nowrap">
+                        <button class="btnService  btn-bold px-4" type="submit" disabled ="disabled">
+                            <i class="fa fa-check mr-1"></i>
+                            Xác nhận
+                        </button>
+                        <a href='@Url.Action("Index", controller, Model)' class="btnCancel ragge btn-bold px-4">
+                            <i class="fa fa-undo mr-1"></i>
+                            Huỷ bỏ
+                        </a>
+                    </div>
+                </div>
+            </div>
 
         }
     </div>
