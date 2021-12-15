@@ -16,7 +16,7 @@ namespace Kztek_Model.Models
 
         public string Code { get; set; } //Mã đăng ký. Tạm thời không dùng
 
-        public int EventType { get; set; } //Trạng thái công việc. 1 - Chờ xác nhận, 2 - Đã xác nhận/Chưa phân tổ, 3 - Đã phân tổ, 4 - Đang thực hiện, 5 - Hoàn thành, 6 - Chờ duyệt
+        public int EventType { get; set; } //Trạng thái công việc. 1 - Chờ xác nhận, 2 - Đã xác nhận/Chưa phân tổ, 3 - Đã phân tổ, 4 - Đang thực hiện, 5 - Chờ duyệt, 6 - Hoàn thành
 
         #region Xe VN
         public string PlateVN { get; set; } //Biển số xe Việt Nam

@@ -43,7 +43,7 @@ namespace Kztek_Data
         public DbSet<tblLane> tblLanes { get; set; }
 
         public DbSet<Group> Groups { get; set; }
-
+        public DbSet<Service> Services { get; set; }
         public DbSet<tblLED> tblLEDs { get; set; }
 
         public DbSet<tbl_Event> tbl_Events { get; set; } 

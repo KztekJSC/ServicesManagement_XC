@@ -60,7 +60,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1)
         {
-            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 2, StatusID, "", "");
+            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 20, StatusID, "", "");
 
            
 
@@ -189,6 +189,40 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 }
             }
             return list;
+        }
+        #endregion
+
+        #region Cập nhật sự kiện
+        public async Task<IActionResult> UpdateService(string id, int type)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            var obj = await _tbl_EventService.GetById(id);
+
+            if(obj != null)
+            {
+                //TH: Đã phân tổ -> bắt đầu
+                if(type == 3)
+                {
+                    obj.EventType = 4; //bắt đầu
+                    obj.StartDate = DateTime.Now;
+                    obj.ModifiedDate = DateTime.Now;
+                }
+                else
+                {
+                    obj.EventType = 5; //chờ duyệt
+                    obj.EndDate = DateTime.Now;
+                    obj.ModifiedDate = DateTime.Now;
+                }
+
+                result = await _tbl_EventService.Update(obj);
+            }
+            else
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+            }
+
+            return Json(result);
         }
         #endregion
     }

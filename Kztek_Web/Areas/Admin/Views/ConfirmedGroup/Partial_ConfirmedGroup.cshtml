@@ -11,7 +11,7 @@
     <table class="table  table-bordered table-hover">
         <thead>
             <tr>
-                <th class="text-center" width="140"></th>
+                <th class="text-center" width="80"></th>
                 <th class="text-center">
                     Trạng thái
                 </th>
@@ -23,7 +23,7 @@
                 </th>
                 <th class="text-center">Loại hàng </th>
 
-                <th class="text-center">Nhóm hàng</th>
+                <th class="text-center">Nhóm</th>
                 <th class="text-center">Dịch vụ</th>
 
 
@@ -41,14 +41,22 @@
                     count++;
                     <tr>
                         <td class="center">
-                            <button class="btn btn-xs btn-primary" style="background-color:#085AA2!important ">
+                            @if (item.EventType == 3)
+                            {
+                                <p>
+                                    <button class="btn btn-xs btn-primary btnStart" idata="@item.Id" style="background-color:#085AA2!important ">
 
-                                Bắt đầu
-                            </button>
-                            <button class="btn btn-xs btn-danger btn-end" style="background-color:#C43119 !important ">
+                                        Bắt đầu
+                                    </button>
+                                </p>
+                            }
+                            else if (item.EventType == 4)
+                            {
+                                <button class="btn btn-xs btn-danger btnEnd" idata="@item.Id" style="background-color:#C43119 !important;">
 
-                                Kết thúc
-                            </button>
+                                    Kết thúc
+                                </button>
+                            }
                         </td>
                         <td class="text-center">
 
@@ -61,9 +69,13 @@
                                 {
                                     <span class="label" style="background-color: #385822">Đang thực hiện</span>
                                 }
-                                else if (item.EventType == 5)
+                                else if (item.EventType == 6)
                                 {
                                     <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                                }
+                                else if (item.EventType == 5)
+                                {
+                                    <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
                                 }
 
 
