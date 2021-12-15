@@ -57,7 +57,7 @@
             <thead>
                 <tr>
                     <th class="text-center">STT</th>
-                    <th class="text-center">Mã dịch vụ</th>
+                    <th class="text-center">Số trang</th>
                     <th class="text-center">
                         Trạng thái
                     </th>
@@ -118,7 +118,10 @@
                                         <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
                                     }
 
-
+                                    else if (item.EventType == 6)
+                                    {
+                                        <span class="label label-danger">Chờ duyệt</span>
+                                    }
                                 }
 
                             </td>
