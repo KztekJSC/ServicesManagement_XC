@@ -82,7 +82,8 @@
                     <th class="text-center">Phụ thu</th>
                     <th class="text-center">Ghi chú </th>
                     <th class="text-center">Tổ bốc xếp</th>
-
+                    <th class="text-center">T/G bắt đầu </th>
+                    <th class="text-center">T/G kết thúc</th>
                     <th class="text-center">Ảnh VN</th>
                     <th class="text-center">Ảnh CN</th>
                     <th class="text-center"></th>
@@ -113,7 +114,7 @@
                         }
                         else if (item.EventType == 3)
                         {
-                            <span class="label label-yellow" >Đã phân tổ</span>
+                            <span class="label label-yellow">Đã phân tổ</span>
                         }
                         else if (item.EventType == 4)
                         {
@@ -165,7 +166,34 @@
                             }
                         }
                     </td>
+                    <td class="center">
+                        @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                        {
+                            @item.StartDate.ToString("dd/MM/yyyy")
+                        }
+                        else if (item.StartDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                        {
+                            <span></span>
+                        }
 
+
+                    </td>
+                    <td class="center">
+
+                        @{
+                            if (item.EndDate.Date != DateTime.MaxValue.Date)
+                            {
+                                @item.EndDate.ToString("dd/MM/yyyy")
+                            }
+
+                            else if (item.EndDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                            {
+                                <span></span>
+                            }
+
+
+                        }
+                    </td>
                     <td class="center">
                         <div class="ace-thumbnails clearfix">
                             @*<img src="~192.168.20.236\Images\Nam_2021\Thang_10\2021_10_16\IN1B7D93F7-7945-449B-8F4A-84EA0386C563\20211016_093747.500_1b7d93f7-7945-449b-8f4a-84ea0386c564.Plate1.jpg" alt="Alternate Text" />*@

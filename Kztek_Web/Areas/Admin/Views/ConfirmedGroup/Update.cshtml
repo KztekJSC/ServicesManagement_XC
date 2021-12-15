@@ -101,57 +101,23 @@
                     @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
                 </div>
             </div>
-            if (Model.EventType == 5)
-            {
+          
                 <div class="row">
                     <div class="col-md-offset-3 col-md-8">
-                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id" disabled="disabled">
+                        <button class=" btnService btnStart " type="button" idata="@Model.Id"  @string.Format("{0}",( Model.EventType == 4 || Model.EventType == 5  ) ? "disabled" :  "" ) >
                             <i class="fa fa-check mr-1"></i>
                             Bắt đầu
                         </button>
 
 
-                        <button class=" btnCancel ragge " type="submit" disabled="disabled">
+                        <button class=" btnCancel  " type="submit"  @string.Format("{0}",( Model.EventType == 3 || Model.EventType == 5  ) ? "disabled" :  "" )>
                             <i class="fa fa-check mr-1"></i>
                             Đã làm xong
                         </button>
                     </div>
                 </div>
-            }
-            if (Model.EventType == 4)
-            {
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-8">
-                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id" disabled="disabled">
-                            <i class="fa fa-check mr-1"></i>
-                            Bắt đầu
-                        </button>
-
-
-                        <button class=" btnCancel ragge " type="submit">
-                            <i class="fa fa-check mr-1"></i>
-                            Đã làm xong
-                        </button>
-                    </div>
-                </div>
-            }
-            if (Model.EventType == 3)
-            {
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-8">
-                        <button class=" btnService btnStart offset-md-3" type="button" idata="@Model.Id">
-                            <i class="fa fa-check mr-1"></i>
-                            Bắt đầu
-                        </button>
-
-
-                        <button class=" btnCancel ragge" type="submit" disabled="disabled">
-                            <i class="fa fa-check mr-1"></i>
-                            Đã làm xong
-                        </button>
-                    </div>
-                </div>
-            }
+           
+      
             <div class="ace-settings-container" id="ace-settings-container" style="position: fixed; top: 155px;">
                 <div class="btn btn-app btn-xs btn-grey ace-settings-btn open" id="ace-settings-btn">
                     <i class="ace-icon fa fa-cog bigger-130"></i>

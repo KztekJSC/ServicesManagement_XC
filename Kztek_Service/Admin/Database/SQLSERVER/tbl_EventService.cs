@@ -224,7 +224,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1 and EventType IN(3,4,5)");
+            sb.AppendLine("FROM [tbl_Event] where 1 = 1 AND EventType IN(3,4,5)  AND  IsDeleted = 0");
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
