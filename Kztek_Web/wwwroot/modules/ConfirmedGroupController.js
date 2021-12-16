@@ -1,6 +1,8 @@
 ﻿$(function () {
     ConfirmedGroupController.PartialConfirmedGroup(1);
 
+    ConfirmedGroupController.PartialCountEvent();
+
     $('body').on('click', '#pagConfGroup li a', function () {
         var cmd = $(this);
         var _page = cmd.attr('idata');
@@ -89,12 +91,25 @@ var ConfirmedGroupController = {
 
                     ConfirmedGroupController.PartialConfirmedGroup(page);
 
+                    ConfirmedGroupController.PartialCountEvent();
+
                     toastr.success("Cập nhật thành công");
                 } else {
                     toastr.error(data.Message);
                 }
                
             });
-    }
+    },
+    PartialCountEvent: function () {
+        var obj = {
+            
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/ConfirmedGroup/Partial_CountEvent', obj)
+            .done(function (data) {
+                $('#boxCountEvent').html('');
+                $('#boxCountEvent').html(data);
+            });
+    },
    
 }

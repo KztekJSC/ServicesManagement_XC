@@ -55,11 +55,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AreaCodeValue = AreaCode;
 
-        
-
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("ConfirmedGroup", this.HttpContext);
-
-            ViewBag.CountEvent = await _tbl_EventService.CountEventByType(this.HttpContext);
 
             return View();
         }
@@ -71,6 +67,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var gridModel = await _tbl_EventService.GetPagingConfirmGroup(this.HttpContext,key, page, 20, StatusID, "", "");
             return PartialView(gridModel);
 
+        }
+
+        public async Task<IActionResult> Partial_CountEvent()
+        {
+            var list = await _tbl_EventService.CountEventByType(this.HttpContext);
+
+            return PartialView(list);
         }
         #endregion
 

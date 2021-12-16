@@ -1,0 +1,25 @@
+﻿@model List<Kztek_Model.Models.CountEventByType>
+
+@if (Model != null && Model.Count > 0)
+{
+
+    <div class="row">
+        @foreach (var item in Model.OrderByDescending(n => n.EventType))
+        {
+            <div class="col-xs-6 col-sm-4">
+                <div class="infobox @item.ColorClass" style="width:250px">
+                    <div class="infobox-icon">
+                        <i class="ace-icon fa @item.Icon"></i>
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-data-number" style="font-weight:bold;font-size:32px">@item.Number</span>
+                        <div class="infobox-content" style="max-width:250px;font-weight:bold;font-size:18px">@item.Title</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="hr hr-18 dotted hr-24"></div>
+}
