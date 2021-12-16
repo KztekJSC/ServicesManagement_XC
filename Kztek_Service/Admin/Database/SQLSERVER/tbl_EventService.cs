@@ -3,6 +3,7 @@ using Kztek_Data.Repository;
 using Kztek_Library.Helpers;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -174,8 +175,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
 
 
-        public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+        public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
+            var currentUser = SessionCookieHelper.CurrentUser(httpContext).Result;
+
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) as RowNumber,a.*", "EventType"));
@@ -192,6 +195,36 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
+            //nếu tk đăng nhập không phải admin thì lấy dữ liệu theo tổ được phân quyền
+            if (currentUser != null && !currentUser.isAdmin)
+            {
+                if (!string.IsNullOrEmpty(currentUser.GroupIds))
+                {
+                    var t = currentUser.GroupIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t.Any())
+                    {
+                        var count = 0;
+
+                        sb.AppendLine("AND ([GroupId] IN ( ");
+
+                        foreach (var item in t)
+                        {
+                            count++;
+
+                            sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                        }
+
+                        sb.AppendLine(" )) ");
+
+
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("AND GroupId = 'Null99'");
+                }
+            }
+
 
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
@@ -201,7 +234,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 {
                     var count = 0;
 
-                    sb.AppendLine("and ([EventType] IN ( ");
+                    sb.AppendLine("AND ([EventType] IN ( ");
 
                     foreach (var item in t)
                     {
@@ -234,6 +267,36 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
+            //nếu tk đăng nhập không phải admin thì lấy dữ liệu theo tổ được phân quyền
+            if (currentUser != null && !currentUser.isAdmin)
+            {
+                if (!string.IsNullOrEmpty(currentUser.GroupIds))
+                {
+                    var t = currentUser.GroupIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t.Any())
+                    {
+                        var count = 0;
+
+                        sb.AppendLine("AND ([GroupId] IN ( ");
+
+                        foreach (var item in t)
+                        {
+                            count++;
+
+                            sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                        }
+
+                        sb.AppendLine(" )) ");
+
+
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("AND GroupId = 'Null99'");
+                }
+            }
+
 
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
@@ -262,6 +325,76 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var model = GridModelHelper<tbl_Event>.GetPage(listData, page, pageSize, _total.TotalCount);
 
             return await Task.FromResult(model);
+        }
+
+        public async Task<List<CountEventByType>> CountEventByType(HttpContext httpContext)
+        {
+            var currentUser = SessionCookieHelper.CurrentUser(httpContext).Result;
+
+            var sb = new StringBuilder();
+            sb.AppendLine("SELECT EventType,Count(*) as Number from [tbl_Event]");
+            sb.AppendLine("WHERE EventType IN(3,4)  and  IsDeleted = 0");
+
+            //nếu tk đăng nhập không phải admin thì lấy dữ liệu theo tổ được phân quyền
+            if (currentUser != null && !currentUser.isAdmin)
+            {
+                if (!string.IsNullOrEmpty(currentUser.GroupIds))
+                {
+                    var t = currentUser.GroupIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (t.Any())
+                    {
+                        var count = 0;
+
+                        sb.AppendLine("AND ([GroupId] IN ( ");
+
+                        foreach (var item in t)
+                        {
+                            count++;
+
+                            sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                        }
+
+                        sb.AppendLine(" )) ");
+
+
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("AND GroupId = 'Null99'");
+                }
+            }
+
+            sb.AppendLine("GROUP BY EventType");
+
+            var list = DatabaseHelper.ExcuteCommandToList<CountEventByType>(sb.ToString());
+
+            var listData = new List<CountEventByType>();
+
+            listData.Add(new CountEventByType { EventType = 3, Number = 0, ColorClass = "infobox-pink", Icon = "fa-gavel", Title = "Việc chưa làm" });
+
+            listData.Add(new CountEventByType { EventType = 4, Number = 0, ColorClass = "infobox-red", Icon = "fa-briefcase", Title = "Việc đang thực hiện" });
+
+            listData.Add(new CountEventByType { EventType = 99, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-truck", Title = "Việc cần hoàn thành" });
+
+            if (list != null && list.Count > 0)
+            {
+                foreach (var item in list)
+                {
+                    var objCount =  listData.FirstOrDefault(n => n.EventType == item.EventType);
+
+                    if(objCount != null)
+                    {
+                        objCount.Number = item.Number;
+                    }
+                }
+
+                var objTotal = listData.FirstOrDefault(n => n.EventType == 99);
+
+                objTotal.Number = listData.Sum(n => n.Number);
+            }
+
+            return await Task.FromResult(listData);
         }
 
         public async Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int pageSize, string statusID, string fromdate, string todate)

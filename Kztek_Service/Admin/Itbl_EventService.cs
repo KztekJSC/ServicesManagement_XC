@@ -1,6 +1,7 @@
 ﻿using Kztek_Core.Models;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,7 +20,7 @@ namespace Kztek_Service.Admin
          Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate);
         Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "");
         Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int v, string statusID, string fromdate, string todate);
-        Task<GridModel<tbl_Event>> GetPagingConfirmGroup(string key, int page, int v, string statusID, string fromdate, string todate);
+        Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int v, string statusID, string fromdate, string todate);
         Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "");
         Task<tbl_Event_Cus> GetByCustomById(string id);
         Task<SelectListModel_Chosen> GetEventypeCoordination(string id = "", string placeholder = "", string selecteds = "");
@@ -43,5 +44,12 @@ namespace Kztek_Service.Admin
         /// <param name="groupid"></param>
         /// <returns></returns>
         Task<List<tbl_Event>> GetListServiceByGroup(string groupid);
+
+        /// <summary>
+        /// Thống kê công việc cần làm của tổ
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
+        Task<List<CountEventByType>> CountEventByType(HttpContext httpContext);
     }
 }
