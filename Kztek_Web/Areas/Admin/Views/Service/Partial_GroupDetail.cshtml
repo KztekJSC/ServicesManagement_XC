@@ -1,4 +1,4 @@
-﻿@model List<Kztek_Model.Models.tbl_Event>
+﻿@model List<Kztek_Model.Models.tbl_Event_Cus>
 
 <tr class="showDetailBox-child-@ViewBag.Id trHide bgRowColor">
     <td colspan="3">
@@ -33,9 +33,9 @@
                                 {
 
                                     <tr>
-                                        <td>@item.Service</td>
-                                        <td>@item.ProductType</td>
-                                        <td>@item.ProductGroup</td>
+                                        <td>@item.serviceName</td>
+                                        <td>@item.productType</td>
+                                        <td>@item.productGroup</td>
                                         
                                     </tr>
                                 }

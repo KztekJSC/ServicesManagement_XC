@@ -43,5 +43,6 @@ namespace Kztek_Service.Admin
         /// <param name="groupid"></param>
         /// <returns></returns>
         Task<List<tbl_Event>> GetListServiceByGroup(string groupid);
+       
     }
 }

@@ -19,10 +19,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
     {
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
-        public ConfirmedGroupController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
+        private IServiceService _ServiceService;
+        public ConfirmedGroupController(Itbl_EventService _tbl_EventService, IGroupService _GroupService , IServiceService _ServiceService)
         {
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
+            this._ServiceService = _ServiceService;
         }
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
@@ -46,12 +48,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
 
             ViewBag.Eventype = await _tbl_EventService.GetEventype(selecteds: StatusID);
-
+            
             ViewBag.StatusID = StatusID;
 
             ViewBag.keyValue = key;
 
             ViewBag.AreaCodeValue = AreaCode;
+
+        
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("ConfirmedGroup", this.HttpContext);
 
@@ -61,8 +65,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1)
         {
             var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 20, StatusID, "", "");
+            ViewBag.lstService = await _ServiceService.GetAll();
 
-           
 
             return PartialView(gridModel);
 

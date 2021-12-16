@@ -1,5 +1,7 @@
 ﻿@model List<Kztek_Model.Models.tbl_Event>
-
+@{ 
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+}
 @if (Model != null && Model.Count > 0)
 {
     var count = 0;
@@ -22,7 +24,14 @@
                 @item.ServiceCode
             </td>      
             <td class="center">
-                @item.Service
+                @{ 
+                    var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                    if (obj != null)
+                    {
+                        <span>@obj.Name</span>
+                    }
+                }
+                
             </td>
 
             <td class="center">

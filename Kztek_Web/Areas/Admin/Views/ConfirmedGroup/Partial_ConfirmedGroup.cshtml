@@ -2,9 +2,8 @@
 @using Kztek_Library.Models
 
 @{
-    
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
 }
-
 @Html.Hidden("totalCount", Model.TotalIem)
 
 <div class="col-xs-12">
@@ -96,7 +95,14 @@
                             @item.ProductGroup
                         </td>
                         <td class="center">
-                            @item.Service
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+
                         </td>
 
 

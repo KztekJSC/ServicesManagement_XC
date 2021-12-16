@@ -6,8 +6,8 @@
     ViewBag.Title = "Điều phối xác nhận";
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
-  
-   
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+
 }
 
 <div class="page-header">
@@ -120,14 +120,15 @@
                         {
                             <span class="label" style="background-color: #385822">Đang thực hiện</span>
                         }
-                        else if (item.EventType == 5)
+                        else if (item.EventType == 6)
                         {
                             <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
                         }
-                        else if (item.EventType == 6)
+                        else if (item.EventType == 5)
                         {
-                            <span class="label label-danger" >Chờ duyệt</span>
+                            <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
                         }
+                       
 
                     </td>
                     <td class="center">
@@ -149,7 +150,13 @@
                         @item.ProductGroup
                     </td>
                     <td class="center">
-                        @item.Service
+                        @{
+                            var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                            if (obj != null)
+                            {
+                                <span>@obj.Name</span>
+                            }
+                        }
                     </td>
                     <td class="center">
                         @item.Price.ToString("###,###.##")
@@ -162,10 +169,10 @@
                     </td>
                     <td class="center">
                         @{
-                            var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
-                            if (obj != null)
+                            var obj1 = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                            if (obj1 != null)
                             {
-                                <span>@obj.Name</span>
+                                <span>@obj1.Name</span>
                             }
                         }
                     </td>

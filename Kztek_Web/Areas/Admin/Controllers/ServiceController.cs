@@ -20,9 +20,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
     {
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
-        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService)
+        private IServiceService _ServiceService;
+        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService)
         {
             this._tbl_EventService = _tbl_EventService;
+            this._ServiceService = _ServiceService;
             this._GroupService = _GroupService;
         }
 
@@ -264,7 +266,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> Partial_Vehicle()
         {
             var list = await _tbl_EventService.GetListType2();
-
+            ViewBag.lstService = await _ServiceService.GetAll();
             return PartialView(list);
         }
 
@@ -279,16 +281,37 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> Partial_GroupDetail(string id)
         {
             var list = await _tbl_EventService.GetListServiceByGroup(id);
-
+         
+            var lst = new List<tbl_Event_Cus>();
+            foreach (var obj in list)
+            {
+                var objService = await _ServiceService.GetById(obj.Service);
+                var model = new tbl_Event_Cus();
+                model.Id = obj.Id;
+                model.serviceCode = obj.ServiceCode;
+                model.plateVN = obj.PlateVN;
+                model.plateCN = obj.PlateCN;
+                model.productType = obj.ProductType;
+                model.weight = obj.Weight.ToString();
+                model.vehicleType = obj.ProductType;
+                model.productGroup = obj.ProductGroup;
+                model.service = obj.Service;
+                model.price = obj.Price.ToString("###,###.##");
+                model.subPrice = obj.SubPrice.ToString("###,###.##");
+                model.GroupId = obj.GroupId;
+                model.description = obj.Description;
+                model.serviceName = objService.Name;
+                lst.Add(model);
+            }
             ViewBag.Id = id;
 
-            return PartialView(list);
+            return PartialView(lst);
         }
 
         public async Task<IActionResult> Modal_Assign(string id)
         {
-            var objService = await _tbl_EventService.GetById(id);
-
+           
+            var objService = await _tbl_EventService.GetByCustomById(id);
             ViewBag.Group = await GetAllGroup();
 
             return PartialView(objService);

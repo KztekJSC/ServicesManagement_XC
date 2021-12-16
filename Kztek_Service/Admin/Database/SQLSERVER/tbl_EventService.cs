@@ -15,9 +15,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
     public class tbl_EventService : Itbl_EventService
     {
         private Itbl_EventRepository _tbl_EventRepository;
-        public tbl_EventService(Itbl_EventRepository _tbl_EventRepository)
+        private IServiceService _ServiceService;
+        public tbl_EventService(Itbl_EventRepository _tbl_EventRepository, IServiceService _ServiceService)
         {
             this._tbl_EventRepository = _tbl_EventRepository;
+            this._ServiceService = _ServiceService;
         }
 
         public async Task<MessageReport> Create(tbl_Event obj)
@@ -55,6 +57,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<tbl_Event_Cus> GetByCustomById(string id)
         {
             var obj = await GetById(id);
+            var objService = await _ServiceService.GetById(obj.Service);
             var model = new tbl_Event_Cus()
             ;
             model.Id = obj.Id;
@@ -70,6 +73,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             model.subPrice = obj.SubPrice.ToString("###,###.##");
             model.GroupId = obj.GroupId;
             model.description = obj.Description;
+            model.serviceName = objService.Name;
             return await Task.FromResult(model);
         }
 
@@ -518,5 +522,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         {
             return await _tbl_EventRepository.Update(oldObj);
         }
+
+     
     }
 }

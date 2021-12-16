@@ -138,6 +138,7 @@ namespace Kztek_Model.Models
         public string bb_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
         public string bb_Id { get; set; } //Id dịch vụ của Biển Bạc
         public string GroupId { get; set; } //Tổ bốc xếp 
+        public string serviceName { get; set; } //Dịch vụ
     }
     public class API_VehicleStatus
     {

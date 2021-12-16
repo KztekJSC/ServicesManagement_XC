@@ -39,8 +39,8 @@ namespace Kztek_Library.Helpers
 
                                         new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},
-                                        new SelectListModel { ItemValue = "5", ItemText = "Hoàn thành"},
-                                          new SelectListModel { ItemValue = "6", ItemText = "Chờ duyệt"}
+                                        new SelectListModel { ItemValue = "5", ItemText = "Chờ duyệt"},
+                                          new SelectListModel { ItemValue = "6", ItemText = "Hoàn thành"}
                                     };
             return list;
         }
@@ -51,8 +51,8 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "2", ItemText = "Chưa phân tổ"},
                                         new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},
-                                        new SelectListModel { ItemValue = "5", ItemText = "Hoàn thành"},
-                                        new SelectListModel { ItemValue = "6", ItemText = "Chờ duyệt"}
+                                        new SelectListModel { ItemValue = "5", ItemText = "Chờ duyệt"},
+                                          new SelectListModel { ItemValue = "6", ItemText = "Hoàn thành"}
                                     };
             return list;
         }
