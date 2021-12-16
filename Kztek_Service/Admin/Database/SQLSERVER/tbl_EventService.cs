@@ -185,11 +185,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
 
@@ -227,11 +227,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("FROM [tbl_Event] where 1 = 1 AND EventType IN(3,4,5)  AND  IsDeleted = 0");
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
 
@@ -275,11 +275,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
 
@@ -320,11 +320,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
 
             //event Code
