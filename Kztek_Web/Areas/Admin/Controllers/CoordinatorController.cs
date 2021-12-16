@@ -1,4 +1,5 @@
-﻿using Kztek_Library.Configs;
+﻿using Kztek_Core.Models;
+using Kztek_Library.Configs;
 using Kztek_Library.Helpers;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
@@ -54,21 +55,31 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //    //return View(gridmodel);
             //}
 
-
-            #region Giao diện
-
-            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate);
             ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
+
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
+
             ViewBag.StatusID = StatusID;
-            ViewBag.Groups = await _GroupService.GetAll();
+           
             ViewBag.keyValue = key;
-            ViewBag.lstService = await _ServiceService.GetAll();
+
             ViewBag.AreaCodeValue = AreaCode;
-            return View(gridModel);
-            #endregion
+
+            return View();
+           
         }
 
+        public async Task<IActionResult> Partial_Coordinator(string StatusID = "", string key = "", int page = 1)
+        {
+            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, "", "");
+
+            ViewBag.lstService = await _ServiceService.GetAll();
+
+            ViewBag.Groups = await _GroupService.GetAll();
+
+            return PartialView(gridModel);
+
+        }
         #endregion
 
         #region Cập nhật
@@ -205,6 +216,35 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return list;
         }
 
+        #endregion
+
+        #region Cập nhật sự kiện
+
+        /// <summary>
+        /// Chuyển từ chờ duyệt -> hoàn thành
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UpdateService(string id)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            var obj = await _tbl_EventService.GetById(id);
+
+            if (obj != null)
+            {
+                obj.EventType = 6; //Hoàn thành
+                obj.ModifiedDate = DateTime.Now;
+
+                result = await _tbl_EventService.Update(obj);
+            }
+            else
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+            }
+
+            return Json(result);
+        }
         #endregion
     }
 }

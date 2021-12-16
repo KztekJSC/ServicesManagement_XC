@@ -1,0 +1,168 @@
+﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@using Kztek_Library.Models
+
+@{
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+
+    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+}
+@Html.Hidden("totalCount", Model.TotalIem)
+
+<div class="col-xs-12">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center" width="80"></th>
+                <th class="text-center">Số trang</th>
+                <th class="text-center">
+                    Trạng thái
+                </th>
+                <th class="text-center">
+                    Xe VN
+                </th>
+                <th class="text-center">
+                    Xe CN
+                </th>
+                <th class="text-center">Loại hàng </th>
+                @*<th class="text-center">Khối lượng</th>*@
+                <th class="text-center hidden-col">Loại xe</th>
+                <th class="text-center">Nhóm hàng</th>
+                <th class="text-center">Dịch vụ</th>
+                @*<th class="text-center">Giá dịch vụ</th>
+        <th class="text-center">Phụ thu</th>*@
+
+                <th class="text-center">Tổ thực hiện</th>
+                <th class="text-center hidden-col">Bắt đầu </th>
+        <th class="text-center hidden-col">Kết thúc</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Data.Any())
+            {
+                var count = 0;
+                foreach (var item in Model.Data)
+                {
+                    count++;
+
+                    <tr>
+                        <td class="center">
+                            @if (item.EventType == 5)
+                            {
+                                <button class="btn btn-xs btn-primary btnOK" idata="@item.Id" style="background-color:#085AA2!important ">
+
+                                    Xác nhận
+                                </button>
+                            }
+
+                            @*@if (item.EventType != 6)
+                                {
+                                    <button class="btn btn-xs btn-danger btnDelete" idata="@item.Id" style="background-color:#C43119 !important;">
+
+                                        Xóa
+                                    </button>
+                                }*@
+                        </td>
+                        <td class="text-left">
+                            @item.ServiceCode
+                        </td>
+
+                        <td class="text-center">
+                            @switch (item.EventType)
+                            {
+                                case 2:
+                                    <span class="label label-grey">Chưa phân tổ</span>
+                                    break;
+                                case 3:
+                                    <span class="label label-yellow">Đã phân tổ</span>
+                                    break;
+                                case 4:
+                                    <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                                    break;
+                                case 5:
+                                    <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
+                                    break;
+                                case 6:
+                                    <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                                    break;
+                            }
+                        </td>
+                        <td class="center">
+                            @item.PlateVN
+                        </td>
+                        <td class="center">
+                            @item.PlateCN
+                        </td>
+                        <td class="center">
+                            @item.ProductType
+                        </td>
+                        @*<td class="center">
+                                @item.Weight
+                            </td>*@
+                        <td class="center hidden-col">
+                            @item.VehicleType
+                        </td>
+                        <td class="center">
+                            @item.ProductGroup
+                        </td>
+                        <td class="center">
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+                        </td>
+                        @*<td class="center">
+                                @item.Price.ToString("###,###.##")
+                            </td>
+                            <td class="center">
+                                @item.SubPrice.ToString("###,###.##")
+                            </td>*@
+
+                        <td class="center">
+                            @{
+                                var obj1 = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                                if (obj1 != null)
+                                {
+                                    <span>@obj1.Name</span>
+                                }
+                            }
+                        </td>
+                        <td class="center hidden-col">
+                                @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                                {
+                                    @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
+                                }
+                              
+                            </td>
+                        <td class="center hidden-col">
+                            @if (item.EndDate.Date != DateTime.MaxValue.Date)
+                            {
+                            @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@if (Model.Data.Any())
+{
+    <div class="col-xs-12" id="pagCoordinator">
+        <div class="pull-right">
+            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Coordinator", "Coordinator", new
+  {
+      page = x,
+      key = ViewBag.keyValue,
+      StatusID = ViewBag.StatusID,
+
+
+  }))
+
+        </div>
+    </div>
+}

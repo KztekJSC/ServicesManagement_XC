@@ -1,0 +1,8 @@
+﻿body {
+}
+
+@media only screen and (max-width: 1124px) {
+    .hidden-col{
+        display:none;
+    }
+}

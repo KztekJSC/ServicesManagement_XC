@@ -201,6 +201,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
         #endregion
 
         #region Cập nhật sự kiện
+        /// <summary>
+        /// Chuyển Đã phân tổ -> Đang thực hiện
+        /// Chuyển Đang thực hiện -> Chờ duyệt
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public async Task<IActionResult> UpdateService(string id, int type)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
