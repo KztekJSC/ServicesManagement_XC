@@ -7,6 +7,8 @@
     ViewBag.Title = "Tổ công nhân xác nhận";
 
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+
+    var countEvents = (List<Kztek_Model.Models.CountEventByType>)ViewBag.CountEvent;
 }
 
 <div class="page-header">
@@ -51,8 +53,33 @@
 }
 <div class="hr hr-18 dotted hr-24"></div>
 
+@if (countEvents != null && countEvents.Count > 0)
+{
+   
+<div class="row">
+    @foreach (var item in countEvents.OrderByDescending(n => n.EventType))
+    {
+        <div class="col-xs-6 col-sm-4">
+            <div class="infobox @item.ColorClass" style="width:250px">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa @item.Icon"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number" style="font-weight:bold;font-size:32px">@item.Number</span>
+                    <div class="infobox-content" style="max-width:250px;font-weight:bold;font-size:18px">@item.Title</div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+    <div class="hr hr-18 dotted hr-24"></div>
+}
+
+
 <div class="row" id="boxTable">
-    
+
 </div>
 <input type="hidden" id="Confirm_delete" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:CONFIRM_DELETE" })" />
 <input type="hidden" id="del_Success" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:REMOVE:SUCCESS" })" />

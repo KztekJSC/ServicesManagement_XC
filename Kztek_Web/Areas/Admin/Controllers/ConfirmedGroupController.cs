@@ -59,15 +59,16 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("ConfirmedGroup", this.HttpContext);
 
+            ViewBag.CountEvent = await _tbl_EventService.CountEventByType(this.HttpContext);
+
             return View();
         }
 
         public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1)
         {
-            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(key, page, 20, StatusID, "", "");
+       
             ViewBag.lstService = await _ServiceService.GetAll();
-
-
+            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(this.HttpContext,key, page, 20, StatusID, "", "");
             return PartialView(gridModel);
 
         }

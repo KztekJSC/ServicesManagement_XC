@@ -155,4 +155,13 @@ namespace Kztek_Model.Models
         public int Number { get; set; } //VN hoặc CN
      
     }
+
+    public class CountEventByType
+    {
+        public int EventType { get; set; } //trạng thái sự kiện
+        public int Number { get; set; } //số sự kiện
+        public string Icon { get; set; }
+        public string ColorClass { get; set; }
+        public string Title { get; set; }
+    }
 }
