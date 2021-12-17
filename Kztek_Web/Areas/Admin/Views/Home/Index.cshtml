@@ -6,7 +6,7 @@
 <div class="page-header">
     <h1>
 
-        @ViewBag.Title
+        @ViewBag.Title (<span id="spCount">0</span>)
     </h1>
 </div>
 
@@ -60,7 +60,7 @@
 
             var obj = {
                 key: $("input[name=key]").val(),
-                StatusID: $("#StatusID").val(),
+                Groupid: $("#GroupId").val(),
                 page: page
             };
 

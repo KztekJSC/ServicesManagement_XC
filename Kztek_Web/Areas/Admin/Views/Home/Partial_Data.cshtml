@@ -41,7 +41,7 @@
                 {
                     count++;
 
-                    var objService = services.FirstOrDefault(n => n.Id == item.Service);
+                    //var objService = services.FirstOrDefault(n => n.Id == item.Service);
 
             <tr id="sId_@item.Id">
                 <td class="text-center">
@@ -64,10 +64,15 @@
 
 
                 <td class="center">
-                    @if(objService != null)
-                    {
-                        @objService.Name
+                    @{
+                        var obj1 = services != null ? services.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                        if (obj1 != null)
+                        {
+                            <span>@obj1.Name</span>
+                        }
                     }
+
+                    
                 </td>
 
 
@@ -112,7 +117,6 @@
            page = x,
            key = ViewBag.keyValue,
            Groupid = ViewBag.Groupid,
-        
 
        }))
         </div>

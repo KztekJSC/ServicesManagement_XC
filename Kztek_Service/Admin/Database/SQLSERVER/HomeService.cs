@@ -27,7 +27,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
             }
 
 
@@ -70,7 +70,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' OR  ProductType LIKE '%{0}%' )", key));
             }
 
             //event Code
