@@ -4,8 +4,6 @@
 @{ 
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
 
-    var services = (List<Kztek_Model.Models.Service>)ViewBag.Service;
-
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
 
     var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
@@ -50,8 +48,6 @@
                 foreach (var item in Model.Data)
                 {
                     count++;
-
-                    var objService = services.FirstOrDefault(n => n.Id == item.Service);
 
                     <tr id="sId_@item.Id">
                         <td class="text-center">
