@@ -12,7 +12,7 @@ namespace Kztek_Service.Admin
 {
     public interface IReportService
     {
-
-       
+        Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate ,string isCheckByTime);
+        public Task<List<tbl_Event_Custom>> GetPagingEvent_Excel(string key, int page, int v, string status, string isCheckByTime, string fromdate, string todate);
     }
 }

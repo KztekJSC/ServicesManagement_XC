@@ -1,0 +1,335 @@
+﻿@using Kztek_Library.Models
+@model Kztek_Core.Models.GridModel<Kztek_Model.Models.tbl_Event>
+@{
+    var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+}
+
+@{
+    ViewBag.Title = "Danh sách sự kiện";
+    var checkbytype = (string)ViewBag.isFilterByTimeIn;
+}
+
+
+<div class="page-header">
+    <h1>
+
+        @ViewBag.Title (<span>@Model.TotalIem</span>)
+    </h1>
+</div>
+
+@using (Html.BeginForm("ReportEvent", "Report", FormMethod.Get, new { id = "frmReport" }))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+    @Html.Hidden("chkExport", "0")
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ khóa
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số..." class="form-control" />
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Trạng thái sự kiện </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="0" class="ace" @string.Format("{0}", checkbytype.Equals("0") ? "checked" : "")>
+                <span class="lbl"> T/G bắt đầu </span>
+            </label>
+        </div>
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="1" class="ace" @string.Format("{0}", checkbytype.Equals("1") ? "checked" : "")>
+                <span class="lbl">T/G phân tổ </span>
+            </label>
+        </div>
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="2" class="ace" @string.Format("{0}", checkbytype.Equals("2") ? "checked" : "")>
+                <span class="lbl"> T/G hoàn thành </span>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <br />
+            <button class="btn btn-white btn-primary btnSearch" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("ReportEvent", "Report",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Reset
+            </a>
+            <a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+            </a>
+
+        </div>
+    </div>
+}
+
+
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="col-xs-12">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">Số trang</th>
+                <th class="text-center">
+                    Trạng thái
+                </th>
+                <th class="text-center">
+                    Xe VN
+                </th>
+                <th class="text-center">
+                    Xe CN
+                </th>
+                <th class="text-center">Loại hàng </th>
+                <th class="text-center">Khối lượng</th>
+                <th class="text-center">Loại xe</th>
+                <th class="text-center">Nhóm hàng</th>
+                <th class="text-center">Dịch vụ</th>
+                <th class="text-center">Giá dịch vụ</th>
+                <th class="text-center">Phụ thu</th>
+                <th class="text-center">T/G bắt đầu</th>
+                <th class="text-center">T/G phân tổ</th>
+                <th class="text-center">T/G hoàn thành</th>
+                <th class="text-left">Ảnh CN </th>
+                <th class="text-left">Ảnh VN </th>
+                <th class="text-center">Ghi chú </th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Data.Any())
+            {
+                var count = 0;
+                foreach (var item in Model.Data)
+                {
+                    count++;
+
+                    <tr id="sId_@item.Id">
+                        <td class="text-center">
+                            @count
+                        </td>
+                        <td class="text-left">
+                            @item.ServiceCode
+                        </td>
+
+                        <td class="text-center">
+
+
+                            @switch (item.EventType)
+                            {
+                                case 1:
+                                    <span class="label label-grey">Chờ xác nhận</span>
+                                    break;
+                                case 2:
+                                    <span class="label label-grey">Chưa phân tổ</span>
+                                    break;
+                                case 3:
+                                    <span class="label label-yellow">Đã phân tổ</span>
+                                    break;
+                                case 4:
+                                    <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                                    break;
+                                case 5:
+                                    <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
+                                    break;
+                                case 6:
+                                    <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                                    break;
+                            }
+
+                        </td>
+                        <td class="center">
+                            @item.PlateVN
+                        </td>
+                        <td class="center">
+                            @item.PlateCN
+                        </td>
+                        <td class="center">
+                            @item.ProductType
+                        </td>
+                        <td class="center">
+                            @item.Weight
+                        </td>
+                        <td class="center">
+                            @item.VehicleType
+                        </td>
+                        <td class="center">
+                            @item.ProductGroup
+                        </td>
+                        <td class="center">
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+                        </td>
+                        <td class="center">
+                            @item.Price.ToString("###,###.##")
+                        </td>
+                        <td class="center">
+                            @item.SubPrice.ToString("###,###.##")
+                        </td>
+                        <td class="center">
+                            @{
+                                if (item.StartDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                                {
+                                    <span></span>
+                                }
+                                else
+                                {
+                                    @item.StartDate
+                                }
+
+                            }
+
+                        </td>
+                        <td class="center">
+                            @{
+                                if (item.DivisionDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                                {
+                                    <span></span>
+                                }
+                                else
+                                {
+                                    @item.DivisionDate
+                                }
+
+
+                            }
+
+                        </td>
+                        <td class="center">
+                            @{
+                                if (item.EndDate.ToString("dd/MM/yyyy") == "31/12/9999")
+                                {
+                                    <span></span>
+                                }
+                                else
+                                {
+                                    @item.EndDate
+                                }
+
+
+                            }
+
+                        </td>
+
+                     
+                        <td class="center">
+                            <div class="ace-thumbnails clearfix">
+
+                                @if (!string.IsNullOrWhiteSpace(item.ImageCN))
+                                {
+                                    var newobj = new ImageFPTModel
+                                    {
+                                        Filename = item.ImageCN,
+                                        Type = "INOUT",
+                                        Description = "Ảnh"
+                                    };
+                                    @await Component.InvokeAsync("ImageFPT", newobj)
+
+                                }
+                            </div>
+
+                        </td>
+                        <td class="center">
+                            <div class="ace-thumbnails clearfix">
+                                @if (!string.IsNullOrWhiteSpace(item.ImageVN))
+                                {
+                                    var newobj = new ImageFPTModel
+                                    {
+                                        Filename = item.ImageVN,
+                                        Type = "INOUT",
+                                        Description = "Ảnh"
+                                    };
+                                    @await Component.InvokeAsync("ImageFPT", newobj)
+
+                                }
+                            </div>
+
+                        </td>
+                        <td class="center">
+                            @item.Description
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+@if (Model.Data.Any())
+{
+    <div class="col-xs-12" id="pagCoordinator">
+        <div class="pull-right">
+            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("ReportEvent", "Report", new
+       {
+
+           page = x,
+           key = ViewBag.keyValue,
+           StatusID = ViewBag.Status,
+           fromdate = ViewBag.fromdateValue,
+           todate = ViewBag.todateValue,
+           isCheckByTime = ViewBag.isFilterByTimeIn ,
+           
+       }))
+
+        </div>
+    </div>
+}
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $(".btnExport").click(function () {
+
+                $("#chkExport").val("1");
+
+                $("#frmReport").submit();
+            });
+            $(".btnSearch").click(function () {
+
+                $("#frmReport").submit();
+            });
+        });
+    </script>
+}

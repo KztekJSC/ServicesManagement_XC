@@ -44,6 +44,7 @@ namespace Kztek_Service.Admin
         /// <param name="groupid"></param>
         /// <returns></returns>
         Task<List<tbl_Event>> GetListServiceByGroup(string groupid);
+        Task<SelectListModel_Chosen>  GetEventypeReport(string id = "", string placeholder = "", string selecteds = "");
 
 
         /// <summary>

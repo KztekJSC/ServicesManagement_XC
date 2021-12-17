@@ -31,6 +31,19 @@ namespace Kztek_Library.Helpers
                                     };
             return list;
         }
+        public static List<SelectListModel> ListStatusReport()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "1", ItemText = "Chờ xác nhận"},
+                                        //new SelectListModel { ItemValue = "2", ItemText = "Đã xác nhận"},
+                                        new SelectListModel { ItemValue = "2", ItemText = "Chưa phân tổ"},
+                                        new SelectListModel { ItemValue = "3", ItemText = "Đã phân tổ"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Đang thực hiện"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Chờ duyệt"},
+                                          new SelectListModel { ItemValue = "6", ItemText = "Hoàn thành"}
+                                    };
+            return list;
+        }
 
         public static List<SelectListModel> ListStatusConfirmGroup()
         {
