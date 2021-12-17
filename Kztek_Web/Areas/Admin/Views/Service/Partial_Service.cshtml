@@ -4,6 +4,8 @@
 @{ 
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
 
+    var services = (List<Kztek_Model.Models.Service>)ViewBag.Service;
+
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
 }
 
@@ -47,6 +49,8 @@
                 {
                     count++;
 
+                    var objService = services.FirstOrDefault(n => n.Id == item.Service);
+
                     <tr id="sId_@item.Id">
                         <td class="text-center">
                             @count
@@ -88,7 +92,10 @@
                             @item.ProductGroup
                         </td>
                         <td class="center">
-                            @item.Service
+                            @if (objService != null)
+                            {
+                                @objService.Name
+                            }
                         </td>
                         <td class="center">
                             @item.Price.ToString("###,###.##")
