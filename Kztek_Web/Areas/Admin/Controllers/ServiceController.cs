@@ -127,7 +127,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.Groups = await _GroupService.GetAll();
 
-            ViewBag.Service = await _ServiceService.GetAll();
+            ViewBag.lstService = await _ServiceService.GetAll();
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
 

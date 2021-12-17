@@ -7,6 +7,8 @@
     var services = (List<Kztek_Model.Models.Service>)ViewBag.Service;
 
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
 }
 
 @Html.Hidden("totalCount",Model.TotalIem)
@@ -92,9 +94,12 @@
                             @item.ProductGroup
                         </td>
                         <td class="center">
-                            @if (objService != null)
-                            {
-                                @objService.Name
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
                             }
                         </td>
                         <td class="center">
