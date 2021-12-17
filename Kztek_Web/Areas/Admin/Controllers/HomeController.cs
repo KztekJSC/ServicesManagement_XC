@@ -29,13 +29,15 @@ namespace Kztek_Web.Areas.Admin.Controllers
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
         private IHomeService _HomeService;
+        private IServiceService _ServiceService;
 
-        public HomeController(IHubContext<SignalServer> context, Itbl_EventService _tbl_EventService, IGroupService _GroupService, IHomeService _HomeService)
+        public HomeController(IHubContext<SignalServer> context, Itbl_EventService _tbl_EventService, IGroupService _GroupService, IHomeService _HomeService, IServiceService _ServiceService)
         {
             _context = context;
             this._HomeService = _HomeService;
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
+            this._ServiceService = _ServiceService;
         }
 
         [CheckSessionCookie(AreaConfig.Admin)]
@@ -75,7 +77,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
             ViewBag.Groupid = Groupid;
             ViewBag.Groups = await _GroupService.GetAll();
-           
+            ViewBag.lstService = await _ServiceService.GetAll();
             return PartialView(gridModel);
             #endregion
         }

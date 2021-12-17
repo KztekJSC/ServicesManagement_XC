@@ -91,7 +91,7 @@
                         </td>
                         <td class="center">
                             @{
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
                                 if (obj != null)
                                 {
                                     <span>@obj.Name</span>

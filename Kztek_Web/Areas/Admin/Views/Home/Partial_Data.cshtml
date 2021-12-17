@@ -4,7 +4,7 @@
 @{
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
 
-    var services = (List<Kztek_Model.Models.Service>)ViewBag.Service;
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
 
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
 }
@@ -65,7 +65,7 @@
 
                 <td class="center">
                     @{
-                        var obj1 = services != null ? services.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                        var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
                         if (obj1 != null)
                         {
                             <span>@obj1.Name</span>
