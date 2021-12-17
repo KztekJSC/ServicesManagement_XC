@@ -23,11 +23,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
             }
 
 
@@ -66,11 +66,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%')", keyReplace));
+                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' ", key));
+                sb.AppendLine(string.Format("OR  Service LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
             }
 
             //event Code
