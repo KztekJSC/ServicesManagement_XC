@@ -54,7 +54,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             return View();
         }
-        public async Task<IActionResult> Partial_Service(string Groupid = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        public async Task<IActionResult> Partial_Data(string Groupid = "", string key = "", string fromdate = "", string todate = "", int page = 1)
         {
 
 
