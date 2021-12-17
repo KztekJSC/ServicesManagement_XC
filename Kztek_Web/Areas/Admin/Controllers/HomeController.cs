@@ -24,17 +24,18 @@ namespace Kztek_Web.Areas.Admin.Controllers
     [Area(AreaConfig.Admin)]
     public class HomeController : Controller
     {
+       
+        private readonly IHubContext<SignalServer> _context;
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
-        private IServiceService _ServiceService;
         private IHomeService _HomeService;
 
-        public HomeController(Itbl_EventService _tbl_EventService, IGroupService _GroupService, IHomeService _HomeService, IServiceService _ServiceService)
+        public HomeController(IHubContext<SignalServer> context, Itbl_EventService _tbl_EventService, IGroupService _GroupService, IHomeService _HomeService)
         {
+            _context = context;
             this._HomeService = _HomeService;
             this._tbl_EventService = _tbl_EventService;
             this._GroupService = _GroupService;
-            this._ServiceService = _ServiceService;
         }
 
         [CheckSessionCookie(AreaConfig.Admin)]
@@ -48,9 +49,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //LanguageHelper.GetLang(sessionValue);
 
             ViewBag.Groups = await _GroupService.GetaSelectModelChoseGroup(selecteds: Groupid);
-
             ViewBag.keyValue = key; 
-
             ViewBag.AreaCodeValue = AreaCode;
 
             return View();
@@ -69,18 +68,16 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
             }
 
-            var gridModel = await _HomeService.GetPagingInOut(key, page, 20, Groupid, fromdate, todate);                         
+            var gridModel = await _HomeService.GetPagingInOut(key, page, 20, Groupid, fromdate, todate);
+
+            #region Giao diện
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
-
             ViewBag.Groupid = Groupid;
-
             ViewBag.Groups = await _GroupService.GetAll();
-
-            ViewBag.Service = await _ServiceService.GetAll();
-
+           
             return PartialView(gridModel);
-          
+            #endregion
         }
         public async Task<IActionResult> Partial_TopService()
         {
@@ -95,6 +92,57 @@ namespace Kztek_Web.Areas.Admin.Controllers
           
 
             return PartialView();
+        }
+
+        public async Task<IActionResult> GetId()//Count(*) as SOLUONG 
+        {
+            string id = "";
+
+            var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+               
+                SqlDependency.Start(connectionString);
+
+                string commandText = string.Format("select Id from dbo.VehicleEvent where IsDelete = 0 order by ModifiedDate desc"); 
+
+                SqlCommand cmd = new SqlCommand(commandText, conn);
+
+                SqlDependency dependency = new SqlDependency(cmd);
+
+                dependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+
+                var reader = cmd.ExecuteReader();
+
+                int count = 0;
+
+                while (reader.Read())
+                {
+                    count++;
+
+                    if(count == 1)
+                    {
+                        id = reader["Id"].ToString();
+
+                        break;
+                    }
+
+                }             
+            }
+
+            return Json(id);
+        }
+
+
+        private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
+        {
+            if (e.Info == SqlNotificationInfo.Insert)
+            {
+                _context.Clients.All.SendAsync("refreshEmployees");
+            }
+           
         }
     }
 }

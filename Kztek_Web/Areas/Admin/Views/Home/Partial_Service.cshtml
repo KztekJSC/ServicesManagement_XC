@@ -9,7 +9,7 @@
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
 }
 
-@*@Html.Hidden("totalCount", Model.TotalIem)*@
+@Html.Hidden("totalCount", Model.TotalIem)
 
 <div class="col-xs-12">
     <table class="table  table-bordered table-hover">
@@ -111,10 +111,8 @@
        {
            page = x,
            key = ViewBag.keyValue,
-           //fromdate = ViewBag.fromdateValue,
-           //todate = ViewBag.todateValue,
            Groupid = ViewBag.Groupid,
-           AreaCode = ViewBag.AreaCodeValue,
+        
 
        }))
         </div>

@@ -62,8 +62,7 @@ var HomeController = {
             .done(function (data) {
                 $('#boxTable').html('');
                 $('#boxTable').html(data);
-
-                //$("#spCount").text($("#totalCount").val());
+                $("#spCount").text($("#totalCount").val());
             });
     },
 }
