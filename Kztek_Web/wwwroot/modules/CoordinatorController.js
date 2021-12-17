@@ -1,6 +1,10 @@
 ﻿$(function () {
     CoordinatorController.PartialCoordinator(1);
 
+    $('body').on('click', '.btnSearch', function () {
+        CoordinatorController.PartialCoordinator(1);
+    })
+
     $('body').on('click', '#pagCoordinator li a', function () {
         var cmd = $(this);
         var _page = cmd.attr('idata');

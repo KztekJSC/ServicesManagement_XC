@@ -3,6 +3,10 @@
 
     ConfirmedGroupController.PartialCountEvent();
 
+    $('body').on('click', '.btnSearch', function () {
+        ConfirmedGroupController.PartialConfirmedGroup(1);
+    })
+
     $('body').on('click', '#pagConfGroup li a', function () {
         var cmd = $(this);
         var _page = cmd.attr('idata');
