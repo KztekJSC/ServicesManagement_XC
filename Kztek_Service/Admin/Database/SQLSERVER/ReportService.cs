@@ -16,11 +16,203 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
     public class ReportService : IReportService
     {
         private IServiceService _ServiceService;
-        public ReportService(IServiceService _ServiceService)
+        private IGroupService _GroupService;
+
+        public ReportService(IServiceService _ServiceService, IGroupService _GroupService)
         {
             this._ServiceService = _ServiceService;
+            this._GroupService = _GroupService;
         }
-        public async Task<List<tbl_Event_Custom>> GetPagingEvent_Excel(string key,  int page, int pageSize, string statusID, string isCheckByTime, string fromdate, string todate)
+        #region Theo tổ
+        public async Task<List<GroupCustom>> GetByGroup(string key, int page, int v, string statusID, string fromdate, string todate, string isCheckByTime, string Groupid)
+        {
+
+            var objName = await _GroupService.GetByName(key.Trim());
+            var sb = new StringBuilder();
+            sb.AppendLine("SELECT * FROM (");
+
+            sb.AppendLine("SELECT ROW_NUMBER () OVER ( ORDER BY GroupId desc) AS RowNumber,C.* FROM (");
+
+            sb.AppendLine(string.Format("SELECT   Count(GroupId) AS 'CountGroup' ,CAST( CASE WHEN GroupId <> '' THEN GroupId ELSE 'Không có tên' END AS nvarchar(50)) as GroupId , Sum(Price) AS 'SumPrice', Sum(SubPrice) AS 'SumSub'  FROM  [tbl_Event]"));
+
+            sb.AppendLine("WHERE 1 =1 AND  IsDeleted = 0");
+
+            if (!string.IsNullOrEmpty(Groupid))
+            {
+                if (Groupid != "00")
+                {
+                    sb.AppendLine(string.Format("AND  GroupId IN ('{0}')    ", Groupid));
+                }
+
+
+
+            }
+            switch (isCheckByTime)
+            {
+
+                case "0"://tg bắt đầu
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND StartDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND StartDate < '{0}'", tdate));
+                    }
+                    break;
+
+                case "1"://phân tổ
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate >= fdate);
+                        sb.AppendLine(string.Format("AND DivisionDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate < tdate);
+                        sb.AppendLine(string.Format("AND [DivisionDate] < '{0}'", tdate));
+                    }
+                    break;
+                case "2"://kết thúc
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND [EndDate] >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND [EndDate] < '{0}'", tdate));
+                    }
+                    break;
+                //case "4"://Không check thời gian
+
+                //    break;
+
+                default:
+                    break;
+            }
+            sb.AppendLine("GROUP BY [GroupId]  ");
+
+            sb.AppendLine(") AS C");
+
+            sb.AppendLine(") AS B");
+
+            var listData = DatabaseHelper.ExcuteCommandToList<GroupCustom>(sb.ToString());
+
+            return listData;
+        }
+
+        #endregion
+
+        #region Theo dịch vụ
+        public async Task<List<ServiceCustom>> GetByService(string key, int page, int v, string statusID, string fromdate, string todate, string isCheckByTime,string ServiceId)
+        {
+            var objName = await _ServiceService.GetByName(key);
+
+
+            var sb = new StringBuilder();
+            sb.AppendLine("SELECT * FROM (");
+
+            sb.AppendLine("SELECT ROW_NUMBER () OVER ( ORDER BY [ServiceId] desc) AS RowNumber,C.* FROM (");
+
+            sb.AppendLine(string.Format("SELECT   Count(Service) AS 'CountService' ,[Service] as 'ServiceId', Sum(Price) AS 'SumPrice', Sum(SubPrice) AS 'SumSub'  FROM  [tbl_Event]"));
+
+            sb.AppendLine("WHERE 1 =1 AND  IsDeleted = 0");
+            if (!string.IsNullOrEmpty(ServiceId))
+            {
+                if (ServiceId != "00")
+                {
+                    sb.AppendLine(string.Format("AND  Service IN ('{0}')    ", ServiceId));
+                }
+            }
+            switch (isCheckByTime)
+            {
+
+                case "0"://tg bắt đầu
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND StartDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND StartDate < '{0}'", tdate));
+                    }
+                    break;
+
+                case "1"://phân tổ
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate >= fdate);
+                        sb.AppendLine(string.Format("AND DivisionDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate < tdate);
+                        sb.AppendLine(string.Format("AND [DivisionDate] < '{0}'", tdate));
+                    }
+                    break;
+                case "2"://kết thúc
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND [EndDate] >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        sb.AppendLine(string.Format("AND [EndDate] < '{0}'", tdate));
+                    }
+                    break;
+              
+
+                default:
+                    break;
+            }
+
+            sb.AppendLine("GROUP BY [Service]  ");
+
+            sb.AppendLine(") AS C");
+
+            sb.AppendLine(") AS B");
+            var listData = DatabaseHelper.ExcuteCommandToList<ServiceCustom>(sb.ToString());
+
+
+
+            return listData;
+        }
+
+        #endregion
+
+
+        #region danh sách sự kiện
+        public async Task<List<tbl_Event_Custom>> GetPagingEvent_Excel(string key, int page, int pageSize, string statusID, string isCheckByTime, string fromdate, string todate)
         {
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
 
@@ -152,7 +344,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     obj.price = item.Price.ToString("###,###.##");
                     obj.subPrice = item.SubPrice.ToString("###,###.##");
                     obj.description = item.Description;
-                    if (item.StartDate.ToString("dd/MM/yyyy") == "31/12/9999" )
+                    if (item.StartDate.ToString("dd/MM/yyyy") == "31/12/9999")
                     {
                         obj.StartDate = "";
                     }
@@ -160,7 +352,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     {
                         obj.StartDate = item.StartDate.ToString();
                     }
-                    if (item.EndDate.ToString("dd/MM/yyyy") == "31/12/9999" )
+                    if (item.EndDate.ToString("dd/MM/yyyy") == "31/12/9999")
                     {
                         obj.EndDate = "";
                     }
@@ -169,7 +361,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                         obj.EndDate = item.EndDate.ToString();
                     }
 
-                    if (item.DivisionDate.ToString("dd/MM/yyyy") == "31/12/9999" )
+                    if (item.DivisionDate.ToString("dd/MM/yyyy") == "31/12/9999")
                     {
                         obj.DivisionDate = "";
                     }
@@ -177,7 +369,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     {
                         obj.DivisionDate = item.DivisionDate.ToString();
                     }
-               
+
                     switch (item.EventType)
                     {
                         case 1:
@@ -205,12 +397,12 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 }
             }
 
-     
+
 
             return await Task.FromResult(lst);
         }
 
-        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate ,string isCheckByTime)
+        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate, string isCheckByTime)
         {
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
 
@@ -426,5 +618,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             return await Task.FromResult(model);
         }
+        #endregion
+
     }
 }

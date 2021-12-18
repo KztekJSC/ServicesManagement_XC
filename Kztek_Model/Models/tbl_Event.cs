@@ -284,4 +284,37 @@ namespace Kztek_Model.Models
         public string ColorClass { get; set; }
         public string Title { get; set; }
     }
+
+    public class ServiceCustom
+    {
+        public long RowNumber { get; set; }
+        public string ServiceName { get; set; }
+        public int CountService { get; set; }
+        public decimal SumPrice { get; set; }
+        public decimal SumSub { get; set; }
+        public string ServiceId { get; set; }
+
+    }
+    public class GroupCustom
+    {
+        public long RowNumber { get; set; }
+        public string GroupName { get; set; }
+
+        public int CountGroup { get; set; }
+        public decimal SumPrice { get; set; }
+        public decimal SumSub { get; set; }
+        public string GroupId { get; set; }
+
+    }
+    public class GroupCustomExcel
+    {
+        public long RowNumber { get; set; }
+        public string GroupName { get; set; }
+
+        public int CountGroup { get; set; }
+        public string SumPrice { get; set; }
+        public string SumSub { get; set; }
+        public string GroupId { get; set; }
+
+    }
 }

@@ -104,6 +104,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await _GroupRepository.GetOneById(id);
         }
 
+        public async Task<Group> GetByName(string key)
+        {
+            var query = from n in _GroupRepository.Table
+                        where n.Name == key
+                        select n;
+            return await Task.FromResult(   query.FirstOrDefault());
+        }
+
         public async Task<MessageReport> Update(Group oldObj)
         {
             return await _GroupRepository.Update(oldObj);

@@ -75,6 +75,45 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await _ServiceRepository.GetOneById(id);
         }
 
+        public async Task<Service> GetByName(string key)
+        {
+            var query = from n in _ServiceRepository.Table
+                        where n.Name == key
+                        select n;
+            return query.FirstOrDefault();
+        }
+
+        public async Task<SelectListModel_Chosen> SelectChoseService(string id = "", string placeholder = "", string selecteds = "")
+        {
+            var data = await GetAll();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.Name,
+                    ItemValue = n.Id
+                }));
+            }
+
+            var model = new SelectListModel_Chosen()
+            {
+                IdSelectList = "ServiceId",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+                isMultiSelect = false
+            };
+            return model;
+        }
+
         public async Task<MessageReport> Update(Service oldObj)
         {
             return await _ServiceRepository.Update(oldObj);

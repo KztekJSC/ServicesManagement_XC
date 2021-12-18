@@ -1,0 +1,179 @@
+﻿@using Kztek_Library.Models
+@model List<Kztek_Model.Models.ServiceCustom>
+@{
+
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.Service;
+
+    var checkbytype = (string)ViewBag.isFilterByTimeIn;
+}
+
+@{
+    ViewBag.Title = "Theo loại dịch vụ";
+
+}
+
+
+<div class="page-header">
+    <h1>
+
+        @ViewBag.Title
+    </h1>
+</div>
+
+@using (Html.BeginForm("ReportByService", "Report", FormMethod.Get, new { id = "frmReport" }))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+    @Html.Hidden("chkExport", "0")
+ 
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Dịch vụ </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.LstService)
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="0" class="ace" @string.Format("{0}", checkbytype.Equals("0") ? "checked" : "")>
+                <span class="lbl"> T/G bắt đầu </span>
+            </label>
+        </div>
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="1" class="ace" @string.Format("{0}", checkbytype.Equals("1") ? "checked" : "")>
+                <span class="lbl">T/G phân tổ </span>
+            </label>
+        </div>
+        <div class="col-md-2 col-xs-2 divboxmd line-height-380">
+            <label>
+                <input type="radio" name="isCheckByTime" value="2" class="ace" @string.Format("{0}", checkbytype.Equals("2") ? "checked" : "")>
+                <span class="lbl"> T/G hoàn thành </span>
+            </label>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <br />
+            <button class="btn btn-white btn-primary btnSearch" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("ReportByService", "Report",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Reset
+            </a>
+            <a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+            </a>
+
+        </div>
+    </div>
+}
+
+
+
+<div class="hr hr-18 dotted hr-24"></div>
+
+<div class="col-xs-10">
+    <table class="table  table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">
+                    Dịch vụ
+                </th>
+                <th class="text-center">
+                    Số lượng dịch vụ
+                </th>
+                <th class="text-center">
+                    Số tiền(VNĐ)
+                </th>
+                <th class="text-center">
+                    Phụ thu(VNĐ)
+                </th>
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Any())
+            {
+                var count = 0;
+                foreach (var item in Model)
+                {
+                    count++;
+
+                    <tr @*id="sId_@item.Id"*@>
+                        <td class="text-center">
+                            @count
+                        </td>
+                        <td class="left">
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.ServiceId.ToLower()) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+                        </td>
+                        <td class="center">
+                            @item.CountService
+                        </td>
+                        <td class="center">
+                            @item.SumPrice.ToString("###,###.##")
+                        </td>
+                        <td class="center">
+                            @item.SumPrice.ToString("###,###.##")
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            $(".btnExport").click(function () {
+
+                $("#chkExport").val("1");
+
+                $("#frmReport").submit();
+            });
+            $(".btnSearch").click(function () {
+
+                $("#frmReport").submit();
+            });
+        });
+    </script>
+}

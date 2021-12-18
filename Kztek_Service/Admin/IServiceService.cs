@@ -17,5 +17,7 @@ namespace Kztek_Service.Admin
         Task<MessageReport> Update(Service oldObj);
         Task<MessageReport> Create(Service model);
         Task<List<Service>> GetAll();
+        Task<Service> GetByName(string key);
+        Task<SelectListModel_Chosen> SelectChoseService(string id = "", string placeholder = "", string selecteds = "");
     }
 }

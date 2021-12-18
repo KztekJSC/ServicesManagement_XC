@@ -18,5 +18,6 @@ namespace Kztek_Service.Admin
         Task<MessageReport> Create(Group model);
         Task<List<Group>> GetAll();
         Task<SelectListModel_Chosen> GetaSelectModelChoseGroup(string id = "", string placeholder = "", string selecteds = "");
+        Task<Group> GetByName(string key);
     }
 }
