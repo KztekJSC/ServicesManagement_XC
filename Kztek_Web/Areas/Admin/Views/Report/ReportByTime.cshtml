@@ -1,0 +1,164 @@
+﻿
+@using System.Data
+@model DataTable
+
+@{
+    ViewBag.Title = "Tổng tiền theo thời gian";
+
+    var lst = (List<Kztek_Model.Models.Service>)ViewBag.Service;
+}
+
+<div class="page-header">
+    <h1 class="page-title text-primary-d2">
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="h-1 my-1"></div>
+
+@using (Html.BeginForm("ReportByTime", "Report", FormMethod.Get, new { id = "frmReport" }))
+{
+    @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+    @Html.Hidden("chkExport", "0")
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+            <br />
+            <button class="btn btn-white btn-primary btnSearch" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+            <a href='@Url.Action("ReportByTime", "Report",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Reset
+            </a>
+            @*<a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+            </a>*@
+
+        </div>
+    </div>
+
+}
+<div> <br /></div>
+<div class="row">
+    <div class="col-xs-8">
+        <div class="divScroll">
+            <table class="table  table-bordered table-hover">
+                <thead>
+                    <tr class="headerSort">
+
+                        @foreach (DataColumn dc in Model.Columns)
+                        {
+                            if (dc.ColumnName.Equals("Service"))
+                            {
+                                <th style="text-align: center;">Dịch vụ</th>
+                            }
+                            else
+                            {
+                                <th style="text-align: center;">
+                                    @dc.ColumnName
+
+
+                                </th>
+                            }
+
+                        }
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.Rows.Count; i++)
+                    {
+                        <tr>
+                            @for (int j = 0; j < Model.Columns.Count; j++)
+                            {
+
+                                <td class="center" style="@string.Format("{0}",j == 0 ? "font-weight:bold;" : "")">
+                                    @if (!string.IsNullOrEmpty(Model.Rows[i][j].ToString()))
+                                    {
+                                        if (j != 0)
+                                        {
+                                            if (Model.Rows[i][j].ToString() == "0")
+                                            {
+                                                <span>0</span>
+                                            }
+                                            else
+                                            {
+                                                <span>@string.Format(new System.Globalization.CultureInfo("en-US"), "{0:0,0}", Convert.ToDecimal(Model.Rows[i][j].ToString()))</span>
+                                            }
+                                        }
+                                        else
+                                        {
+
+
+                                            var obj = lst != null ? lst.FirstOrDefault(n => n.Id.Equals(Model.Rows[i][j].ToString())) : null;
+                                            if (obj != null)
+                                            {
+                                                <span>@obj.Name</span>
+                                            }
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                </td>
+
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            $(".btnExport").click(function () {
+
+                $("#chkExport").val("1");
+
+                $("#frmReport").submit();
+            });
+            $(".btnSearch").click(function () {
+
+                $("#frmReport").submit();
+            });
+
+        });
+    </script>
+
+}
+
+
+

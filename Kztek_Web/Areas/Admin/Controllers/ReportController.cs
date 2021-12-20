@@ -90,6 +90,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.todateValue = string.IsNullOrWhiteSpace(todate) ? DateTime.Now.ToString("đd/MM/yyyy 23:59") : todate;
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.fromdateValue = fromdate;
+            ViewBag.todateValue = todate;
             ViewBag.lstService = await _ServiceService.GetAll();
 
             return View(gridModel);
@@ -169,6 +170,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var gridModel = await _ReportService.GetByService(key, page, 10, StatusID, fromdate, todate, isCheckByTime, ServiceId);
             ViewBag.isFilterByTimeIn = isCheckByTime;
             ViewBag.fromdateValue = fromdate;
+            ViewBag.todateValue = todate;
             ViewBag.Service = await _ServiceService.GetAll();
             ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
             return View(gridModel);
@@ -249,8 +251,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var gridModel = await _ReportService.GetByGroup(key, page, 10, StatusID, fromdate, todate, isCheckByTime,GroupId);
             ViewBag.lstGroup = await _GroupService.GetAll();
             ViewBag.isFilterByTimeIn = isCheckByTime;
+            ViewBag.LstGrSelect = await _GroupService.GetaSelectModelChoseGroup(selecteds: GroupId);
             ViewBag.fromdateValue = fromdate;
-          
+            ViewBag.todateValue = todate;
             return View(gridModel);
         }
 
@@ -327,18 +330,19 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-            if (chkExport.Equals("1"))
-            {
-                await ExportFileByTime(key, page, 10, StatusID, fromdate, todate, isCheckByTime, this.HttpContext, GroupId);
+            //if (chkExport.Equals("1"))
+            //{
+            //    await ExportFileByTime(key, page, 10, StatusID, fromdate, todate, isCheckByTime, this.HttpContext, GroupId);
 
-                //return View(gridmodel);
-            }
+            //    //return View(gridmodel);
+            //}
+            ViewBag.Service = await _ServiceService.GetAll();
 
             var gridModel = await _ReportService.GetByTime(key, page, 10, StatusID, fromdate, todate, isCheckByTime, GroupId);
             ViewBag.lstGroup = await _GroupService.GetAll();
             ViewBag.isFilterByTimeIn = isCheckByTime;
             ViewBag.fromdateValue = fromdate;
-
+            ViewBag.todateValue = todate;
             return View(gridModel);
         }
 
@@ -346,40 +350,44 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {
             //column header
             var Data_ColumnHeader = new List<SelectListModel_Print_Column_Header>();
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "STT" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Tổ" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số lượng" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số tiền(VNĐ)" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Phụ thu(VNĐ)" });
+            //Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Dịch vụ" });
+            //Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Tổ" });
+            //Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số lượng" });
+            //Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số tiền(VNĐ)" });
+            //Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Phụ thu(VNĐ)" });
 
             //
-            var printConfig = PrintHelper.Template_Excel_V1(PrintConfig.HeaderType.TwoColumns, "Tổ thực hiện", DateTime.Now, SessionCookieHelper.CurrentUser(this.HttpContext).Result, "Kztek", Data_ColumnHeader, 4, 5, 5);
+            var printConfig = PrintHelper.Template_Excel_V1(PrintConfig.HeaderType.TwoColumns, "Tổ thực hiện", DateTime.Now, SessionCookieHelper.CurrentUser(this.HttpContext).Result, "Kztek", Data_ColumnHeader, 3, 4, 4);
 
             //
-            var lstdata = await _ReportService.GetByGroup(key, page, 10, status, fromdate, todate, isCheckByTime, GroupId);
-            var lst = new List<GroupCustomExcel>();
-            foreach (var item in lstdata)
+            var dt = await _ReportService.GetByTime(key, page, 10, status, fromdate, todate, isCheckByTime, GroupId);
+            if (dt != null && dt.Rows.Count > 0)
             {
-                var obj1 = await _GroupService.GetById(item.GroupId);
-
-                var objGr = new GroupCustomExcel();
-                objGr.RowNumber = item.RowNumber;
-                if (obj1 != null)
-                {
-                    objGr.GroupName = obj1.Name;
-                }
-                else
-                {
-                    objGr.GroupName = item.GroupId;
-                }
-                objGr.CountGroup = item.CountGroup;
-                objGr.SumPrice = item.SumPrice.ToString("###,###.##");
-                objGr.SumSub = item.SumSub.ToString("###,###.##");
-                lst.Add(objGr);
 
             }
+            var lst = new List<GroupCustomExcel>();
+            //foreach (var item in lstdata)
+            //{
+            //    var obj1 = await _GroupService.GetById(item.GroupId);
 
-            return await PrintHelper.Excel_Write<GroupCustomExcel>(httpContext, lst, "Event_" + DateTime.Now.ToString("ddMMyyyyHHmmss"), printConfig);
+            //    var objGr = new GroupCustomExcel();
+            //    objGr.RowNumber = item.RowNumber;
+            //    if (obj1 != null)
+            //    {
+            //        objGr.GroupName = obj1.Name;
+            //    }
+            //    else
+            //    {
+            //        objGr.GroupName = item.GroupId;
+            //    }
+            //    objGr.CountGroup = item.CountGroup;
+            //    objGr.SumPrice = item.SumPrice.ToString("###,###.##");
+            //    objGr.SumSub = item.SumSub.ToString("###,###.##");
+            //    lst.Add(objGr);
+
+            //}
+
+            return await PrintHelper.Excel_Write(httpContext, dt, "Event_" + DateTime.Now.ToString("ddMMyyyyHHmmss"), null);
         }
 
         #endregion

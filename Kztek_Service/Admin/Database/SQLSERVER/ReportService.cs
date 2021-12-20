@@ -208,6 +208,52 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return listData;
         }
 
+        public async Task<DataTable> GetByTime(string key, int page, int v, string statusID, string _fromdate, string _todate, string isCheckByTime, string groupId)
+        {
+            var connect = await AppSettingHelper.GetStringFromAppSetting("ConnectionStrings:DefaultConnection");
+            if (!string.IsNullOrEmpty(_fromdate))
+            {
+                _fromdate = Convert.ToDateTime(_fromdate).ToString("yyyy/MM/dd HH:mm:ss");
+            }
+            if (!string.IsNullOrEmpty(_todate))
+            {
+                _todate = Convert.ToDateTime(_todate).ToString("yyyy/MM/dd HH:mm:ss");
+            }
+            var query = new StringBuilder();
+            query.AppendLine("DECLARE @list AS NVARCHAR(MAX),@query  AS NVARCHAR(MAX)");
+            query.AppendLine("SELECT @list =");
+            query.AppendLine("COALESCE(@list + ', ','') + QUOTENAME(date)");
+            query.AppendLine("FROM (");
+            query.AppendLine("Select (CONVERT(nvarchar(50), mon) + '/' + CONVERT(nvarchar(50), yea)) as date");
+            query.AppendLine("FROM (");
+            query.AppendLine("Select distinct MONTH(CreatedDate) as mon,Year(CreatedDate) as yea FROM tbl_Event ce WITH (NOLOCK) where  ");
+            query.AppendLine(string.Format(" ce.[CreatedDate] >= '{0}' AND ce.[CreatedDate] <= '{1}'", _fromdate, _todate));
+            query.AppendLine("Order by yea asc,mon asc OFFSET 0 ROWS");
+            query.AppendLine(") AS C ");
+            query.AppendLine(") as k");
+            query.AppendLine("set @query ='select * from(");
+            query.AppendLine("Select TotalMoney,Service,(CONVERT(nvarchar(50), mon) + ''' + '/' + ''' + CONVERT(nvarchar(50), yea)) as date   FROM (");
+            query.AppendLine("Select SUM(Price) as TotalMoney,mon,yea ,Service FROM (");
+            query.AppendLine("Select Price,Service,MONTH(CreatedDate) as mon,Year(CreatedDate) as yea FROM tbl_Event ce WITH (NOLOCK)  ");
+            query.AppendLine(string.Format(" where  ce.[CreatedDate] >= ''' + cast('{0}' as VARCHAR(50)) + '''AND ce.[CreatedDate] <= ''' + cast('{1}' as VARCHAR(50)) + '''", _fromdate, _todate));
+            query.AppendLine("Order by CreatedDate desc OFFSET 0 ROWS");
+            query.AppendLine(") as A");
+            query.AppendLine("Group by mon,yea,Service");
+            query.AppendLine("Order by yea asc,mon asc OFFSET 0 ROWS");
+            query.AppendLine(") AS C ");
+            query.AppendLine(") as s PIVOT");
+            query.AppendLine("(");
+            query.AppendLine("SUM(TotalMoney)");
+            query.AppendLine("  FOR date IN ('+@list+')");
+            query.AppendLine(")AS pvt'");
+            query.AppendLine("execute(@query)");
+            var list = SqlHelper.ExcuteCommandToDataTable(connect, query.ToString());
+            
+            return list;
+        }
+
+      
+
         #endregion
 
 

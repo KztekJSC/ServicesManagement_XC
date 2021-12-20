@@ -302,6 +302,25 @@ namespace Kztek_Library.Helpers
             }
 
            
-        }   
+        }
+
+        public static DataTable ExcuteCommandToDataTable(string connect, string command)
+        {
+            var k = new SqlConnection(connect);
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = k)
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(command, conn);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                adapter.Fill(dt);
+
+                conn.Close();
+
+                return dt;
+            }
+        }
     }
 }
