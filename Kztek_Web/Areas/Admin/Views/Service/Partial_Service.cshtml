@@ -91,11 +91,15 @@
                         </td>
                         <td class="center">
                             @{
+                                if (item.Service != null)
+                                {
+                                
                                 var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
                                 if (obj != null)
                                 {
                                     <span>@obj.Name</span>
                                 }
+                            }
                             }
                         </td>
                         <td class="center">

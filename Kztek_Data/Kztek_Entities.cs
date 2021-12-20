@@ -46,8 +46,8 @@ namespace Kztek_Data
         public DbSet<Service> Services { get; set; }
         public DbSet<tblLED> tblLEDs { get; set; }
 
-        public DbSet<tbl_Event> tbl_Events { get; set; } 
-
+        public DbSet<tbl_Event> tbl_Events { get; set; }
+      
         public DbSet<tbl_Lane_PC> tbl_Lane_PCs { get; set; }
         //Face
 
