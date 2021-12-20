@@ -14,11 +14,47 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
     public class GroupServieService : IGroupServieService
     {
         private IServiceRepository _ServiceRepository;
-        public GroupServieService(IServiceRepository _ServiceRepository)
+        private Itbl_EventService _tbl_EventService;
+        public GroupServieService(IServiceRepository _ServiceRepository, Itbl_EventService _tbl_EventService)
         {
             this._ServiceRepository = _ServiceRepository;
+            this._tbl_EventService = _tbl_EventService;
         }
-        public Task<GridModel<Service>> GetAllCustomPagingByFirst(string key, string pc, int pageNumber, int pageSize)
+
+        public async Task<MessageReport> Create(Service model)
+        {
+            return await _ServiceRepository.Add(model);
+        }
+
+        public async Task<MessageReport> DeleteById(string id)
+        {
+            var result = new MessageReport(false, await LanguageHelper.GetLanguageText("MESSAGEREPORT:ERR"));
+            var obj1 = await _tbl_EventService.GetByService(id);
+
+            if (obj1 != null) // đã tồn tại k được xoá
+            {
+                result = new MessageReport(false, "Không xoá được");
+            }
+            else
+            {
+                var obj = GetById(id);
+                if (obj.Result != null)
+                {
+                    return await _ServiceRepository.Remove(obj.Result);
+                }
+                else
+                {
+                    result = new MessageReport(false, await LanguageHelper.GetLanguageText("MESSAGEREPORT:NON_RECORD"));
+                }
+            }
+            
+          
+
+            return await Task.FromResult(result);
+          
+        }
+
+        public async Task<GridModel<Service>> GetAllCustomPagingByFirst(string key, string pc, int pageNumber, int pageSize)
         {
             var query = from n in _ServiceRepository.Table
                         select n;
@@ -26,7 +62,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrWhiteSpace(key))
             {
-                query = query.Where(n => n.Name.Contains(key));
+                query = query.Where(n => n.Name.Contains(key) || n.Code.Contains(key));
             }
 
 
@@ -35,8 +71,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             var model = GridModelHelper<Service>.GetPage(pageList.OrderByDescending(n => n.Name).ToList(), pageNumber, pageSize, pageList.TotalItemCount, pageList.PageCount);
 
-            return null;
-            //return await Task.FromResult(model);
+            return await Task.FromResult(model);
+        }
+
+        public async Task<Service> GetById(string id)
+        {
+            return await _ServiceRepository.GetOneById(id);
+        }
+
+        public async Task<MessageReport> Update(Service oldObj)
+        {
+            return await _ServiceRepository.Update(oldObj);
         }
     }
 }

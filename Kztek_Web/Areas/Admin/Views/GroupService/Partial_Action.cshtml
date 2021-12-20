@@ -1,0 +1,88 @@
+﻿
+@using Kztek_Library.Helpers
+@model Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.Service>
+
+@{
+    var action = Model.Action;
+    var controller = Model.Controller;
+    ViewBag.Title = action.Contains("Create") ? await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:CREATE" })
+                                              : await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:UPDATE" });
+    int pn = Model.Page;
+}
+
+<div class="page-header">
+    <h1>
+        @ViewBag.Title
+    </h1>
+</div>
+
+<div class="row">
+    @if (TempData["Success"] != null)
+    {
+        <strong style="color:green">@TempData["Success"]</strong>
+    }
+    <strong style="color:red">@ViewBag.Error</strong>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @using (Html.BeginForm(action, controller, FormMethod.Post, new { encType = "multipart/form-data", @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+            @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
+            @Html.Hidden("key", (string)ViewBag.keyValue)
+            @if (action.Contains("Create"))
+            {
+                @Html.Hidden("SaveAndCountinue", false)
+            }
+            else
+            {
+                @Html.HiddenFor(n => n.Model.Id)
+                @Html.Hidden("page", pn)
+            }
+
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Mã tổ </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Code", Model.Model.Code, new { @class = "form-control", @placeholder = "Code" })
+                    @Html.ValidationMessage("Code", "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Tổ </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("Name", Model.Model.Name, new { @class = "form-control", @placeholder = "Name" })
+                    @Html.ValidationMessage("Name", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            @if (action.Contains("Create"))
+            {
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Mô tả </label>
+                    <div class="col-sm-3 col-xs-12">
+                        @Html.TextArea("Description", Model.Model.Description, new { @class = "form-control", @placeholder = "Mô tả" })
+                        @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+           
+
+
+
+            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+            {
+          ControllerName = controller,
+          ActionName = action,
+          RecordId = "",
+          model = new { AreaCode = ViewBag.AreaCodeValue },
+          Auth_Value = null
+      })
+
+        }
+    </div>
+</div>
+

@@ -686,5 +686,13 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             };
             return model;
         }
+
+        public async Task<tbl_Event> GetByService(string id)
+        {
+            var query = from n in _tbl_EventRepository.Table
+                        where n.Service == id
+                        select n;
+            return await Task.FromResult(query.FirstOrDefault());
+        }
     }
 }

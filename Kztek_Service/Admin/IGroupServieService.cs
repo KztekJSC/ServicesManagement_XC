@@ -11,5 +11,9 @@ namespace Kztek_Service.Admin
     public interface IGroupServieService
     {
         Task<GridModel<Service>> GetAllCustomPagingByFirst(string key, string pc, int page, int v);
+        Task<MessageReport> Create(Service model);
+        Task<Service> GetById(string id);
+        Task<MessageReport> Update(Service oldObj);
+        Task<MessageReport> DeleteById(string id);
     }
 }

@@ -65,14 +65,18 @@
 
                 <td class="center">
                     @{
-                        var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
-                        if (obj1 != null)
+                        if (item.Service != null)
                         {
-                            <span>@obj1.Name</span>
+                            var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                            if (obj1 != null)
+                            {
+                                <span>@obj1.Name</span>
+                            }
                         }
+
                     }
 
-                    
+
                 </td>
 
 

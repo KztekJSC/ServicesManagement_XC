@@ -126,7 +126,7 @@
     {
         <div class="col-xs-12">
             <div class="pull-right">
-                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "tblCamera", new
+                @Html.GeneratePagingFooter(Model.TotalPage, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Index", "Group", new
            {
                page = x,
                key = ViewBag.keyValue,
