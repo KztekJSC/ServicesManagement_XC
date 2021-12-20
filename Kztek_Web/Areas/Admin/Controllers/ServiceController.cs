@@ -195,8 +195,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             oldObj.Weight = Convert.ToDecimal( model.weight);
             oldObj.VehicleType = model.vehicleType;
             oldObj.ServiceCode = model.serviceCode;
-            oldObj.ProductGroup = model.productGroup;
-            oldObj.Service = model.service;
+            oldObj.ProductGroup = model.productGroup;       
             oldObj.Price = Convert.ToDecimal( model.price);
           
             oldObj.SubPrice = Convert.ToDecimal(model.subPrice);

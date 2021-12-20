@@ -103,7 +103,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Dịch vụ</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("serviceName", Model.serviceName, new { @class = "form-control", @placeholder = "Nhóm hàng hóa" })
+                    @Html.TextBox("serviceName", Model.serviceName, new { @class = "form-control", @placeholder = "Nhóm hàng hóa", @disabled = "disabled" })
                     @Html.ValidationMessage("serviceName", "", new { @class = "text-danger" })
                 </div>
             </div>
