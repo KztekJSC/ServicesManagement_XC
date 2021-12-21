@@ -283,7 +283,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var list = await _tbl_EventService.GetListServiceByGroup(id);
          
             var lst = new List<tbl_Event_Cus>();
-            foreach (var obj in list)
+            foreach (var obj in list.OrderByDescending(n => n.StartDate))
             {
                 var objService = await _ServiceService.GetById(obj.Service);
                 var model = new tbl_Event_Cus();
@@ -301,6 +301,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 model.GroupId = obj.GroupId;
                 model.description = obj.Description;
                 model.serviceName = objService.Name;
+                model.StartDate = obj.StartDate.Date != DateTime.MaxValue.Date ? obj.StartDate.ToString("dd/MM/yyyy HH:mm:ss") : "";
+                model.EventTypeName = obj.EventType == 3 ? "<span class='label label-yellow'>Chưa thực hiện</span>" : "<span class='label' style='background-color: #385822'>Đang thực hiện</span>";
                 lst.Add(model);
             }
             ViewBag.Id = id;
