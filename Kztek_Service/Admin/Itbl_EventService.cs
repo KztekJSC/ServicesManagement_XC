@@ -17,7 +17,7 @@ namespace Kztek_Service.Admin
         Task<MessageReport> DeleteById(string id);
         Task<tbl_Event> GetById(string id);
         Task<MessageReport> Update(tbl_Event oldObj);
-         Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate);
+         Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate, string ServiceId = "", string GroupId = "");
         Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "");
         Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int v, string statusID, string fromdate, string todate);
         Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int v, string statusID, string fromdate, string todate);
@@ -53,7 +53,7 @@ namespace Kztek_Service.Admin
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        Task<List<CountEventByType>> CountEventByType(HttpContext httpContext);
+        Task<List<CountEventByType>> CountEventByType(HttpContext httpContext,string fromdate);
 
     }
 }

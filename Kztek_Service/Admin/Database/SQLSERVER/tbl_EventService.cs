@@ -182,13 +182,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int pageSize, string statusID, string fromdate, string todate)
         {
             var currentUser = SessionCookieHelper.CurrentUser(httpContext).Result;
-
+            var tdate = Convert.ToDateTime(fromdate);
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) as RowNumber,a.*", "EventType"));
             sb.AppendLine("FROM(");
-            sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and EventType IN(3,4,5,6)  and  IsDeleted = 0");
+            sb.AppendLine("  SELECT * FROM [tbl_Event]");
+            sb.AppendLine("WHERE 1 =1 AND EventType IN(3,4,5,6)  AND  IsDeleted = 0");
+            sb.AppendLine(string.Format("AND  FORMAT(DivisionDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -262,6 +263,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] where 1 = 1 AND EventType IN(3,4,5,6)  AND  IsDeleted = 0");
+            sb.AppendLine(string.Format("AND  FORMAT(DivisionDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
@@ -331,14 +333,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(model);
         }
 
-        public async Task<List<CountEventByType>> CountEventByType(HttpContext httpContext)
+        public async Task<List<CountEventByType>> CountEventByType(HttpContext httpContext,string fromdate)
         {
             var currentUser = SessionCookieHelper.CurrentUser(httpContext).Result;
-
+            var tdate = Convert.ToDateTime(fromdate);
             var sb = new StringBuilder();
             sb.AppendLine("SELECT EventType,Count(*) as Number from [tbl_Event]");
-            sb.AppendLine("WHERE EventType IN(3,4)  and  IsDeleted = 0");
-
+            sb.AppendLine("WHERE EventType IN(3,4,5,6)  and  IsDeleted = 0");
+            sb.AppendLine(string.Format("AND  FORMAT(DivisionDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
             //nếu tk đăng nhập không phải admin thì lấy dữ liệu theo tổ được phân quyền
             if (currentUser != null && !currentUser.isAdmin)
             {
@@ -381,6 +383,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             listData.Add(new CountEventByType { EventType = 99, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-truck", Title = "Việc cần hoàn thành" });
 
+            listData.Add(new CountEventByType { EventType = 6, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-check", Title = "Việc đã hoàn thành" });
+
+            listData.Add(new CountEventByType { EventType = 5, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-spinner", Title = "Việc đang chờ duyệt" });
+
             if (list != null && list.Count > 0)
             {
                 foreach (var item in list)
@@ -393,9 +399,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     }
                 }
 
-                var objTotal = listData.FirstOrDefault(n => n.EventType == 99);
-
-                objTotal.Number = listData.Sum(n => n.Number);
+                var objTotal = listData.FirstOrDefault(n => n.EventType == 99 );
+                foreach (var item1 in listData)
+                {
+                    if (item1.EventType == 3 || item1.EventType == 4 || item1.EventType == 5)
+                    {
+                        objTotal.Number +=  item1.Number;
+                    }
+                }
+                //objTotal.Number = listData.Sum(n => n.Number );
             }
 
             return await Task.FromResult(listData);
@@ -493,7 +505,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(model);
         }
 
-        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate, string ServiceId , string GroupId )
         {
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
 
@@ -511,11 +523,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE N'%{0}%' OR  ProductType LIKE N'%{0}%' OR Weight LIKE N'%{0}%'  OR VehicleType LIKE N'%{0}%' OR ProductGroup LIKE N'%{0}%') ", key));
             }
 
 
@@ -541,7 +553,50 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
                 }
             }
+            //Service
+            if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
+            {
+                var t = ServiceId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
 
+                    sb.AppendLine("and ([Service] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            //Group
+            if (!string.IsNullOrWhiteSpace(GroupId) && GroupId != "00")
+            {
+                var t = GroupId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([GroupId] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
             sb.AppendLine(") AS a");
 
             sb.AppendLine(") AS C1");
@@ -560,11 +615,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%') ", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE N'%{0}%' OR  ProductType LIKE N'%{0}%' OR Weight LIKE N'%{0}%'  OR VehicleType LIKE N'%{0}%' OR ProductGroup LIKE N'%{0}%') ", key));
             }
 
             //event Code
@@ -576,6 +631,50 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     var count = 0;
 
                     sb.AppendLine("AND ([EventType] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            //Service
+            if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
+            {
+                var t = ServiceId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([Service] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            //Group
+            if (!string.IsNullOrWhiteSpace(GroupId) && GroupId != "00")
+            {
+                var t = GroupId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([GroupId] IN ( ");
 
                     foreach (var item in t)
                     {

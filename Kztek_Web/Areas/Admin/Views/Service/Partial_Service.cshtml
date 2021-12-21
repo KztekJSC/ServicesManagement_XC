@@ -15,6 +15,7 @@
     <table class="table  table-bordered table-hover">
         <thead>
             <tr>
+                
                 <th class="text-center">STT</th>
                 <th class="text-center">Số trang</th>
                 <th class="text-center">
@@ -34,7 +35,7 @@
                 <th class="text-center">Giá dịch vụ</th>
                 <th class="text-center">Phụ thu</th>
                 <th class="text-center">Ghi chú </th>
-                @*<th class="text-center">Tổ bốc xếp</th>*@
+                <th class="text-center">Tổ bốc xếp</th>
                 <th class="text-left">Ảnh CN </th>
                 <th class="text-left">Ảnh VN </th>
                 <th class="text-center"></th>
@@ -44,6 +45,7 @@
         <tbody>
             @if (Model.Data.Any())
             {
+               
                 var count = 0;
                 foreach (var item in Model.Data)
                 {
@@ -93,13 +95,13 @@
                             @{
                                 if (item.Service != null)
                                 {
-                                
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
+
+                                    var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                                    if (obj1 != null)
+                                    {
+                                        <span>@obj1.Name</span>
+                                    }
                                 }
-                            }
                             }
                         </td>
                         <td class="center">
@@ -111,7 +113,7 @@
                         <td class="center">
                             @item.Description
                         </td>
-                        @*<td class="center">
+                        <td class="center">
                             @{
                                 var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
                                 if (obj != null)
@@ -119,10 +121,10 @@
                                     <span>@obj.Name</span>
                                 }
                             }
-                        </td>*@
+                        </td>
                         <td class="center">
                             <div class="ace-thumbnails clearfix">
-                           
+
                                 @if (!string.IsNullOrWhiteSpace(item.ImageCN))
                                 {
                                     var newobj = new ImageFPTModel
@@ -164,14 +166,14 @@
                                model = new { id = item.Id },
                                Auth_Value = authModel
                            })
-                              @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                              {
-          ControllerName = "Service",
-          ActionName = "Delete",
-          RecordId = item.Id,
-          model = null,
-          Auth_Value = authModel
-          })
+                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                {
+            ControllerName = "Service",
+            ActionName = "Delete",
+            RecordId = item.Id,
+            model = null,
+            Auth_Value = authModel
+            })
                             </div>
                         </td>
                     </tr>
@@ -189,9 +191,10 @@
             @Html.GeneratePagingFooterAjax(Model.TotalPage,Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Service", "Service", new
        {
            page = x,
-           key = ViewBag.keyValue,       
+           key = ViewBag.keyValue,
            StatusID = ViewBag.StatusID,
-         
+           ServiceId =  ViewBag.ServiceID ,
+           GroupId = ViewBag.GroupID 
 
        }))
         </div>

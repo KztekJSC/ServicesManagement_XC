@@ -15,6 +15,7 @@
         @ViewBag.Title (<span id="spCount">0</span>)
     </h1>
 </div>
+
 @using (Html.BeginForm("Index", "ConfirmedGroup", FormMethod.Get, new { id = "frmService" }))
 {
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
@@ -33,7 +34,32 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control drp_auto_input" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
 
+            </div>
+        </div>
+
+        @*<div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+        </div>*@
+
+
+
+
+    </div>
     <div class="row">
         <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
             <br />

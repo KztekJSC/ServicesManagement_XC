@@ -44,14 +44,14 @@
 
 
             <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> Mã tổ </label>
+                <label class="col-sm-3 control-label no-padding-right"> Mã dịch vụ</label>
                 <div class="col-sm-3 col-xs-12">
                     @Html.TextBox("Code", Model.Model.Code, new { @class = "form-control", @placeholder = "Code" })
                     @Html.ValidationMessage("Code", "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> Tổ </label>
+                <label class="col-sm-3 control-label no-padding-right"> Tên dịch vụ </label>
                 <div class="col-sm-3 col-xs-12">
                     @Html.TextBox("Name", Model.Model.Name, new { @class = "form-control", @placeholder = "Name" })
                     @Html.ValidationMessage("Name", "", new { @class = "text-danger" })

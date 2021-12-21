@@ -81,7 +81,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
+        public async Task<IActionResult> Index(string StatusID = "", string ServiceId ="" ,string GroupId = "",string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
         {
             var datefrompicker = "";
            
@@ -102,14 +102,17 @@ namespace Kztek_Web.Areas.Admin.Controllers
            
             ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
 
-            ViewBag.keyValue = key;  
-            
+            ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
+
+            ViewBag.LstGrSelect = await _GroupService.GetaSelectModelChoseGroup(selecteds: GroupId);
+
+          
             ViewBag.AreaCodeValue = AreaCode;
 
             return View();
         }
 
-        public async Task<IActionResult> Partial_Service(string StatusID = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        public async Task<IActionResult> Partial_Service(string StatusID = "", string ServiceId = "", string GroupId = "", string key = "", string fromdate = "", string todate = "", int page = 1)
         {
           
 
@@ -123,7 +126,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
             }
 
-            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate, ServiceId, GroupId);
 
             ViewBag.Groups = await _GroupService.GetAll();
 
@@ -131,6 +134,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
 
+            ViewBag.keyValue = key;
+
+            ViewBag.ServiceID = ServiceId;
+
+            ViewBag.GroupID = GroupId;
             return PartialView(gridModel);
            
         }

@@ -68,6 +68,8 @@ var ServiceController = {
         var obj = {
             key: $("input[name=key]").val(),
             StatusID: $("#StatusID").val(),
+            ServiceId: $("#ServiceId").val(),
+            GroupId: $("#GroupId").val(),
             page: page
         };
 

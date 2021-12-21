@@ -14,19 +14,31 @@
 {
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
     @Html.Hidden("chkExport", "0")
-    <div class="row">
-        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-            Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số..." class="form-control" />
-        </div>
-
-        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-
-            <span class="lbl">Trạng thái sự kiện </span>
-            @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
-
-        </div>
+<div class="row">
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+        Từ khóa
+        <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số..." class="form-control" />
     </div>
+
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Trạng thái sự kiện </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+
+    </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Dịch vụ </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.LstService)
+
+    </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Tổ bốc xếp </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.LstGrSelect)
+
+    </div>
+</div>
 
 
     <div class="row">

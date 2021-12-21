@@ -60,18 +60,18 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1)
+        public async Task<IActionResult> Partial_ConfirmedGroup(string StatusID = "", string key = "", int page = 1, string fromdate = "")
         {
        
             ViewBag.lstService = await _ServiceService.GetAll();
-            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(this.HttpContext,key, page, 20, StatusID, "", "");
+            var gridModel = await _tbl_EventService.GetPagingConfirmGroup(this.HttpContext,key, page, 20, StatusID, fromdate, "");
             return PartialView(gridModel);
 
         }
 
-        public async Task<IActionResult> Partial_CountEvent()
+        public async Task<IActionResult> Partial_CountEvent(string fromdate = "")
         {
-            var list = await _tbl_EventService.CountEventByType(this.HttpContext);
+            var list = await _tbl_EventService.CountEventByType(this.HttpContext, fromdate);
 
             return PartialView(list);
         }

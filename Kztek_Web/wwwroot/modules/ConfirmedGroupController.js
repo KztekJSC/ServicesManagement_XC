@@ -5,6 +5,7 @@
 
     $('body').on('click', '.btnSearch', function () {
         ConfirmedGroupController.PartialConfirmedGroup(1);
+        ConfirmedGroupController.PartialCountEvent();
     })
 
     $('body').on('click', '#pagConfGroup li a', function () {
@@ -18,7 +19,8 @@
 
     $('body').on('click', '.btnStart', function () {
         var id = $(this).attr("idata");
-
+      
+    
         bootbox.confirm({
             message: "<h3 style='font-weight:bold'>Bạn chắc chắn muốn bắt đầu công việc này?</h3>",
             buttons: {
@@ -70,6 +72,7 @@ var ConfirmedGroupController = {
         var obj = {
             key: $("input[name=key]").val(),
             StatusID: $("#StatusID").val(),
+            fromdate: $("#fromdate").val(),
             page: page
         };
 
@@ -106,7 +109,7 @@ var ConfirmedGroupController = {
     },
     PartialCountEvent: function () {
         var obj = {
-            
+            fromdate: $("#fromdate").val(),
         };
 
         JSHelper.AJAX_LoadDataPOST('/Admin/ConfirmedGroup/Partial_CountEvent', obj)
