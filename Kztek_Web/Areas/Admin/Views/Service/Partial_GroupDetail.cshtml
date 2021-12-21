@@ -1,7 +1,7 @@
 ﻿@model List<Kztek_Model.Models.tbl_Event_Cus>
 
 <tr class="showDetailBox-child-@ViewBag.Id trHide bgRowColor">
-    <td colspan="3">
+    <td colspan="6">
         <!--Tab detail-->
         <div class="tabbable SubTab">
             <ul class="nav nav-tabs" id="myTab">
@@ -20,23 +20,34 @@
                     <table class="col-sm-9 col-xs-12 table table-bordered table-striped" id="tblLot" style="margin-top:15px">
                         <thead>
                             <tr>
-
+                                <th>STT</th>
                                 <th>Dịch vụ</th>
                                 <th>Loại hàng</th>
                                 <th>Nhóm hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Bắt đầu</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if (Model != null && Model.Count > 0)
                             {
+                                int count = 0;
                                 foreach (var item in Model)
                                 {
-
+                                    count++;
                                     <tr>
+                                        <td>@count</td>
                                         <td>@item.serviceName</td>
                                         <td>@item.productType</td>
                                         <td>@item.productGroup</td>
-                                        
+                                        <td class="text-center">
+                                            @if (!string.IsNullOrEmpty(item.EventTypeName))
+                                            {
+                                                @Html.Raw(item.EventTypeName)
+                                            }
+                                        </td>
+                                        <td class="text-center">@item.StartDate
+                                        </td>
                                     </tr>
                                 }
 

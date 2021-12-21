@@ -40,6 +40,12 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             query.AppendLine(string.Format("Set VehicleType = N'{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 1,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe vào
             query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN",obj.image)); //ảnh xe
+
+            //đổi sang trạng thái đã xác nhận
+            //nếu type == VN thì kiểm tra giờ vào xe CN và ngược lại
+            //nếu thời gian vào loại xe CN đã có thì chuyển trang thái sang đã xác nhận ko thì giữ nguyên
+            query.AppendLine(string.Format("EventType = (CASE WHEN FORMAT ({0}, 'yyyy-MM-dd') != '9999-12-31' THEN 2 ELSE 1 END),", obj.type == "VN" ? "TimeInCN" : "TimeInVN"));
+
             query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss") )); //thời gian vào
             query.AppendLine("where IsDeleted = 0 and EventType = 1");
             query.AppendLine(string.Format("and {0} = 0", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe chưa vào

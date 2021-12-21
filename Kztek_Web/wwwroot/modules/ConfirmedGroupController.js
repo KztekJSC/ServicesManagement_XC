@@ -45,25 +45,12 @@
 
     $('body').on('click', '.btnEnd', function () {
         var id = $(this).attr("idata");
+        ConfirmedGroupController.ModalInfo(id);
+      
+    })
 
-        bootbox.confirm({
-            message: "<h3 style='font-weight:bold'>Bạn đã hoàn thành công việc chưa?</h3>",
-            buttons: {
-                confirm: {
-                    label: 'Hoàn thành',
-                    className: 'btn-primary'
-                },
-                cancel: {
-                    label: 'Hủy',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if (result) {
-                    ConfirmedGroupController.UpdateService(id, 4);
-                }
-            }
-        }); 
+    $('body').on('click', '#ModalInfo #btnCompleted', function () {
+        ConfirmedGroupController.SaveService();
     })
 })
 
@@ -107,6 +94,37 @@ var ConfirmedGroupController = {
                
             });
     },
+    SaveService: function () {
+
+        var frm = $("#frmInfo");
+
+        var obj = {
+            ServiceCode: frm.find("input[name=txtServiceCode]").val(),
+            VehicleType: frm.find("input[name=txtVehicleType]").val(),
+            PackageNumber: frm.find("input[name=txtPackageNumber]").val(),
+            Weight: frm.find("input[name=txtWeight]").val(),
+            Id: $("#serId").val()
+        };
+
+        JSHelper.AJAX_HttpPost('/Admin/ConfirmedGroup/SaveService', obj)
+            .done(function (data) {
+
+                if (data.isSuccess) {
+                    $("#ModalInfo").modal("hide");
+
+                    var page = $("#pagConfGroup li.active a").attr("idata");
+
+                    ConfirmedGroupController.PartialConfirmedGroup(page);
+
+                    ConfirmedGroupController.PartialCountEvent();
+
+                    toastr.success("Cập nhật thành công");
+                } else {
+                    toastr.error(data.Message);
+                }
+
+            });
+    },
     PartialCountEvent: function () {
         var obj = {
             fromdate: $("#fromdate").val(),
@@ -118,5 +136,16 @@ var ConfirmedGroupController = {
                 $('#boxCountEvent').html(data);
             });
     },
-   
+    ModalInfo: function (id) {
+        var obj = {
+            id: id
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/ConfirmedGroup/Modal_Info', obj)
+            .done(function (data) {
+                $("#boxModal").html(data);
+                $("#ModalInfo").modal("show");
+                JSLoader.load_MaskInput();
+            });
+    },
 }
