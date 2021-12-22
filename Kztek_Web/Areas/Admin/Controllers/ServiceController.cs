@@ -189,7 +189,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 ViewBag.Error = await LanguageHelper.GetLanguageText("MESSAGE:RECORD:NOTEXISTS");
                 return View(model);
             }
-
+            var oldObj1 = await _tbl_EventService.GetByCustomById(model.Id.ToString());
 
 
             if (!ModelState.IsValid)
@@ -205,23 +205,59 @@ namespace Kztek_Web.Areas.Admin.Controllers
             oldObj.ServiceCode = model.serviceCode;
             oldObj.ProductGroup = model.productGroup;       
             oldObj.Price = Convert.ToDecimal( model.price);
-          
+            //oldObj.EventType = 2;
             oldObj.SubPrice = Convert.ToDecimal(model.subPrice);
             oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
             oldObj.Description = model.description;
             //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
+            oldObj.ParkingPosition = model.ParkingPosition;
             oldObj.CreatedDate = DateTime.Now;
             oldObj.ModifiedDate = DateTime.Now;
             //oldObj.TimeInVN =
-
+        
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
 
 
             if (result.isSuccess)
             {
+                //thông tin cũ
+            
+                var oldModel = new tbl_Event_Cus();
+                oldModel.plateVN = oldObj1.plateVN;
+                oldModel.plateCN = oldObj1.plateCN;
+                oldModel.productType = oldObj1.productType;
+                oldModel.weight = oldObj1.weight.ToString();
+                oldModel.vehicleType = oldObj1.vehicleType;
+                oldModel.serviceCode = oldObj1.serviceCode;
+                oldModel.productGroup = oldObj1.productGroup;
+                oldModel.price = oldObj1.price;
+                oldModel.EventType = oldObj1.EventType ;
+                oldModel.ParkingPosition = oldObj1.ParkingPosition;
+                oldModel.subPrice = (oldObj1.subPrice);
+                oldModel.GroupId = oldObj1.GroupId != null ? oldObj.GroupId : "";
+                oldModel.description = oldObj1.description;
+                var jsStrOld = Newtonsoft.Json.JsonConvert.SerializeObject(oldModel);
 
-                await LogHelper.WriteLog(oldObj.Id.ToString(), ActionConfig.Update,"tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext);
+                //thông tin mới
+
+                var NewModel = new tbl_Event_Cus();
+                NewModel.plateVN = model.plateVN;
+                NewModel.plateCN = model.plateCN;
+                NewModel.productType = model.productType;
+                NewModel.weight = model.weight.ToString();
+                NewModel.vehicleType = model.vehicleType;
+                NewModel.serviceCode = model.serviceCode;
+                NewModel.productGroup = model.productGroup;
+                NewModel.price = model.price;
+                NewModel.EventType = model.EventType;
+                NewModel.ParkingPosition = model.ParkingPosition;
+                NewModel.subPrice = (model.subPrice);
+                NewModel.GroupId = model.GroupId != null ? model.GroupId : "";
+                NewModel.description = model.description;
+                var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
+               await LogHelper.WriteLogupdateService(oldObj.Id.ToString(), ActionConfig.Update, "tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext, jsStrOld, jsStrNew);
+
                 return RedirectToAction("Index");
             }
             else

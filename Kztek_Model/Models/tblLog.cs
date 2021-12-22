@@ -20,5 +20,8 @@ namespace Kztek_Model.Models
         public string Description { get; set; }
         public string IPAddress { get; set; }
         public string ComputerName { get; set; }
+
+        public string OldInfo { get; set; }
+        public string NewInfo { get; set; }
     }
 }

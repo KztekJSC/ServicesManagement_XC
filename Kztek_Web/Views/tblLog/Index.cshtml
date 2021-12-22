@@ -103,7 +103,9 @@
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:SubSystemCode" }) </th>
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ObjectName" }) </th>
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" }) </th>
-                    <th class="text-left">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" }) </th>
+                    @*<th class="text-left">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" }) </th>*@
+                    <th class="center">Thông tin cũ </th>
+                    <th class="center">Thông tin mới </th>
                 </tr>
             </thead>
 
@@ -112,34 +114,225 @@
                 {
                     foreach (var item in Model.Data)
                     {
-                        <tr>
-                            <td class="text-left hidden-480">
-                                @Convert.ToDateTime(item.Date).ToString("dd/MM/yyyy HH:mm:ss")
-                            </td>
+                <tr>
+                    <td class="text-left hidden-480">
+                        @Convert.ToDateTime(item.Date).ToString("dd/MM/yyyy HH:mm:ss")
+                    </td>
 
-                            <td class="text-left">
-                                @item.ComputerName
-                            </td>
+                    <td class="text-left">
+                        @item.ComputerName
+                    </td>
 
-                            <td class="text-left">
-                                @item.UserName
-                            </td>
+                    <td class="text-left">
+                        @item.UserName
+                    </td>
 
-                            <td class="text-left hidden-480">
-                                @item.SubSystemCode
-                            </td>
+                    <td class="text-left hidden-480">
+                        @item.SubSystemCode
+                    </td>
 
-                            <td class="text-left hidden-480">
-                                @item.ObjectName
-                            </td>
+                    <td class="text-left hidden-480">
+                        @item.ObjectName
+                    </td>
 
-                            <td class="text-left hidden-480">
-                                @item.Actions
-                            </td>
-                            <td class="text-left">
-                                @item.Description
-                            </td>
-                        </tr>
+                    <td class="text-left hidden-480">
+                        @item.Actions
+                    </td>
+                    @*<td class="text-left hidden-480">
+                        @item.Description
+                    </td>*@
+                    <td class="text-left">
+                        @{
+                            if (item.OldInfo != null)
+                            {
+                                var objOld = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.OldInfo);
+                                if (objOld.serviceCode != null)
+                                {
+                                    <p>Số trang : @objOld.serviceCode</p>
+                                }
+                                else
+                                {
+
+                                }
+                                if (objOld.plateVN != null || objOld.plateVN == "")
+                                {
+                                    <p>Biển số VN : @objOld.plateVN</p>
+                                }
+                                else
+                                {
+
+                                }
+
+                                if (objOld.plateCN == null || objOld.plateCN == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Biển số TQ: @objOld.plateCN</p>
+                                }
+                                if (objOld.productType == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Loại hàng : @objOld.productType</p>
+                                }
+                                if (objOld.weight == null || objOld.weight == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Khối lượng: @objOld.weight</p>
+                                }
+
+                                if (objOld.vehicleType != null)
+                                {
+                                    <p>Loại xe : @objOld.vehicleType</p>
+                                }
+                                else
+                                {
+
+                                }
+
+
+                                if (objOld.price == null || objOld.price == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Giá dịch vụ : @objOld.price</p>
+                                }
+                                if (objOld.subPrice == null || objOld.subPrice == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Phụ thu : @objOld.subPrice</p>
+                                }
+                                if (objOld.ParkingPosition == null || objOld.ParkingPosition == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Vị trí đỗ : @objOld.ParkingPosition</p>
+                                }
+                                if (objOld.description == null || objOld.description == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Ghi chú : @objOld.description</p>
+                                }
+                            }
+
+
+
+                        }
+
+                    </td>
+                    <td class="text-left">
+                        @{
+                            if (item.NewInfo != null)
+                            {
+                                var objNew = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.NewInfo);
+                                if (objNew.serviceCode != null)
+                                {
+                                    <p>Số trang : @objNew.serviceCode</p>
+                                }
+                                else
+                                {
+
+                                }
+                                if (objNew.plateVN != null || objNew.plateVN == "")
+                                {
+                                    <p>Biển số VN : @objNew.plateVN</p>
+                                }
+                                else
+                                {
+
+                                }
+
+                                if (objNew.plateCN == null || objNew.plateCN == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Biển số TQ: @objNew.plateCN</p>
+                                }
+                                if (objNew.productType == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Loại hàng : @objNew.productType</p>
+                                }
+                                if (objNew.weight == null || objNew.weight == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Khối lượng: @objNew.weight</p>
+                                }
+
+                                if (objNew.vehicleType != null)
+                                {
+                                    <p>Loại xe : @objNew.vehicleType</p>
+                                }
+                                else
+                                {
+
+                                }
+
+
+                                if (objNew.price == null || objNew.price == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Giá dịch vụ : @objNew.price</p>
+                                }
+                                if (objNew.subPrice == null || objNew.subPrice == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Phụ thu : @objNew.subPrice</p>
+                                }
+                                if (objNew.ParkingPosition == null || objNew.ParkingPosition == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Vị trí đỗ : @objNew.ParkingPosition</p>
+                                }
+                                if (objNew.description == null || objNew.description == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Ghi chú : @objNew.description</p>
+                                }
+                            }
+
+
+
+                        }
+                    </td>
+                </tr>
                     }
                 }
             </tbody>

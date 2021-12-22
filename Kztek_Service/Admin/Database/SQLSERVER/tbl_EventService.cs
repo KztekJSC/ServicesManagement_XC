@@ -70,6 +70,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             model.vehicleType = obj.ProductType;
             model.productGroup = obj.ProductGroup;
             model.service = obj.Service;
+            model.ParkingPosition = obj.ParkingPosition;
             model.price = obj.Price.ToString("###,###.##");
             model.subPrice = obj.SubPrice.ToString("###,###.##");
             model.GroupId = obj.GroupId;
@@ -377,15 +378,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             var listData = new List<CountEventByType>();
 
-            listData.Add(new CountEventByType { EventType = 3, Number = 0, ColorClass = "infobox-pink", Icon = "fa-gavel", Title = "Việc chưa làm" });
+            listData.Add(new CountEventByType { EventType = 3, Number = 0, ColorClass = "infobox-pink", Icon = "fa-gavel", Title = "Đã phân tổ" });
 
-            listData.Add(new CountEventByType { EventType = 4, Number = 0, ColorClass = "infobox-red", Icon = "fa-briefcase", Title = "Việc đang thực hiện" });
+            listData.Add(new CountEventByType { EventType = 4, Number = 0, ColorClass = "infobox-red", Icon = "fa-briefcase", Title = "Đang thực hiện" });
 
-            listData.Add(new CountEventByType { EventType = 99, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-truck", Title = "Việc cần hoàn thành" });
+            listData.Add(new CountEventByType { EventType = 6, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-check", Title = "Đã hoàn thành" });
 
-            listData.Add(new CountEventByType { EventType = 6, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-check", Title = "Việc đã hoàn thành" });
+            listData.Add(new CountEventByType { EventType = 5, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-spinner", Title = "Đang chờ duyệt" });
 
-            listData.Add(new CountEventByType { EventType = 5, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-spinner", Title = "Việc đang chờ duyệt" });
+            listData.Add(new CountEventByType { EventType = 99, Number = 0, ColorClass = "infobox-orange2", Icon = "fa-truck", Title = "Việc trong ngày" });
 
             if (list != null && list.Count > 0)
             {
@@ -400,14 +401,14 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 }
 
                 var objTotal = listData.FirstOrDefault(n => n.EventType == 99 );
-                foreach (var item1 in listData)
-                {
-                    if (item1.EventType == 3 || item1.EventType == 4 || item1.EventType == 5)
-                    {
-                        objTotal.Number +=  item1.Number;
-                    }
-                }
-                //objTotal.Number = listData.Sum(n => n.Number );
+                //foreach (var item1 in listData)
+                //{
+                //    if (item1.EventType == 3 || item1.EventType == 4 || item1.EventType == 5)
+                //    {
+                //        objTotal.Number +=  item1.Number;
+                //    }
+                //}
+                objTotal.Number = listData.Sum(n => n.Number);
             }
 
             return await Task.FromResult(listData);

@@ -16,27 +16,11 @@
 
     $('body').on('click', '.btnOK', function () {
         var id = $(this).attr("idata");
-
-        bootbox.confirm({
-            message: "<h3 style='font-weight:bold'>Bạn đồng ý xác nhận công việc này?</h3>",
-            buttons: {
-                confirm: {
-                    label: 'Đồng ý',
-                    className: 'btn-primary'
-                },
-                cancel: {
-                    label: 'Hủy',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if (result) {
-                    CoordinatorController.UpdateService(id);
-                }
-            }
-        });
-
-
+        CoordinatorController.ModalInforCoordior(id);
+      
+    })
+    $('body').on('click', '#ModalInfor #btnCompleted', function () {
+        CoordinatorController.SaveService();
     })
 
 })
@@ -69,6 +53,49 @@ var CoordinatorController = {
                     var page = $("#pagConfGroup li.active a").attr("idata");
 
                     CoordinatorController.PartialCoordinator(page);
+
+                    toastr.success("Cập nhật thành công");
+                } else {
+                    toastr.error(data.Message);
+                }
+
+            });
+    },
+    ModalInforCoordior: function (id) {
+        var obj = {
+            id: id
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Coordinator/Modal_Info', obj)
+            .done(function (data) {
+                $("#boxModal").html(data);
+                $("#ModalInfor").modal("show");
+                JSLoader.load_MaskInput();
+            });
+    },
+    SaveService: function () {
+
+        var frm = $("#frmInfo");
+
+        var obj = {
+            ServiceCode: frm.find("input[name=txtServiceCode]").val(),
+            VehicleType: frm.find("input[name=txtVehicleType]").val(),
+            PackageNumber: frm.find("input[name=txtPackageNumber]").val(),
+            Weight: frm.find("input[name=txtWeight]").val(),
+            Id: $("#serId").val()
+        };
+
+        JSHelper.AJAX_HttpPost('/Admin/Coordinator/SaveService', obj)
+            .done(function (data) {
+
+                if (data.isSuccess) {
+                    $("#ModalInfor").modal("hide");
+
+                    var page = $("#pagCoordinator li.active a").attr("idata");
+
+                    CoordinatorController.PartialCoordinator(page);
+
+                 
 
                     toastr.success("Cập nhật thành công");
                 } else {

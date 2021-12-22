@@ -246,5 +246,41 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return Json(result);
         }
         #endregion
+
+        #region Modal xác nhận hoàn thành dịch vụ
+        public async Task<IActionResult> Modal_Info(string id)
+        {
+            var objService = await _tbl_EventService.GetById(id);
+
+            return PartialView(objService);
+        }
+
+        public async Task<IActionResult> SaveService(tbl_Event model)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            var obj = await _tbl_EventService.GetById(model.Id);
+
+            if (obj != null)
+            {
+                obj.EventType = 6; //Hoàn thành
+                obj.EndDate = DateTime.Now;
+                obj.ModifiedDate = DateTime.Now;
+
+                obj.ServiceCode = model.ServiceCode;
+                obj.VehicleType = model.VehicleType;
+                obj.Weight = model.Weight;
+                obj.PackageNumber = model.PackageNumber;
+
+                result = await _tbl_EventService.Update(obj);
+            }
+            else
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+            }
+
+            return Json(result);
+        }
+        #endregion
     }
 }

@@ -34,7 +34,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 key = key.ToLower();
 
-                query = query.Where(n => n.ComputerName.ToLower().Contains(key) || n.Actions.ToLower().Contains(key) || n.ComputerName.ToLower().Contains(key) || n.Description.Contains(key) || n.ObjectName.ToLower().Contains(key) || n.SubSystemCode.ToLower().Contains(key));
+                query = query.Where(n => n.ComputerName.ToLower().Contains(key) || n.Actions.ToLower().Contains(key) || n.ComputerName.ToLower().Contains(key) || n.Description.Contains(key) || n.ObjectName.ToLower().Contains(key) || n.SubSystemCode.ToLower().Contains(key)  );  
             }
 
             if (!string.IsNullOrWhiteSpace(users))

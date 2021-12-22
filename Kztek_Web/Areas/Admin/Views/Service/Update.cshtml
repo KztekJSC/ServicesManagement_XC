@@ -121,12 +121,19 @@
                     @Html.ValidationMessage("subPrice", "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Tổ bốc xếp</label>
                 <div class="col-sm-3 col-xs-12">
                     @await Component.InvokeAsync("ChosenSelect", ViewBag.AllGroup)
                 </div>
-            </div>*@
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Vị trí đỗ</label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("ParkingPosition", Model.ParkingPosition, new { @class = "form-control", @placeholder = "Vị trí đỗ" })
+                    @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Ghi chú</label>
                 <div class="col-sm-3 col-xs-12">
@@ -139,7 +146,7 @@
                 <div class="col-md-offset-3 col-md-8">
                     <button class="btnService" type="submit">
                         <i class="fa fa-check mr-1"></i>
-                        Xác nhận
+                        Lưu
                     </button>
                     <a href='@Url.Action("Index", controller, Model)' class="btnCancel">
                         <i class="fa fa-undo mr-1"></i>

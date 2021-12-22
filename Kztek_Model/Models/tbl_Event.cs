@@ -141,11 +141,11 @@ namespace Kztek_Model.Models
         public string GroupId { get; set; } //Tổ bốc xếp 
         public string serviceName { get; set; } //Dịch vụ
         public string StartDate { get; set; } //Ngày bắt đầu công việc
-
+        public string ParkingPosition { get; set; }//Vị trí đỗ
         public string EndDate { get; set; } //Ngày kết thúc công việc
 
         public string DivisionDate { get; set; } //Ngày phân tổ
-
+        public int EventType { get; set; }
         public string EventTypeName { get; set; }
     }
 
@@ -174,7 +174,7 @@ namespace Kztek_Model.Models
         public string EndDate { get; set; } //Ngày kết thúc công việc
 
         public string DivisionDate { get; set; } //Ngày phân tổ
-
+        public string ParkingPosition { get; set; }//Vị trí đỗ
         public string description { get; set; }
 
 
