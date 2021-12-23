@@ -9,6 +9,7 @@ var JSLoader = {
         JSLoader.load_MaskInput();
         JSLoader.load_ChosenSelect();
         JSLoader.load_MultiSelect();
+        JSLoader.load_MultiSelect_ColumnTable();
         //JSLoader.load_ViewImage();
     },
 
@@ -133,6 +134,30 @@ var JSLoader = {
             buttonClass: 'btn btn-white btn-primary',
             templates: {
                 button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a tabindex="0"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+            },
+            maxHeight: 250
+        });
+
+    },
+
+    load_MultiSelect_ColumnTable: function () {
+
+        $('.multiselectColumn').multiselect({
+            enableFiltering: true,
+            enableHTML: true,
+            nonSelectedText: "-- Lựa chọn --",
+            allSelectedText: "Tất cả đã chọn",
+            nSelectedText: "Đã chọn",
+            numberDisplayed: 1,
+            buttonClass: 'btn btn-white btn-primary',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class=""></span><b class="fa fa-th-list"></b></button>',
                 ul: '<ul class="multiselect-container dropdown-menu"></ul>',
                 filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
                 filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
