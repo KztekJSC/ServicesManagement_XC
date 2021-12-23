@@ -104,6 +104,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
 
+            ViewBag.listSlectColumn = await _ServiceService.SelectColumn();
             ViewBag.LstGrSelect = await _GroupService.GetaSelectModelChoseGroup(selecteds: GroupId);
 
           
@@ -385,6 +386,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
 
             return Json(result);
+        }
+        #endregion
+
+        #region Hiện thị cột 
+        public async Task<IActionResult> Partial_ShowColumn()
+        {
+            var lst = StaticList.Display_Display();
+            return PartialView(lst);
         }
         #endregion
     }

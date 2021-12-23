@@ -9,6 +9,7 @@ var JSLoader = {
         JSLoader.load_MaskInput();
         JSLoader.load_ChosenSelect();
         JSLoader.load_MultiSelect();
+        JSLoader.load_MultiSelect();
         //JSLoader.load_ViewImage();
     },
 

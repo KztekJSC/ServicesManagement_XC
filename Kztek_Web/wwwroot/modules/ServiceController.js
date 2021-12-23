@@ -157,5 +157,18 @@ var ServiceController = {
                     toastr.error(data.Message);
                 }
             });
-    }
+    },
+    PartialShowColumn: function () {
+        var obj = {
+             //controller : "Service" ,
+             //action : "Index"
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_ShowColumn', obj)
+            .done(function (data) {
+                $('#BoxshowColumn').html('');
+                $('#BoxshowColumn').html(data);
+
+            });
+    },
 }

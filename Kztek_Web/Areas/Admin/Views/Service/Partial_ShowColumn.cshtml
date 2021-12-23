@@ -1,0 +1,23 @@
+﻿
+
+
+  @model List<Kztek_Model.ModelCustom.DisplayService>
+
+
+    <div class='btn-group dropdown'>
+        <button class='btn btn-outline-default btn-smd bgc-white btn-h-light-primary btn-a-outline-primary py-1 dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' title='Columns'> <i class='fa fa-th-list text-orange-d1'></i> </button>
+
+        <div class='dropdown-menu dropdown-menu-right'>
+            @foreach (var item in Model)
+            {
+                <label class='dropdown-item dropdown-item-marker  @string.Format("{0}", @item.IsDefault ? "disabled" : "") '>
+                    <input type='checkbox' name='fieldDisplay' data-field='@item.FieldName' value="@item.FieldName" @string.Format("{0}", item.IsDisplay ? "checked" : "") @string.Format("{0}", item.IsDefault ? "disabled" : "")> <span>@item.DisplayName</span>
+                </label>
+            }
+            <div class='dropdown-divider'></div>
+            <button class='btn btn-sm btn-secondary btn-h-purple btn-a-purple btn-block btnSaveChangeDisplay' idata='{0}' idata1='{1}' idata2='{2}'><i class='fa fa-save text-110 mr-1'></i> Save </button>
+        </div>
+    </div>
+
+
+

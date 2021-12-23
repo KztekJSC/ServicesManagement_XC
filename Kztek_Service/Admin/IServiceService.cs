@@ -19,5 +19,6 @@ namespace Kztek_Service.Admin
         Task<List<Service>> GetAll();
         Task<Service> GetByName(string key);
         Task<SelectListModel_Chosen> SelectChoseService(string id = "", string placeholder = "", string selecteds = "");
+        Task<SelectListModel_Multi> SelectColumn(string id = "", string placeholder = "", string selecteds = "" , bool isMultipule = false);
     }
 }

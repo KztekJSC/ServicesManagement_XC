@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Kztek_Library.Configs;
 using Kztek_Library.Models;
+using Kztek_Model.ModelCustom;
 
 namespace Kztek_Library.Helpers
 {
@@ -44,7 +45,41 @@ namespace Kztek_Library.Helpers
                                     };
             return list;
         }
+        public static List<SelectListModel> ListDisplay_Display()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "1", ItemText = "STT"},
+                                        
+                                        new SelectListModel { ItemValue = "2", ItemText = "Trạng thái"},
+                                        new SelectListModel { ItemValue = "3", ItemText = "Xe VN"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Xe CN"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Loại hàng"},
+                                          new SelectListModel { ItemValue = "6", ItemText = "Khối lượng"}
+                                    };
+            return list;
+        }
+        public static List<DisplayService> Display_Display()
+        {
+            var list = new List<DisplayService> {
+                   new DisplayService { FieldName = "STT", DisplayName = "STT", IsDefault = false, IsDisplay = true},
+                //new DisplayService { FieldName = "Id", DisplayName = "Id", IsDefault = false, IsDisplay = false},
+                new DisplayService { FieldName = "EventType", DisplayName = "Trạng thái", IsDefault = true, IsDisplay = true},
+                new DisplayService { FieldName = "PlateVN", DisplayName = "Xe VN", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "PlateCN", DisplayName = "Xe CN", IsDefault = true, IsDisplay = true},
+                new DisplayService { FieldName = "ProductType", DisplayName = "Loại hàng", IsDefault = true, IsDisplay = true},
+                new DisplayService { FieldName = "Weight", DisplayName = "Khối lượng", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "VehicleType", DisplayName = "Loại xe", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "ProductGroup", DisplayName = "Nhóm hàng", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "Service", DisplayName = "Dịch vụ", IsDefault = true, IsDisplay = true},
+                  new DisplayService { FieldName = "Price", DisplayName = "Giá dịch vụ", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "SubPrice", DisplayName = "Phụ thu", IsDefault = false, IsDisplay = true},
+                new DisplayService { FieldName = "Description", DisplayName = "Ghi chú", IsDefault = true, IsDisplay = true},
+                //  new DisplayService { FieldName = "DateUpdated", DisplayName = "Ảnh CN", IsDefault = false, IsDisplay = false},
+                //new DisplayService { FieldName = "Active", DisplayName = "Ảnh VN", IsDefault = true, IsDisplay = true},
+            };
 
+            return list;
+        }
         public static List<SelectListModel> ListStatusConfirmGroup()
         {
             var list = new List<SelectListModel> {

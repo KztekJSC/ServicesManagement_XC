@@ -1,6 +1,7 @@
 @model Kztek_Library.Models.SelectListModel_Multi
 @{
-    var list = Model.Selecteds.Split(',').ToList();
+   
+    var list = !string.IsNullOrEmpty(Model.Selecteds) ? Model.Selecteds.Split(',').ToList() : new List<string>();
 }
 <select multiple="" class="multiselect form-control" id="@Model.IdSelectList" name="@Model.IdSelectList" data-placeholder="@Model.Placeholder">
     @foreach (var item in Model.Data)

@@ -42,6 +42,7 @@ namespace Kztek_Library.Models
 
         public string Placeholder { get; set; }
     }
+   
     public class SelectListModelCommunication_Chosen
     {
         public string IdSelectList { get; set; }

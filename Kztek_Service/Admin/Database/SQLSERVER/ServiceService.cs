@@ -114,6 +114,37 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return model;
         }
 
+        public async Task<SelectListModel_Multi> SelectColumn(string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
+        {
+            var data =  StaticList.ListDisplay_Display();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Multi()
+            {
+                IdSelectList = "columnId",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+            
+            };
+            return model;
+        }
+
         public async Task<MessageReport> Update(Service oldObj)
         {
             return await _ServiceRepository.Update(oldObj);
