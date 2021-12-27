@@ -1,6 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Dịch vụ đã xác nhận";
+    //var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn;
+
 }
 
 <div class="page-header">
@@ -19,7 +21,6 @@
             Từ khóa
             <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số | Loại hàng | Khối lượng | Loại xe |Nhóm hàng hoá |..." class="form-control" />
         </div>
-
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
 
             <span class="lbl">Trạng thái sự kiện </span>
@@ -38,6 +39,7 @@
             @await Component.InvokeAsync("ChosenSelect", ViewBag.LstGrSelect)
 
         </div>
+
     </div>
 
 
@@ -59,9 +61,11 @@
 
 
 <div class="hr hr-18 dotted hr-24"></div>
-<div class="row" id="BoxshowColumn" >
-    @await Component.InvokeAsync("MultiSelect", ViewBag.listSlectColumn)
-   
+<div class="row" id="BoxshowColumn">
+
+
+    @await Component.InvokeAsync("MultiSelect", ViewBag.listSlectColumn) <label class="label text-120 ">được hiện thị</label> 
+
 </div>
 <div class="hr hr-18 dotted hr-24"></div>
 <div class="row" id="boxTable">
@@ -75,6 +79,19 @@
     <script>
         $(document).ready(function () {
             ServiceController.PartialService(1);
+            
+           
+            $('#columnId').change(function () {
+                var str = "";
+                var cmd = $(this);
+                cmd.parent().find('ul.multiselect-container li.active').each(function () {
+                    var _cmd = $(this);
+                    str += _cmd.find('input[type=checkbox]').val() + ",";
+                });
+                ServiceController.AddValueSelect(str, "Service", "Index");
+           
+            });
+         
             
         });
     </script>

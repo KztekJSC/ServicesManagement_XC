@@ -12,6 +12,7 @@ namespace Kztek_Web.Components.ChosenSelect
 {
     public class MultiSelectViewComponent : ViewComponent
     {
+     
         private IHttpContextAccessor HttpContextAccessor;
 
         public MultiSelectViewComponent(IHttpContextAccessor HttpContextAccessor)

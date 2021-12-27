@@ -49,12 +49,42 @@ namespace Kztek_Library.Helpers
         {
             var list = new List<SelectListModel> {
                                         new SelectListModel { ItemValue = "1", ItemText = "STT"},
-                                        
+
+                                        new SelectListModel { ItemValue = "2", ItemText = "Số trang"},
+                                        new SelectListModel { ItemValue = "3", ItemText = "Trạng thái"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Xe VN"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Xe CN"},
+                                          new SelectListModel { ItemValue = "6", ItemText = "Loại hàng"},
+                                           new SelectListModel { ItemValue = "7", ItemText = "Khối lượng"},
+                                        new SelectListModel { ItemValue = "8", ItemText = "Loại xe"},
+                                        new SelectListModel { ItemValue = "9", ItemText = "Nhóm hàng"},
+                                        new SelectListModel { ItemValue = "10", ItemText = "Dịch vụ"},
+                                          new SelectListModel { ItemValue = "11", ItemText = "Giá dịch vụ"},
+                                             new SelectListModel { ItemValue = "12", ItemText = "Phụ thu"},
+                                        new SelectListModel { ItemValue = "13", ItemText = "Ghi chú"},
+                                        new SelectListModel { ItemValue = "14", ItemText = "Tổ bốc xếp"},
+                                          new SelectListModel { ItemValue = "15", ItemText = "Ảnh CN"},
+                                             new SelectListModel { ItemValue = "16", ItemText = "Ảnh VN"}
+                                    };
+            return list;
+        }
+
+        public static List<SelectListModel> ListCoordinator_Display()
+        {
+            var list = new List<SelectListModel> {
+                                   
+
+                                        new SelectListModel { ItemValue = "1", ItemText = "Số trang"},
                                         new SelectListModel { ItemValue = "2", ItemText = "Trạng thái"},
                                         new SelectListModel { ItemValue = "3", ItemText = "Xe VN"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Xe CN"},
-                                        new SelectListModel { ItemValue = "5", ItemText = "Loại hàng"},
-                                          new SelectListModel { ItemValue = "6", ItemText = "Khối lượng"}
+                                          new SelectListModel { ItemValue = "5", ItemText = "Loại hàng"},                                       
+                                        new SelectListModel { ItemValue = "6", ItemText = "Loại xe"},
+                                        new SelectListModel { ItemValue = "7", ItemText = "Nhóm hàng"},
+                                        new SelectListModel { ItemValue = "8", ItemText = "Dịch vụ"},
+                                        new SelectListModel { ItemValue = "9", ItemText = "Tổ bốc xếp"},
+                                          new SelectListModel { ItemValue = "10", ItemText = "Bắt đầu"},
+                                             new SelectListModel { ItemValue = "11", ItemText = "Kết thúc"}
                                     };
             return list;
         }

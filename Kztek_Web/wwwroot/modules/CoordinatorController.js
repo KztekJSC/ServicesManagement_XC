@@ -26,6 +26,21 @@
 })
 
 var CoordinatorController = {
+
+    AddValueSelects: function (str, controller, action) {
+        var obj = {
+            str: str,
+            controller: controller,
+            action: action
+
+        };
+        JSHelper.AJAX_LoadDataPOST('/Admin/Coordinator/AddChooseSelect', obj).done(function (result) {
+            if (result.isSuccess) {
+                CoordinatorController.PartialCoordinator(1);
+            }
+        });
+
+    },
     PartialCoordinator: function (page) {
         var obj = {
             key: $("input[name=key]").val(),

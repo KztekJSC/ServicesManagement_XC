@@ -21,9 +21,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
         private IServiceService _ServiceService;
-        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService)
+        private IColumTableService _ColumTableService;
+        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService, IColumTableService _ColumTableService)
         {
             this._tbl_EventService = _tbl_EventService;
+            this._ColumTableService = _ColumTableService;
             this._ServiceService = _ServiceService;
             this._GroupService = _GroupService;
         }
@@ -81,11 +83,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string ServiceId ="" ,string GroupId = "",string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
-        {
+         public async Task<IActionResult> Index(string StatusID = "", string ServiceId ="" ,string GroupId = "",string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = "")
+       {
             var datefrompicker = "";
            
-            if (string.IsNullOrEmpty(fromdate))
+             if (string.IsNullOrEmpty(fromdate))
             {
                 fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
             }
@@ -99,21 +101,24 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-           
+            var controller = "Service";
+            var action = "Index";
             ViewBag.Eventype = await _tbl_EventService.GetEventypeService(selecteds: StatusID);
 
             ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
 
-            ViewBag.listSlectColumn = await _ServiceService.SelectColumn();
+            ViewBag.listSlectColumn = await _ServiceService.SelectColumn(controller,action);
+
             ViewBag.LstGrSelect = await _GroupService.GetaSelectModelChoseGroup(selecteds: GroupId);
 
-          
+            //ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
+    
             ViewBag.AreaCodeValue = AreaCode;
 
             return View();
         }
 
-        public async Task<IActionResult> Partial_Service(string StatusID = "", string ServiceId = "", string GroupId = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        public async Task<IActionResult> Partial_Service(string StatusID = "", string ServiceId = "", string GroupId = "", string key = "", string fromdate = "", string todate = "", int page = 1,string Checkid = "")
         {
           
 
@@ -135,10 +140,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Service", this.HttpContext);
 
+            ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
+
             ViewBag.keyValue = key;
 
             ViewBag.ServiceID = ServiceId;
-
+            ViewBag.Check = Checkid;
             ViewBag.GroupID = GroupId;
             return PartialView(gridModel);
            
@@ -390,11 +397,37 @@ namespace Kztek_Web.Areas.Admin.Controllers
         #endregion
 
         #region Hiện thị cột 
-        public async Task<IActionResult> Partial_ShowColumn()
+
+        public async Task<IActionResult> AddChooseSelect(string str,string controller, string action)
         {
-            var lst = StaticList.Display_Display();
-            return PartialView(lst);
+            var obj = StaticList.ListDisplay_Display();
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+            var str1 = "";
+            foreach (var item in obj)
+            {
+                str1 += (item.ItemValue + "-" + item.ItemText) + ",";
+            }
+            var objColum = await _ColumTableService.GetDetailByController(controller, action);
+            if (objColum == null)
+            {
+                var model = new ColumTable();
+                model.Controller = controller;
+                model.Action = action;
+                model.ColumShows = str;
+                model.Columns = str1;
+                model.Id = Guid.NewGuid().ToString();
+                 result = await _ColumTableService.Create(model);
+            }
+            else
+            {
+                objColum.ColumShows = str ;
+                result = await _ColumTableService.Update(objColum); 
+            }
+
+            return Json(result);
         }
+
+      
         #endregion
     }
 }

@@ -31,7 +31,8 @@ namespace Kztek_Data
 
         public DbSet<tblLog> tblLogs { get; set; }
 
-        public DbSet<User_AuthGroup> User_AuthGroups { get; set; }
+        public DbSet<User_AuthGroup> User_AuthGroups { get; set; } 
+        public DbSet<ColumTable> ColumTables { get; set; }
 
         //Parking
 

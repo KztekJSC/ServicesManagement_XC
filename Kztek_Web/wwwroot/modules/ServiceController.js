@@ -81,6 +81,21 @@ var ServiceController = {
                 $("#spCount").text($("#totalCount").val());
             });
     },
+    AddValueSelect: function (str, controller, action) {
+        var obj = {
+            str: str,
+            controller: controller,
+            action: action
+        
+        }
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/AddChooseSelect', obj).done(function (result) {
+            if (result.isSuccess) {
+                ServiceController.PartialService(1);
+            }
+        });
+               
+        },
+
     PartialVehicle: function () {
         var obj = {
            
@@ -158,17 +173,5 @@ var ServiceController = {
                 }
             });
     },
-    PartialShowColumn: function () {
-        var obj = {
-             //controller : "Service" ,
-             //action : "Index"
-        };
-
-        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_ShowColumn', obj)
-            .done(function (data) {
-                $('#BoxshowColumn').html('');
-                $('#BoxshowColumn').html(data);
-
-            });
-    },
+   
 }

@@ -5,6 +5,14 @@
     var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
 
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
+
+    var shows = new List<string>();
+ 
+    var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn;
+
+    var objC = objColum != null ? objColum : new Kztek_Model.Models.ColumTable();
+
+    shows = objC.ColumShows != null ? objC.ColumShows.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() : shows;
 }
 @Html.Hidden("totalCount", Model.TotalIem)
 
@@ -13,27 +21,24 @@
         <thead>
             <tr>
                 <th class="text-center" width="80"></th>
-                <th class="text-center">Số trang</th>
-                <th class="text-center">
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">Số trang</th>
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
                     Trạng thái
                 </th>
-                <th class="text-center">
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
                     Xe VN
                 </th>
-                <th class="text-center">
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
                     Xe CN
                 </th>
-                <th class="text-center">Loại hàng </th>
-                @*<th class="text-center">Khối lượng</th>*@
-                <th class="text-center hidden-col">Loại xe</th>
-                <th class="text-center">Nhóm hàng</th>
-                <th class="text-center">Dịch vụ</th>
-                @*<th class="text-center">Giá dịch vụ</th>
-        <th class="text-center">Phụ thu</th>*@
-
-                <th class="text-center">Tổ thực hiện</th>
-                <th class="text-center hidden-col">Bắt đầu </th>
-        <th class="text-center hidden-col">Kết thúc</th>
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">Loại hàng </th>
+               
+                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">Loại xe</th>
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">Nhóm hàng</th>
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">Dịch vụ</th>
+                <th class="text-center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">Tổ thực hiện</th>
+                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Bắt đầu </th>
+        <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Kết thúc</th>
 
             </tr>
         </thead>
@@ -64,11 +69,11 @@
                                     </button>
                                 }*@
                         </td>
-                        <td class="text-left">
+                        <td class="text-left" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
                             @item.ServiceCode
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-center" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
                             @switch (item.EventType)
                             {
                                 case 2:
@@ -88,25 +93,25 @@
                                     break;
                             }
                         </td>
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
                             @item.PlateVN
                         </td>
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
                             @item.PlateCN
                         </td>
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
                             @item.ProductType
                         </td>
                         @*<td class="center">
                                 @item.Weight
                             </td>*@
-                        <td class="center hidden-col">
+                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
                             @item.VehicleType
                         </td>
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
                             @item.ProductGroup
                         </td>
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
                             @{
                                 var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
                                 if (obj != null)
@@ -122,7 +127,7 @@
                                 @item.SubPrice.ToString("###,###.##")
                             </td>*@
 
-                        <td class="center">
+                        <td class="center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
                             @{
                                 var obj1 = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
                                 if (obj1 != null)
@@ -131,14 +136,14 @@
                                 }
                             }
                         </td>
-                        <td class="center hidden-col">
+                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
                                 @if (item.StartDate.Date != DateTime.MaxValue.Date)
                                 {
                                     @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
                                 }
                               
                             </td>
-                        <td class="center hidden-col">
+                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
                             @if (item.EndDate.Date != DateTime.MaxValue.Date)
                             {
                             @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
