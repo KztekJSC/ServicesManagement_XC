@@ -81,16 +81,7 @@
             ServiceController.PartialService(1);
             
            
-            $('#columnId').change(function () {
-                var str = "";
-                var cmd = $(this);
-                cmd.parent().find('ul.multiselect-container li.active').each(function () {
-                    var _cmd = $(this);
-                    str += _cmd.find('input[type=checkbox]').val() + ",";
-                });
-                ServiceController.AddValueSelect(str, "Service", "Index");
-           
-            });
+          
          
             
         });

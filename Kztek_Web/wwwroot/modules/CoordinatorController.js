@@ -22,7 +22,16 @@
     $('body').on('click', '#ModalInfor #btnCompleted', function () {
         CoordinatorController.SaveService();
     })
+    $('#columnId').change(function () {
+        var str = "";
+        var cmd = $(this);
+        cmd.parent().find('ul.multiselect-container li.active').each(function () {
+            var _cmd = $(this);
+            str += _cmd.find('input[type=checkbox]').val() + ",";
+        });
+        CoordinatorController.AddValueSelects(str, "Coordinator", "Index");
 
+    });
 })
 
 var CoordinatorController = {
