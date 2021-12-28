@@ -15,9 +15,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
     public class ServiceService : IServiceService
     {
         private IServiceRepository _ServiceRepository;
-        public ServiceService(IServiceRepository _ServiceRepository)
+        private IColumTableService _ColumTableService;
+        public ServiceService(IServiceRepository _ServiceRepository, IColumTableService _ColumTableService)
         {
             this._ServiceRepository = _ServiceRepository;
+            this._ColumTableService = _ColumTableService;
         }
         public async Task<MessageReport> Create(Service model)
         {
@@ -114,18 +116,18 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return model;
         }
 
-        public async Task<SelectListModel_Multi> SelectColumn(string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
+
+        public async Task<SelectListModel_Multi> SelectColumn(string controller = "", string action = "",string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
         {
             var data =  StaticList.ListDisplay_Display();
+            var obj =  await _ColumTableService.GetDetailByController(controller,action);
+            
+            selecteds = obj != null ? obj.ColumShows : "";
             var cus = new List<SelectListModel>();
             var lst = data;
             if (lst != null && lst.Count > 0)
             {
-                cus.Add(new SelectListModel()
-                {
-                    ItemText = "---- Lựa chọn ----",
-                    ItemValue = "00"
-                });
+             
 
                 cus.AddRange(data.Select(n => new SelectListModel()
                 {
@@ -139,13 +141,44 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 IdSelectList = "columnId",
                 Selecteds = selecteds,
                 Placeholder = placeholder,
+                //isMultiSelect = true,
                 Data = cus.ToList(),
             
             };
             return model;
         }
 
-        public async Task<MessageReport> Update(Service oldObj)
+        public async Task<SelectListModel_Multi> SelectColumnCoor(string controller = "", string action = "",string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
+        {
+            var data = StaticList.ListCoordinator_Display();
+            var obj = await _ColumTableService.GetDetailByController(controller, action);
+
+            selecteds = obj != null ? obj.ColumShows : "";
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Multi()
+            {
+                IdSelectList = "columnId",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                //isMultiSelect = true,
+                Data = cus.ToList(),
+
+            };
+            return model;
+        }
+            public async Task<MessageReport> Update(Service oldObj)
         {
             return await _ServiceRepository.Update(oldObj);
         }

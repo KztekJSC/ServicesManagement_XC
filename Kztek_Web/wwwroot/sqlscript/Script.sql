@@ -128,4 +128,20 @@ BEGIN
 	ALTER TABLE tblLog ADD NewInfo nvarchar(max) null
 END
 
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ColumTable')
+BEGIN
 
+CREATE TABLE [dbo].[ColumTable](
+	[Id] [VARCHAR](128) NOT NULL,
+	[Controller] [nvarchar](200) NULL,
+	[Action] [nvarchar](500) NULL,
+	[Columns] [nvarchar](max) NULL,
+	[Active] [bit] NOT NULL,
+	[ColumShows] [varchar](max)  NULL,
+ CONSTRAINT [PK_ColumTable] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+END

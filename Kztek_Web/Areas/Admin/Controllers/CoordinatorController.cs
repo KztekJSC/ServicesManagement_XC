@@ -20,9 +20,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
         private Itbl_EventService _tbl_EventService;
         private IGroupService _GroupService;
         private IServiceService _ServiceService;
-        public CoordinatorController(Itbl_EventService _tbl_EventService, IGroupService _GroupService , IServiceService _ServiceService)
+        private IColumTableService _ColumTableService;
+        public CoordinatorController(Itbl_EventService _tbl_EventService, IGroupService _GroupService , IServiceService _ServiceService, IColumTableService _ColumTableService)
         {
             this._tbl_EventService = _tbl_EventService;
+            this._ColumTableService = _ColumTableService;
             this._GroupService = _GroupService;
             this._ServiceService = _ServiceService;
         }
@@ -48,16 +50,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 datefrompicker = fromdate + "-" + todate;
             }
-            //if (chkExport.Equals("1"))
-            //{
-            //    await ExportFile(key, sort, page, 20, StatusID, isCheckByTime, fromdate, todate, this.HttpContext);
-
-            //    //return View(gridmodel);
-            //}
-
+         
+            var controller = "Coordinator";
+            var action = "Index";
             ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
+
+            ViewBag.listSlectColumn = await _ServiceService.SelectColumnCoor(controller, action);
 
             ViewBag.StatusID = StatusID;
            
@@ -71,9 +71,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Partial_Coordinator(string StatusID = "", string key = "", int page = 1)
         {
+
             var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, "", "");
 
+            ViewBag.showColumn = await _ColumTableService.GetDetailByController("Coordinator", "Index");
+
             ViewBag.lstService = await _ServiceService.GetAll();
+
 
             ViewBag.Groups = await _GroupService.GetAll();
 
@@ -281,6 +285,41 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             return Json(result);
         }
+        #endregion
+
+
+        #region Hiện thị cột 
+
+        public async Task<IActionResult> AddChooseSelect(string str, string controller, string action)
+        {
+            var obj = StaticList.ListCoordinator_Display();
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+            var str1 = "";
+            foreach (var item in obj)
+            {
+                str1 += (item.ItemValue + "-" + item.ItemText) + ",";
+            }
+            var objColum = await _ColumTableService.GetDetailByController(controller, action);
+            if (objColum == null)
+            {
+                var model = new ColumTable();
+                model.Controller = controller;
+                model.Action = action;
+                model.ColumShows = str;
+                model.Columns = str1;
+                model.Id = Guid.NewGuid().ToString();
+                result = await _ColumTableService.Create(model);
+            }
+            else
+            {
+                objColum.ColumShows = str;
+                result = await _ColumTableService.Update(objColum);
+            }
+
+            return Json(result);
+        }
+
+
         #endregion
     }
 }

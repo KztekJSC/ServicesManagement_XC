@@ -51,8 +51,13 @@
         </div>
     </div>
 }
+<div class="hr hr-18 dotted hr-24"></div>
+<div class="row" id="BoxshowColumn">
 
 
+    @await Component.InvokeAsync("MultiSelect", ViewBag.listSlectColumn) <label class="label text-120 ">được hiện thị</label>
+
+</div>
 
 <div class="hr hr-18 dotted hr-24"></div>
 
@@ -79,6 +84,7 @@
             });
 
 
+        
             $(".btnDelete").click(function () {
                 var cmd = $(this);
                 var id = cmd.attr('idata');
