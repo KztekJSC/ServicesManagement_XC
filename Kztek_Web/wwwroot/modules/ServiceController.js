@@ -62,16 +62,7 @@
         }
     });
 
-    $('#columnId').change(function () {
-        var str = "";
-        var cmd = $(this);
-        cmd.parent().find('ul.multiselect-container li.active').each(function () {
-            var _cmd = $(this);
-            str += _cmd.find('input[type=checkbox]').val() + ",";
-        });
-        ServiceController.AddValueSelect(str, "Service", "Index");
-
-    });
+   
 })
 
 var ServiceController = {
@@ -101,7 +92,28 @@ var ServiceController = {
         }
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/AddChooseSelect', obj).done(function (result) {
             if (result.isSuccess) {
-                ServiceController.PartialService(1);
+                  ServiceController.PartialService(1);
+                //$('table tr').find('th').each(function (i) {
+                //    var cmd1 = $(this);
+                //    var column = cmd1.attr('idata');
+                //    var shows = repose.split(',');
+                //    for (var i = 0; i < shows.length; i++) {
+                //        if (column == shows[i]) {
+                //            $("thead tr").find("th[idata=" + shows[i] + "]").css("display", "");
+                //        }
+                //    }
+                //});
+                //$('table tr').find('td').each(function (i) {
+                //    var cmd1 = $(this);
+                //    var column = cmd1.attr('idata');
+                //    var shows = repose.split(',');
+                //    for (var i = 0; i < shows.length; i++) {
+                //        if (column == shows[i]) {
+                //            $("tbody tr").find("td[idata=" + shows[i] + "]").css("display", "");
+                //        }
+                //    }
+                //});
+              
             }
         });
                

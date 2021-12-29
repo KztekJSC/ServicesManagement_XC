@@ -1,8 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Dịch vụ đã xác nhận";
-    //var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn;
-
+ 
 }
 
 <div class="page-header">
@@ -17,9 +16,9 @@
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
     @Html.Hidden("chkExport", "0")
     <div class="row">
-        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+        <div class="col-md-4 col-lg-4 col-xs-12 col-sm-12 divboxmd">
             Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số | Loại hàng | Khối lượng | Loại xe |Nhóm hàng hoá |..." class="form-control" />
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số | Loại hàng | Khối lượng | Loại xe | Nhóm hàng hoá..." class="form-control" />
         </div>
         <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
 
@@ -58,13 +57,10 @@
         </div>
     </div>
 }
-
-
 <div class="hr hr-18 dotted hr-24"></div>
-<div class="row" id="BoxshowColumn">
+<div class="row" style="margin-left: 4px" id="BoxshowColumn">
 
-
-    @await Component.InvokeAsync("MultiSelect", ViewBag.listSlectColumn) <label class="label text-120 ">được hiện thị</label> 
+    @await Component.InvokeAsync("MultiselectColumn", ViewBag.listSlectColumn)
 
 </div>
 <div class="hr hr-18 dotted hr-24"></div>
@@ -77,9 +73,61 @@
     <script src="~/modules/ServiceController.js"></script>
     <script src="~/modules/Signalr.js"></script>
     <script>
+        jQuery(function ($) {
+            var $overflow = '';
+            var colorbox_params = {
+                rel: 'colorbox',
+                reposition: true,
+                scalePhotos: true,
+                scrolling: false,
+                previous: '<i class="ace-icon fa fa-arrow-left"></i>',
+                next: '<i class="ace-icon fa fa-arrow-right"></i>',
+                close: '&times;',
+                current: '{current} of {total}',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                onOpen: function () {
+                    $overflow = document.body.style.overflow;
+                    document.body.style.overflow = 'hidden';
+                },
+                onClosed: function () {
+                    document.body.style.overflow = $overflow;
+                },
+                onComplete: function () {
+                    $.colorbox.resize();
+                }
+            };
+
+            $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+            $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+
+            $(document).one('ajaxloadstart.page', function (e) {
+                $('#colorbox, #cboxOverlay').remove();
+            });
+        })
         $(document).ready(function () {
             ServiceController.PartialService(1);
-  
+            $('#columnId').change(function () {
+                var str = "";
+                var cmd = $(this);
+                cmd.parent().find('ul.multiselect-container li.active').each(function () {
+                    var _cmd = $(this);
+                    str += _cmd.find('input[type=checkbox]').val() + ",";
+                });
+                ServiceController.AddValueSelect(str, "Service", "Index");
+
+            });
+
+
+            //$('[data-spzoom]').spzoom({
+            //    width: 350,
+            //    height: 350,
+            //    position: 'right',
+            //    margin: 25,
+            //    showTitle: true,
+            //    titlePosition: 'bottom'
+            //});
         });
     </script>
 }

@@ -108,11 +108,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
 
             ViewBag.listSlectColumn = await _ServiceService.SelectColumn(controller,action);
-
+           
             ViewBag.LstGrSelect = await _GroupService.GetaSelectModelChoseGroup(selecteds: GroupId);
 
             //ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
-    
+            var obj = await _ColumTableService.GetDetailByController("Service", "Index");
+            ViewBag.StrShows = obj.ColumShows;
+
             ViewBag.AreaCodeValue = AreaCode;
 
             return View();
@@ -423,7 +425,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 objColum.ColumShows = str ;
                 result = await _ColumTableService.Update(objColum); 
             }
-
+            //var obj1 = await _ColumTableService.GetDetailByController(controller, action);
+            //var shows = "";
+            //if (result.isSuccess)
+            //{
+            //    shows = obj1.ColumShows;
+            //}
+            //result.Message = shows;
             return Json(result);
         }
 

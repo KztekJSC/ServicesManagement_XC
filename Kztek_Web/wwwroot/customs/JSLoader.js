@@ -10,7 +10,7 @@ var JSLoader = {
         JSLoader.load_ChosenSelect();
         JSLoader.load_MultiSelect();
         JSLoader.load_MultiSelect_ColumnTable();
-        //JSLoader.load_ViewImage();
+        /*JSLoader.load_ViewImage();*/
     },
 
     load_DateTimePicker: function () {

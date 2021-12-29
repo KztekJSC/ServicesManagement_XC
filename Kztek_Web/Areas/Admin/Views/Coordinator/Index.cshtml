@@ -52,13 +52,11 @@
     </div>
 }
 <div class="hr hr-18 dotted hr-24"></div>
-<div class="row" id="BoxshowColumn">
+<div class="row" style="margin-left: 4px" id="BoxshowColumn">
 
-
-    @await Component.InvokeAsync("MultiSelect", ViewBag.listSlectColumn) <label class="label text-120 ">được hiện thị</label>
+    @await Component.InvokeAsync("MultiselectColumn", ViewBag.listSlectColumn)
 
 </div>
-
 <div class="hr hr-18 dotted hr-24"></div>
 
 
