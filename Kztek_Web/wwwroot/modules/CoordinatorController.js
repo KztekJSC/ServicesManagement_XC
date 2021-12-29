@@ -17,11 +17,11 @@
     $('body').on('click', '.btnOK', function () {
         var id = $(this).attr("idata");
         CoordinatorController.ModalInforCoordior(id);
-      
-    })
+
+    });
     $('body').on('click', '#ModalInfor #btnCompleted', function () {
         CoordinatorController.SaveService();
-    })
+    });
     $('#columnId').change(function () {
         var str = "";
         var cmd = $(this);
