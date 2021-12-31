@@ -33,6 +33,8 @@
             }
         });
     });
+
+    HomeController.PartialNotifi();
 })
 
 var HomeController = {
@@ -63,6 +65,18 @@ var HomeController = {
                 $('#boxTable').html('');
                 $('#boxTable').html(data);
                 $("#spCount").text($("#totalCount").val());
+            });
+    },
+    PartialNotifi: function () {
+        var obj = {
+            
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Notifi', obj)
+            .done(function (data) {
+                $('#liNotifi').html('');
+                $('#liNotifi').html(data);
+                
             });
     },
 }

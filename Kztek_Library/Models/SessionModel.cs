@@ -12,5 +12,6 @@ namespace Kztek_Library.Models
 
         public string Avatar { get; set; }
         public string GroupIds { get; set; }
+        public string TypeNotifi { get; set; }
     }
 }

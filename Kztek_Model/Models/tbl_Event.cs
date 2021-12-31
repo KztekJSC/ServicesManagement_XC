@@ -317,4 +317,12 @@ namespace Kztek_Model.Models
         public string GroupId { get; set; }
 
     }
+    public class NotifiCustom
+    {
+        public int EventType { get; set; }
+        public string TypeName { get; set; }
+
+        public int Quantity { get; set; }
+
+    }
 }

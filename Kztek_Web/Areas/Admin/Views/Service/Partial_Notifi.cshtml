@@ -1,0 +1,66 @@
+﻿@model List<Kztek_Model.Models.NotifiCustom>
+
+@if (Model != null && Model.Count > 0)
+{
+    var total = Model.Sum(n => n.Quantity);
+
+    //chưa xác nhận
+    var objType1 = Model.FirstOrDefault(n => n.EventType == 1);
+
+    //đã xác nhận
+    var objType2 = Model.FirstOrDefault(n => n.EventType == 2);
+
+
+    <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+        <i class="ace-icon fa fa-bell"></i>
+        <span class="badge badge-important">@total</span>
+    </a>
+
+    <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+        <li class="dropdown-header">
+            <i class="ace-icon fa fa-exclamation-triangle"></i>
+            @total dịch vụ chưa/đã xác nhận
+        </li>
+
+        <li class="dropdown-content ace-scroll" style="position: relative;">
+            <div class="scroll-track" style="display: none;"><div class="scroll-bar"></div></div><div class="scroll-content" style="">
+                <ul class="dropdown-menu dropdown-navbar navbar-pink">
+                    @if (objType1 != null)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Service",new { AreaCode="Admin",StatusID = "1"})">
+                                <div class="clearfix">
+                                    <span class="pull-left">
+                                        <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
+                                        @objType1.TypeName
+                                    </span>
+                                    <span class="pull-right badge badge-info">@objType1.Quantity</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+
+
+                    @if (objType2 != null)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Service",new { AreaCode="Admin",StatusID = "2"})">
+                                <div class="clearfix">
+                                    <span class="pull-left">
+                                        <i class="btn btn-xs no-hover btn-success fa fa-apple"></i>
+                                        @objType2.TypeName
+                                    </span>
+                                    <span class="pull-right badge badge-success">@objType2.Quantity</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
+
+
+
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+}

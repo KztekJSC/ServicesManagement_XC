@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -57,6 +57,7 @@ namespace Kztek_Model.Models
 
         public Nullable<DateTime> DateCreated { get; set; }
         public string GroupIds { get; set; }
+        public string TypeNotifi { get; set; } //hiển thị thông báo trên header
     }
 
     public class User_Submit
@@ -85,6 +86,7 @@ namespace Kztek_Model.Models
 
         public string Avatar { get; set; } = "";
         public string GroupIds { get; set; }
+        public string TypeNotifi { get; set; } //hiển thị thông báo trên header
     }
 
     //public class User_Selected

@@ -122,6 +122,17 @@ namespace Kztek_Library.Helpers
                                     };
             return list;
         }
+        public static List<SelectListModel> TypeNotifi()
+        {
+            var list = new List<SelectListModel> {
+
+                new SelectListModel { ItemValue = "", ItemText = "Không hiển thị thông báo"},
+                                        new SelectListModel { ItemValue = "1", ItemText = "Thông báo cho tài khoản giao dịch viên"},
+                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"}
+                                       
+                                    };
+            return list;
+        }
         public static List<SelectListModel> ListStatusCoordinator()
         {
             var list = new List<SelectListModel> {

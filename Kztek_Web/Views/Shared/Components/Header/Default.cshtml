@@ -25,6 +25,11 @@
         @*@await Component.InvokeAsync("ChosenSelect", langLst)*@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
+                
+                <li id="liNotifi" class="purple dropdown-modal">
+
+                </li>
+
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         @if (Model != null && !string.IsNullOrWhiteSpace(Model.Avatar))

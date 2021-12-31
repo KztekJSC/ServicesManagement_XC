@@ -53,7 +53,7 @@
             @if (Model.Data.Any())
             {
 
-                var count = 0;
+                var count = Model.PageSize * (Model.PageIndex - 1);
                 foreach (var item in Model.Data)
                 {
                     count++;

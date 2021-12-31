@@ -9,6 +9,9 @@ $(() => {
         ServiceController.PartialService(1);
     })
 
+    connection.on("Notifi", function () {
+        HomeController.PartialNotifi();
+    })
 })
 
 var SignalrController = {

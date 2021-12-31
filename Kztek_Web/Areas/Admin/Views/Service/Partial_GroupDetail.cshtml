@@ -1,7 +1,7 @@
 ﻿@model List<Kztek_Model.Models.tbl_Event_Cus>
 
 <tr class="showDetailBox-child-@ViewBag.Id trHide bgRowColor">
-    <td colspan="6">
+    <td colspan="7">
         <!--Tab detail-->
         <div class="tabbable SubTab">
             <ul class="nav nav-tabs" id="myTab">
@@ -26,6 +26,7 @@
                                 <th>Nhóm hàng</th>
                                 <th>Trạng thái</th>
                                 <th>Bắt đầu</th>
+                                <th>Chọn tổ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,6 +48,14 @@
                                             }
                                         </td>
                                         <td class="text-center">@item.StartDate
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.EventType == 3)
+                                            {
+                                                <a class="green btnUpdateGroup" href="javascript:void(0)" title="Chọn tổ" idata="@item.Id">
+                                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                                </a>
+                                            }
                                         </td>
                                     </tr>
                                 }

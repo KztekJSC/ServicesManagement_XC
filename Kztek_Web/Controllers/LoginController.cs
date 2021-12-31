@@ -32,13 +32,15 @@ namespace Kztek_Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            updateDatabase();
+
             var data = await _UserService.GetAll();
 
             var model = new AuthModel();
             model.isAny = data.Any();
             model.Data_Service = Data_Service();
             model.AreaCode = "Admin";
-            updateDatabase();
+           
             //kiểm tra session xem có lưu ngôn ngữ không nếu có thì lấy không mặc định là "vi"
             string sessionValue = HttpContext.Session.GetString(SessionConfig.Kz_Language);
             if (string.IsNullOrWhiteSpace(sessionValue))
@@ -103,6 +105,7 @@ namespace Kztek_Web.Controllers
                 Avatar = user.UserAvatar,
                 isAdmin = user.Admin,
                 GroupIds = user.GroupIds,
+                TypeNotifi = user.TypeNotifi
             };
 
 
@@ -130,6 +133,8 @@ namespace Kztek_Web.Controllers
             HttpContext.Response.Cookies.Delete(CookieConfig.Kz_UserCookie);
 
             CacheFunction.Clear(this.HttpContext, string.Format(CacheConfig.Kz_User_MenuFunctionCache_Key, userid, SecurityModel.Cache_Key));
+
+            HttpContext.Session.Remove(SessionConfig.NotifiType1Session);
 
             return RedirectToAction("Index", "Login");
         }

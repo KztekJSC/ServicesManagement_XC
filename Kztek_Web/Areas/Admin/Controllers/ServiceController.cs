@@ -6,6 +6,7 @@ using Kztek_Model.Models;
 using Kztek_Service.Admin;
 using Kztek_Web.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -357,6 +358,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 model.serviceName = objService.Name;
                 model.StartDate = obj.StartDate.Date != DateTime.MaxValue.Date ? obj.StartDate.ToString("dd/MM/yyyy HH:mm:ss") : "";
                 model.EventTypeName = obj.EventType == 3 ? "<span class='label label-yellow'>Chưa thực hiện</span>" : "<span class='label' style='background-color: #385822'>Đang thực hiện</span>";
+                model.EventType = obj.EventType;
                 lst.Add(model);
             }
             ViewBag.Id = id;
@@ -365,9 +367,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
         }
 
         public async Task<IActionResult> Modal_Assign(string id)
-        {
-           
+        {          
             var objService = await _tbl_EventService.GetByCustomById(id);
+
             ViewBag.Group = await GetAllGroup();
 
             return PartialView(objService);
@@ -386,6 +388,47 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 objService.EventType = 3; //đã phân tổ
 
                 objService.DivisionDate = DateTime.Now;
+
+                result = await _tbl_EventService.Update(objService);
+
+                //nếu phân tổ thành công thì load lại thông báo cho dg viên
+                if (result.isSuccess)
+                {
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
+                }
+            }
+            else
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+            }
+
+            return Json(result);
+        }
+
+        public async Task<IActionResult> Modal_UpdateGroup(string id)
+        {
+            var objService = await _tbl_EventService.GetByCustomById(id);
+
+            ViewBag.Group = await GetAllGroup();
+
+            return PartialView(objService);
+        }
+
+        public async Task<IActionResult> UpdateGroup(string id, string groupid)
+        {
+            var result = new MessageReport(false, "Có lỗi xảy ra!");
+
+            var objService = await _tbl_EventService.GetById(id);
+
+            if (objService != null)
+            {
+                objService.GroupId = !string.IsNullOrEmpty(groupid) ? groupid : "";
+
+                objService.EventType = !string.IsNullOrEmpty(groupid) ? 3 : 2; 
+
+                objService.DivisionDate = !string.IsNullOrEmpty(groupid) ? DateTime.Now : DateTime.MaxValue;
+
+                objService.ModifiedDate = DateTime.Now;
 
                 result = await _tbl_EventService.Update(objService);
             }
@@ -435,7 +478,23 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return Json(result);
         }
 
-      
+
+        #endregion
+
+        #region Thông báo
+        public async Task<IActionResult> Partial_Notifi()
+        {
+            var user = await SessionCookieHelper.CurrentUser(HttpContext);
+
+            var listData = new List<NotifiCustom>();
+
+            if (user != null && user.TypeNotifi == "1")
+            {
+                listData = await _tbl_EventService.NotifiSession1(HttpContext);
+            }
+
+            return PartialView(listData);
+        }
         #endregion
     }
 }

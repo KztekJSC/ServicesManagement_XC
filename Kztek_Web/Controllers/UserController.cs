@@ -39,6 +39,20 @@ namespace Kztek_Web.Controllers
         }
 
         #region DDL
+        public async Task<SelectListModel_Chosen> TypeNotifi(string selecteds = "", string id = "TypeNotifi")
+        {
+            //Khai báo danh sách
+
+            var a = new SelectListModel_Chosen
+            {
+                Placeholder = "",
+                IdSelectList = id,
+                Selecteds = !string.IsNullOrEmpty(selecteds) ? selecteds : "",
+                Data = StaticList.TypeNotifi()
+            };
+
+            return await Task.FromResult(a);
+        }
         public async Task<SelectListModel_Multi> GetGroup_Multi(string selecteds = "", string id = "ddlGroup")
         {
             //Khai báo danh sách
@@ -134,6 +148,8 @@ namespace Kztek_Web.Controllers
 
             ViewBag.Group = await GetGroup_Multi(model.GroupIds);
 
+            ViewBag.TypeNotifi = await TypeNotifi(model.TypeNotifi);
+
             return View(model);
         }
 
@@ -142,6 +158,9 @@ namespace Kztek_Web.Controllers
         public async Task<IActionResult> Create(User_Submit model, bool SaveAndCountinue = false, string AreaCode = "",string groupids = "")
         {
             model.Data_Role = await _RoleService.GetAllActiveOrder();
+
+            ViewBag.TypeNotifi = await TypeNotifi(model.TypeNotifi);
+
             ViewBag.AreaCodeValue = AreaCode;
 
             ViewBag.Group = await GetGroup_Multi(model.GroupIds);
@@ -181,7 +200,8 @@ namespace Kztek_Web.Controllers
                 Name = model.Name,
                 Username = model.Username,
                 Admin = model.isAdmin,
-                GroupIds = model.isAdmin ? "" : groupids
+                GroupIds = model.isAdmin ? "" : groupids,
+                TypeNotifi = model.TypeNotifi
             };
 
             if (!string.IsNullOrWhiteSpace(model.RoleIds))
@@ -239,6 +259,8 @@ namespace Kztek_Web.Controllers
 
             ViewBag.Group = await GetGroup_Multi(model.GroupIds);
 
+            ViewBag.TypeNotifi = await TypeNotifi(model.TypeNotifi);
+
             return View(model);
         }
 
@@ -247,6 +269,8 @@ namespace Kztek_Web.Controllers
         public async Task<IActionResult> Update(User_Submit model, string AreaCode = "", string groupids = "")
         {
             model.Data_Role = await _RoleService.GetAllActiveOrder();
+
+            ViewBag.TypeNotifi = await TypeNotifi(model.TypeNotifi);
 
             ViewBag.AreaCodeValue = AreaCode;
 
@@ -277,6 +301,7 @@ namespace Kztek_Web.Controllers
             oldObj.Username = model.Username;
             oldObj.Admin = model.isAdmin;
             oldObj.GroupIds = oldObj.Admin ? "" : groupids;
+            oldObj.TypeNotifi = model.TypeNotifi;
 
             //Kiểm tra mật khẩu mới
             if (!string.IsNullOrWhiteSpace(model.Password))

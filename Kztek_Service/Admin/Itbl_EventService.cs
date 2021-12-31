@@ -55,5 +55,12 @@ namespace Kztek_Service.Admin
         /// <returns></returns>
         Task<List<CountEventByType>> CountEventByType(HttpContext httpContext,string fromdate);
 
+        /// <summary>
+        /// Thông báo cho giao dịch viên
+        /// </summary>
+        /// <param name="HttpContext"></param>
+        /// <returns></returns>
+        Task<List<NotifiCustom>> NotifiSession1(HttpContext HttpContext);
+
     }
 }

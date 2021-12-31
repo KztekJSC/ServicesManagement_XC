@@ -62,7 +62,15 @@
         }
     });
 
-   
+    $('body').on('click', '.btnUpdateGroup', function () {
+        var id = $(this).attr("idata");
+
+        ServiceController.Modal_UpdateGroup(id);
+    })
+
+    $('body').on('click', '#ModalUpdateGroup #btnCompleted', function () {
+        ServiceController.UpdateGroup();
+    })
 })
 
 var ServiceController = {
@@ -118,7 +126,6 @@ var ServiceController = {
         });
                
         },
-
     PartialVehicle: function () {
         var obj = {
            
@@ -196,5 +203,39 @@ var ServiceController = {
                 }
             });
     },
-   
+    Modal_UpdateGroup: function (id) {
+        var obj = {
+            id: id
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Service/Modal_UpdateGroup', obj)
+            .done(function (data) {
+                $("#boxModal").html(data);
+                $("#ModalUpdateGroup").modal("show");
+            });
+    },
+    UpdateGroup: function () {
+        var gid = $("#GroupId").val();
+
+        var obj = {
+            id: $("#serId").val(),
+            groupid: gid
+        };
+
+        JSHelper.AJAX_HttpPost('/Admin/Service/UpdateGroup', obj)
+            .done(function (data) {
+                if (data.isSuccess) {
+                    $('#ModalUpdateGroup').modal("hide");
+
+                    ServiceController.PartialVehicle();
+
+                    ServiceController.PartialGroup();
+
+                    toastr.success("Cập nhật thành công!");
+
+                } else {
+                    toastr.error(data.Message);
+                }
+            });
+    },
 }

@@ -146,6 +146,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 {
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
                 }
+
+                //load lại thông báo cho dg viên
+                await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
             }
 
             return result;
@@ -249,6 +252,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                     result = new MessageReport(true, "Thành công");
 
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
+
+                    //load lại thông báo cho dg viên
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
                 }             
             }
             catch (Exception ex)

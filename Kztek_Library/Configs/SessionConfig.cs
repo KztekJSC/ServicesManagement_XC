@@ -1,4 +1,4 @@
-namespace Kztek_Library.Configs
+﻿namespace Kztek_Library.Configs
 {
     public class SessionConfig
     {
@@ -7,6 +7,8 @@ namespace Kztek_Library.Configs
         public const string Kz_UserSession = "Kz_UserSession";
 
         public const string Kz_AdminSession = "Kz_AdminSession";
+
+        public const string NotifiType1Session = "NotifiType1Session"; //session cho thông báo của giao dịch viên
 
 
         public const string Kz_AC_Upload_Controller = "Kz_AC_Upload_Controller";

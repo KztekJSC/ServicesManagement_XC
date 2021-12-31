@@ -1,9 +1,11 @@
 ﻿using Kztek_Core.Models;
 using Kztek_Data.Repository;
+using Kztek_Library.Configs;
 using Kztek_Library.Helpers;
 using Kztek_Library.Models;
 using Kztek_Model.Models;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +28,57 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<MessageReport> Create(tbl_Event obj)
         {
             return await _tbl_EventRepository.Add(obj);
+        }
+
+        /// <summary>
+        /// Thông báo tài khoản giao dịch viên
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<NotifiCustom>> NotifiSession1(HttpContext HttpContext)
+        {
+            var listData = new List<NotifiCustom>();
+
+            #region Tạm thời ẩn session, nếu count chậm có thể áp dụng phương án session
+            //lấy data từ session
+            //var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
+
+            ////nếu có dữ liệu
+            //if (!string.IsNullOrWhiteSpace(sessionValue))
+            //{
+            //    listData = JsonConvert.DeserializeObject<List<NotifiCustom>>(sessionValue);
+            //}
+            //else
+            //{
+            //    //nếu chưa có thì lấy từ db
+            //    listData = await GetCountServiceByType12();
+
+            //    //add vào session
+            //    HttpContext.Session.SetString(SessionConfig.NotifiType1Session, JsonConvert.SerializeObject(listData));
+            //}
+            #endregion
+
+            listData = await GetCountServiceByType12();
+
+            return listData;
+        }
+
+        /// <summary>
+        /// Đếm số lượng chưa xác nhận, đã xác nhận
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<NotifiCustom>> GetCountServiceByType12()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT EventType, (CASE WHEN EventType = 1 THEN N'Dịch vụ chưa xác nhận' ELSE N'Dịch vụ đã xác nhận' END) as TypeName, Count(Id) as Quantity FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
+
+            sb.AppendLine("GROUP BY EventType");
+
+            var listData = DatabaseHelper.ExcuteCommandToList<NotifiCustom>(sb.ToString());
+
+            return await Task.FromResult(listData);
         }
 
         public async Task<MessageReport> DeleteById(string id)

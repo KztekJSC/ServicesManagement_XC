@@ -1,0 +1,44 @@
+﻿
+@model Kztek_Model.Models.tbl_Event_Cus
+
+
+<div id="ModalUpdateGroup" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Chọn tổ thực hiện
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="@string.Format("frmUpdateGroup")" class="form-horizontal">
+                    @Html.Hidden("serId", Model.Id)
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group row">
+                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                    <label for="id-form-field-name" class="mb-0">
+                                        Tổ thực hiện
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    @Html.DropDownList("GroupId", new SelectList(ViewBag.Group, "ItemValue", "ItemText",Model.GroupId), "- Lựa chọn -", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background-color: #c00000 !important;border-color: #c00000 !important" id="btnClose" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn" style="background-color: #385822 !important;border-color: #385822 !important" id="btnCompleted">Xác nhận</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

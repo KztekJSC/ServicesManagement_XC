@@ -135,7 +135,8 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 Username = model.Username,
                 isAdmin = model.Admin,
                 Avatar = model.UserAvatar,
-                GroupIds = model.GroupIds
+                GroupIds = model.GroupIds,
+                TypeNotifi = model.TypeNotifi
             };
 
             obj.Roles = (from n in _UserRoleRepository.Table
