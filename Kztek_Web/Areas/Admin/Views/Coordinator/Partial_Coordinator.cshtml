@@ -7,7 +7,7 @@
     var lstGroup = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
 
     var shows = new List<string>();
- 
+
     var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn;
 
     var objC = objColum != null ? objColum : new Kztek_Model.Models.ColumTable();
@@ -32,13 +32,13 @@
                     Xe CN
                 </th>
                 <th class="text-center" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">Loại hàng </th>
-               
+
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">Loại xe</th>
                 <th class="text-center" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">Nhóm hàng</th>
                 <th class="text-center" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">Dịch vụ</th>
                 <th class="text-center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">Tổ thực hiện</th>
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Bắt đầu </th>
-        <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Kết thúc</th>
+                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Kết thúc</th>
 
             </tr>
         </thead>
@@ -137,16 +137,16 @@
                             }
                         </td>
                         <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
-                                @if (item.StartDate.Date != DateTime.MaxValue.Date)
-                                {
-                                    @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
-                                }
-                              
-                            </td>
+                            @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                            {
+                                @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
+                            }
+
+                        </td>
                         <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
                             @if (item.EndDate.Date != DateTime.MaxValue.Date)
                             {
-                            @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
+                                @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
                             }
                         </td>
                     </tr>
@@ -160,13 +160,14 @@
     <div class="col-xs-12" id="pagCoordinator">
         <div class="pull-right">
             @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Coordinator", "Coordinator", new
-  {
-      page = x,
-      key = ViewBag.keyValue,
-      StatusID = ViewBag.StatusID,
+       {
+           page = x,
+           key = ViewBag.keyValue,
+           StatusID = ViewBag.StatusID,
+           fromdate = ViewBag.fromdateValue,
+           todate = ViewBag.todateValue
 
-
-  }))
+            }))
 
         </div>
     </div>

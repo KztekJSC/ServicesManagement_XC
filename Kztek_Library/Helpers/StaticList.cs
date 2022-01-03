@@ -209,6 +209,17 @@ namespace Kztek_Library.Helpers
             return list;
         }
 
+        public static async Task<List<SelectListModel>> ParkingPosittions()
+        {
+
+            var list = new List<SelectListModel> {
+                                         new SelectListModel { ItemValue = "Chưa có vị trí đỗ", ItemText = "Chưa có vị trí đỗ"},
+                                         new SelectListModel { ItemValue = "Đã có vị trí đỗ", ItemText = "Đã có vị trí đỗ"},
+                                       
+                                    };
+            return list;
+        }
+
         public static List<SelectListModel_Communication> Communication1()
         {
             return new List<SelectListModel_Communication>

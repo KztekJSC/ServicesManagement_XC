@@ -54,6 +54,8 @@ var CoordinatorController = {
         var obj = {
             key: $("input[name=key]").val(),
             StatusID: $("#StatusID").val(),
+            fromdate: $("#fromdate").val(),
+            todate: $("#todate").val(),
             page: page
         };
 
@@ -61,7 +63,6 @@ var CoordinatorController = {
             .done(function (data) {
                 $('#boxTable').html('');
                 $('#boxTable').html(data);
-
                 $("#spCount").text($("#totalCount").val());
             });
     },
@@ -102,11 +103,12 @@ var CoordinatorController = {
         var frm = $("#frmInfo");
 
         var obj = {
+            Id: frm.find("#serId").val(),
             ServiceCode: frm.find("input[name=txtServiceCode]").val(),
             VehicleType: frm.find("input[name=txtVehicleType]").val(),
             PackageNumber: frm.find("input[name=txtPackageNumber]").val(),
-            Weight: frm.find("input[name=txtWeight]").val(),
-            Id: $("#serId").val()
+            Weight: frm.find("input[name=txtWeight]").val(),           
+            Description: frm.find("#Description").val()
         };
 
         JSHelper.AJAX_HttpPost('/Admin/Coordinator/SaveService', obj)

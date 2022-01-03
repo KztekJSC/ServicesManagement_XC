@@ -85,6 +85,39 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return query.FirstOrDefault();
         }
 
+        public async Task<SelectListModel_Chosen> SelectChoseParkingPosittion(string id = "", string placeholder = "", string selecteds = "")
+        {
+            var data =  StaticList.ParkingPosittions();
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Result.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = "00"
+                });
+
+                cus.AddRange(data.Result.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen()
+            {
+                IdSelectList = "ParkingPosittion",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                Data = cus.ToList(),
+                isMultiSelect = false
+            };
+            return model;
+        }
+
+       
+
         public async Task<SelectListModel_Chosen> SelectChoseService(string id = "", string placeholder = "", string selecteds = "")
         {
             var data = await GetAll();

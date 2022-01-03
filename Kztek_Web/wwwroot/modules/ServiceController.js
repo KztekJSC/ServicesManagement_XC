@@ -14,6 +14,10 @@
         ServiceController.PartialService(1);
     })
 
+    $('body').on('click', '.btnSearchAssignment', function () {
+        ServiceController.PartialVehicle();
+    })
+
     $('body').on('click', '.btnDelete', function () {
         var cmd = $(this);
         var id = cmd.attr('idata');
@@ -80,6 +84,8 @@ var ServiceController = {
             StatusID: $("#StatusID").val(),
             ServiceId: $("#ServiceId").val(),
             GroupId: $("#GroupId").val(),
+            fromdate: $("#fromdate").val(),
+            todate: $("#todate").val(),
             page: page
         };
 
@@ -128,7 +134,11 @@ var ServiceController = {
         },
     PartialVehicle: function () {
         var obj = {
-           
+            key: $("input[name=key]").val(),
+            ServiceId: $("#ServiceId").val(),
+            fromdate: $("#fromdate").val(),
+            ParkingPosittion: $("#ParkingPosittion").val()
+          
         };
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Vehicle', obj)

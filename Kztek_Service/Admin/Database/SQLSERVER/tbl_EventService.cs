@@ -135,7 +135,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<tbl_Event> GetById(string id)
         {
 
-            return await _tbl_EventRepository.GetOneById(id);
+            return await _tbl_EventRepository.GetOneById(id.ToLower());
         }
 
         public async Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "")
@@ -475,6 +475,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("FROM(");
             sb.AppendLine("  SELECT * FROM [tbl_Event]");
             sb.AppendLine("WHERE 1 =1 AND  EventType != 1 AND IsDeleted = 0");
+            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'",fromdate,todate));
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -484,7 +485,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
-
+          
 
 
 
@@ -520,7 +521,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1 AND EventType != 1 AND IsDeleted = 0");
-
+            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
@@ -575,6 +576,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
 
+            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
@@ -667,6 +669,8 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("FROM [tbl_Event] where 1 = 1  AND EventType IN (1,2) AND  IsDeleted = 0");
 
+            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
@@ -754,8 +758,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         /// Dùng cho giao diện phân tổ
         /// </summary>
         /// <returns></returns>
-        public async Task<List<tbl_Event>> GetListType2()
+        public async Task<List<tbl_Event>> GetListType2(string key = "", string ServiceId = "", string fromdate = "", string ParkingPosittion = "")
         {
+            var tdate = Convert.ToDateTime(fromdate);
+
             var sb = new StringBuilder();
 
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
@@ -765,6 +771,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("SELECT * FROM [tbl_Event]");
 
             sb.AppendLine("WHERE 1 = 1 AND EventType = 2 AND  IsDeleted = 0");
+
+            sb.AppendLine(string.Format("AND  FORMAT(DivisionDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+            if (!string.IsNullOrEmpty(keyReplace))
+            {
+                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+            }
+            if (!string.IsNullOrEmpty(key))
+            {
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
+            }
 
             sb.AppendLine(") AS a");
 

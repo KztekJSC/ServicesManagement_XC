@@ -51,8 +51,8 @@
                                 <div class="col-sm-3 col-form-label text-sm-right pr-0">
                                     <label for="id-form-field-name" class="mb-0">
                                         Loại xe
-                                    </label>    
-                                </div>  
+                                    </label>
+                                </div>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="txtVehicleType" value="@Model.VehicleType" />
                                 </div>
@@ -78,7 +78,20 @@
                                     <input type="text" class="form-control" name="txtWeight" value="@Model.Weight" />
                                 </div>
                             </div>
-
+                            @if (Model.EventType == 5)
+                            {
+                                <div class="form-group row">
+                                    <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                        <label for="id-form-field-name" class="mb-0">
+                                          Ghi chú
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <textarea id="Description" name="Description" class="form-control">@Model.Description</textarea>
+                                        @*<input type="text" class="form-control" name="txtWeight" value="@Model.Description" />*@
+                                    </div>
+                                </div>
+                            }
 
                         </div>
                     </div>

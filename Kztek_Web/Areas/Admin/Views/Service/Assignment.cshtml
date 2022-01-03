@@ -6,9 +6,55 @@
 <div id="boxModal">
 
 </div>
+<div class="row">
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+        Từ khóa
+        <input type="text" name="key" value="@ViewBag.keyValue" placeholder=" Biển số | Mã dịch vụ..." class="form-control" p />
+    </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+        Ngày:
+        <div class="input-group">
+            @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control drp_auto_input" })
+            <span class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </span>
+
+        </div>
+    </div>
+
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Vị trí đỗ </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.LstParkingPosit)
+
+    </div>
+
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Dịch vụ </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.LstService)
+
+    </div>
+
+</div>
 
 <div class="row">
-    <div class="col-xs-7" >
+    <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
+        <br />
+        <button class="btn btn-white btn-primary btnSearchAssignment" type="button"><i class="fa fa-search" aria-hidden="true"></i> @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:SEARCH" }) </button>
+        <a href='@Url.Action("Assignment", "Service",new { AreaCode = ViewBag.AreaCodeValue })' class="btn btn-primary btn-white" type="submit">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            Reset
+        </a>
+        @*<a href="javascript:void(0)" class="btnExport btn btn-white btn-primary" title="Xuất excel">
+                <i class="ace-icon fa fa-file-excel-o"></i>  @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:EXCEL" })
+            </a>*@
+
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-xs-7">
         <h3 class="header smaller lighter blue">Danh sách chưa phân tổ</h3>
         <div style="height:700px;overflow:auto">
             <table class="table  table-bordered table-hover" id="tblVehicle">
@@ -24,7 +70,7 @@
                         </th>
                         <th class="text-center">Mã dịch vụ</th>
                         <th class="text-center">Dịch vụ</th>
-
+                        <th class="text-center">Vị trí đỗ  </th>
                         <th class="text-center">Phân tổ</th>
                     </tr>
                 </thead>
@@ -33,7 +79,7 @@
                 </tbody>
             </table>
         </div>
-       
+
     </div>
 
     <div class="col-xs-5">
@@ -55,7 +101,7 @@
                 </tbody>
             </table>
         </div>
-      
+
     </div>
 </div>
 

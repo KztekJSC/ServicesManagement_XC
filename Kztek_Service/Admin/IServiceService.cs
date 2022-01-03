@@ -22,5 +22,6 @@ namespace Kztek_Service.Admin
         Task<SelectListModel_Multi> SelectColumn(string controller = "", string action = "",string id = "", string placeholder = "", string selecteds = "" , bool isMultipule = false);
 
         Task<SelectListModel_Multi> SelectColumnCoor(string controller = "", string action = "",string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false);
+        Task<SelectListModel_Chosen> SelectChoseParkingPosittion(string id = "", string placeholder = "", string selecteds = "");
     }
 }

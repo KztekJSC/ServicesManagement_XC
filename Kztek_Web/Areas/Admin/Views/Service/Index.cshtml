@@ -40,7 +40,30 @@
         </div>
 
     </div>
+    <div class="row">
 
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
@@ -73,39 +96,7 @@
     <script src="~/modules/ServiceController.js"></script>
     <script src="~/modules/Signalr.js"></script>
     <script>
-        jQuery(function ($) {
-            var $overflow = '';
-            var colorbox_params = {
-                rel: 'colorbox',
-                reposition: true,
-                scalePhotos: true,
-                scrolling: false,
-                previous: '<i class="ace-icon fa fa-arrow-left"></i>',
-                next: '<i class="ace-icon fa fa-arrow-right"></i>',
-                close: '&times;',
-                current: '{current} of {total}',
-                maxWidth: '100%',
-                maxHeight: '100%',
-                onOpen: function () {
-                    $overflow = document.body.style.overflow;
-                    document.body.style.overflow = 'hidden';
-                },
-                onClosed: function () {
-                    document.body.style.overflow = $overflow;
-                },
-                onComplete: function () {
-                    $.colorbox.resize();
-                }
-            };
-
-            $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
-            $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
-
-
-            $(document).one('ajaxloadstart.page', function (e) {
-                $('#colorbox, #cboxOverlay').remove();
-            });
-        })
+     
         $(document).ready(function () {
             ServiceController.PartialService(1);
             $('#columnId').change(function () {

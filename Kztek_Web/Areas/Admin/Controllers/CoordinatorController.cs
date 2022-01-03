@@ -59,9 +59,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.listSlectColumn = await _ServiceService.SelectColumnCoor(controller, action);
 
-            ViewBag.StatusID = StatusID;
-           
-            ViewBag.keyValue = key;
+            
 
             ViewBag.AreaCodeValue = AreaCode;
 
@@ -69,16 +67,29 @@ namespace Kztek_Web.Areas.Admin.Controllers
            
         }
 
-        public async Task<IActionResult> Partial_Coordinator(string StatusID = "", string key = "", int page = 1)
+        public async Task<IActionResult> Partial_Coordinator(string StatusID = "", string key = "", int page = 1, string fromdate = "" , string todate ="")
         {
+            if (string.IsNullOrEmpty(fromdate))
+            {
+                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
+            }
 
-            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, "", "");
+            if (string.IsNullOrEmpty(todate))
+            {
+                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
+            }
+
+           
+            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate);
 
             ViewBag.showColumn = await _ColumTableService.GetDetailByController("Coordinator", "Index");
 
             ViewBag.lstService = await _ServiceService.GetAll();
 
-
+            ViewBag.StatusID = StatusID;
+            ViewBag.fromdateValue = fromdate;
+            ViewBag.todateValue = todate;
+            ViewBag.keyValue = key;
             ViewBag.Groups = await _GroupService.GetAll();
 
             return PartialView(gridModel);
@@ -254,8 +265,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         #region Modal xác nhận hoàn thành dịch vụ
         public async Task<IActionResult> Modal_Info(string id)
         {
-            var objService = await _tbl_EventService.GetById(id);
-
+            var objService = await _tbl_EventService.GetById(id);     
             return PartialView(objService);
         }
 
@@ -275,7 +285,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 obj.VehicleType = model.VehicleType;
                 obj.Weight = model.Weight;
                 obj.PackageNumber = model.PackageNumber;
-
+                obj.Description = model.Description;
                 result = await _tbl_EventService.Update(obj);
             }
             else

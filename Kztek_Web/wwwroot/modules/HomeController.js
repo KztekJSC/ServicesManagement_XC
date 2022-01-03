@@ -60,7 +60,7 @@ var HomeController = {
             page: page
         };
 
-        JSHelper.AJAX_LoadDataPOST('/Admin/Home/Partial_Service', obj)
+        JSHelper.AJAX_LoadDataPOST('/Admin/Home/Partial_Data', obj)
             .done(function (data) {
                 $('#boxTable').html('');
                 $('#boxTable').html(data);

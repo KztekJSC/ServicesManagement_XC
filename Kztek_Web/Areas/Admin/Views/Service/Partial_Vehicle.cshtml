@@ -9,37 +9,41 @@
     {
         count++;
 
-        <tr>
-            <td class="text-center">
-                @count
-            </td>
-            
-            <td class="center">
-                @item.PlateVN
-            </td>
-            <td class="center">
-                @item.PlateCN
-            </td>
-            <td class="text-left">
-                @item.ServiceCode
-            </td>      
-            <td class="center">
-                @{ 
-                    var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
-                    if (obj != null)
-                    {
-                        <span>@obj.Name</span>
-                    }
-                }
-                
-            </td>
+<tr>
+    <td class="text-center">
+        @count
+    </td>
 
-            <td class="center">
-                <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
-                    <i class="ace-icon fa fa-pencil bigger-130"></i>
-                </a>
-               
-            </td>
-        </tr>
+    <td class="center">
+        @item.PlateVN
+    </td>
+    <td class="center">
+        @item.PlateCN
+    </td>
+    <td class="text-left">
+        @item.ServiceCode
+    </td>
+    <td class="center">
+        @{
+            var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+            if (obj != null)
+            {
+                <span>@obj.Name</span>
+            }
+        }
+
+    </td>
+    <td class="center">
+        @item.ParkingPosition
+
+    </td>
+
+    <td class="center">
+        <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
+            <i class="ace-icon fa fa-pencil bigger-130"></i>
+        </a>
+
+    </td>
+</tr>
     }
 }

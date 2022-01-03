@@ -31,7 +31,7 @@ namespace Kztek_Service.Admin
         /// Dùng cho giao diện phân tổ
         /// </summary>
         /// <returns></returns>
-        Task<List<tbl_Event>> GetListType2();
+        Task<List<tbl_Event>> GetListType2(string key = "", string ServiceId = "", string fromdate = "", string ParkingPosittion = "");
 
         /// <summary>
         /// Đếm số lượng dịch vụ đã giao của từng tổ

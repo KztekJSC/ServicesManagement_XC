@@ -25,7 +25,7 @@
             <tr id="headColumn">
                 <th class="text-center  stt" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">STT</th>
                 <th class="text-center" idata="2" style="display :@string.Format("{0}",shows.Contains("2") ? "" : "none")">Số trang</th>
-                <th class="text-center"idata="3" style="display :@string.Format("{0}",shows.Contains("3")  ? "" : "none")">
+                <th class="text-center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")  ? "" : "none")">
                     Trạng thái
                 </th>
                 <th class="text-center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")? "" : "none")">
@@ -37,14 +37,14 @@
                 <th class="text-center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")  ? "" : "none")">Loại hàng </th>
                 <th class="text-center" idata="7" style="display :@string.Format("{0}",shows.Contains("7") ? "" : "none")">Khối lượng</th>
                 <th class="text-center" idata="8" style="display :@string.Format("{0}",shows.Contains("8") ? "" : "none")">Loại xe</th>
-                <th class="text-center"  idata="9"  style="display :@string.Format("{0}",shows.Contains("9") ? "" : "none")">Nhóm hàng</th>
-                <th class="text-center" idata="10"  style="display :@string.Format("{0}",shows.Contains("10") ? "" : "none")">Dịch vụ</th>
+                <th class="text-center" idata="9" style="display :@string.Format("{0}",shows.Contains("9") ? "" : "none")">Nhóm hàng</th>
+                <th class="text-center" idata="10" style="display :@string.Format("{0}",shows.Contains("10") ? "" : "none")">Dịch vụ</th>
                 <th class="text-center" idata="11" style="display :@string.Format("{0}",shows.Contains("11")? "" : "none")">Giá dịch vụ</th>
                 <th class="text-center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")? "" : "none") ">Phụ thu</th>
                 <th class="text-center" idata="13" style="display :@string.Format("{0}",shows.Contains("13")? "" : "none")">Ghi chú </th>
                 <th class="text-center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")? "" : "none")">Tổ bốc xếp</th>
-                <th class="text-left"  idata="15"  style="display :@string.Format("{0}",shows.Contains("15")? "" : "none")">Ảnh CN </th>
-                <th class="text-left"  idata="16"  style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
+                <th class="text-left" idata="15" style="display :@string.Format("{0}",shows.Contains("15")? "" : "none")">Ảnh CN </th>
+                <th class="text-left" idata="16" style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -59,14 +59,14 @@
                     count++;
 
                     <tr id="sId_@item.Id">
-                        <td class="text-center stt" idata ="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
+                        <td class="text-center stt" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
                             @count
                         </td>
-                        <td class="text-left"  idata ="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
+                        <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
                             @item.ServiceCode
                         </td>
 
-                        <td class="text-center" idata ="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                        <td class="text-center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
 
                             @if (item.EventType == 1)
                             {
@@ -80,25 +80,25 @@
 
 
                         </td>
-                        <td class="center"  idata ="4"style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                        <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
                             @item.PlateVN
                         </td>
-                        <td class="center" idata ="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
+                        <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
                             @item.PlateCN
                         </td>
-                        <td class="center"  idata ="6"style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
+                        <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
                             @item.ProductType
                         </td>
-                        <td class="center" idata ="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                        <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
                             @item.Weight
                         </td>
-                        <td class="center" idata ="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
+                        <td class="center" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
                             @item.VehicleType
                         </td>
-                        <td class="center" idata ="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
+                        <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
                             @item.ProductGroup
                         </td>
-                        <td class="center" idata ="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
+                        <td class="center" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
                             @{
                                 if (item.Service != null)
                                 {
@@ -111,16 +111,16 @@
                                 }
                             }
                         </td>
-                        <td class="center" idata ="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
+                        <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
                             @item.Price.ToString("###,###.##")
                         </td>
-                        <td class="center" idata ="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
+                        <td class="center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
                             @item.SubPrice.ToString("###,###.##")
                         </td>
-                        <td class="center" idata ="13" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">
+                        <td class="center" idata="13" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">
                             @item.Description
                         </td>
-                        <td class="center" idata ="14" style="display :@string.Format("{0}",shows.Contains("14")   ? "" : "none")">
+                        <td class="center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")   ? "" : "none")">
                             @{
                                 var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
                                 if (obj != null)
@@ -129,7 +129,7 @@
                                 }
                             }
                         </td>
-                        <td class="center" idata ="15" style="display :@string.Format("{0}",shows.Contains("15")   ? "" : "none")">
+                        <td class="center" idata="15" style="display :@string.Format("{0}",shows.Contains("15")   ? "" : "none")">
                             <div class="ace-thumbnails clearfix">
 
                                 @if (!string.IsNullOrWhiteSpace(item.ImageCN))
@@ -146,7 +146,7 @@
                             </div>
 
                         </td>
-                        <td class="center" idata ="16" style="display :@string.Format("{0}",shows.Contains("16")   ? "" : "none")">
+                        <td class="center" idata="16" style="display :@string.Format("{0}",shows.Contains("16")   ? "" : "none")">
                             <div class="ace-thumbnails clearfix">
                                 @if (!string.IsNullOrWhiteSpace(item.ImageVN))
                                 {
@@ -202,7 +202,8 @@
            StatusID = ViewBag.StatusID,
            ServiceId = ViewBag.ServiceID,
            GroupId = ViewBag.GroupID,
-           Checkid = ViewBag.Check
+           fromdate = ViewBag.fromdateValue,
+           todate = ViewBag.todateValue
 
        }))
         </div>

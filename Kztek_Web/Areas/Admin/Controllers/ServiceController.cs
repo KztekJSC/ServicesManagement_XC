@@ -146,7 +146,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
 
             ViewBag.keyValue = key;
-
+            ViewBag.fromdateValue = fromdate;
+            ViewBag.todateValue = todate;
             ViewBag.ServiceID = ServiceId;
             ViewBag.Check = Checkid;
             ViewBag.GroupID = GroupId;
@@ -311,17 +312,23 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Phân tổ
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Assignment()
+        public async Task<IActionResult> Assignment(string  ServiceId = "" ,string fromdate = "", string key = "", string ParkingPosittion = "")
         {
+            ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
 
+            ViewBag.LstParkingPosit = await _ServiceService.SelectChoseParkingPosittion(selecteds: ParkingPosittion);
 
             return View();
         }
 
-        public async Task<IActionResult> Partial_Vehicle()
+        public async Task<IActionResult> Partial_Vehicle(string key = "",  string ServiceId = "", string fromdate = "",  string ParkingPosittion = "" )
         {
-            var list = await _tbl_EventService.GetListType2();
+            var list = await _tbl_EventService.GetListType2(key, ServiceId ,fromdate, ParkingPosittion);
+
+            ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
+       
             ViewBag.lstService = await _ServiceService.GetAll();
+
             return PartialView(list);
         }
 
