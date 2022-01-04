@@ -31,7 +31,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
+        public async Task<IActionResult> Index(string ServiceId = "", string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
 )
         {
             var datefrompicker = "";
@@ -52,22 +52,30 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
          
             var controller = "Coordinator";
+
             var action = "Index";
+
             ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Coordinator", this.HttpContext);
 
             ViewBag.listSlectColumn = await _ServiceService.SelectColumnCoor(controller, action);
 
-            
+            ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
 
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.todateValue = todate;
+
+            ViewBag.keyValue = key;
+
+            ViewBag.fromdateValue = fromdate;
 
             return View();
            
         }
 
-        public async Task<IActionResult> Partial_Coordinator(string StatusID = "", string key = "", int page = 1, string fromdate = "" , string todate ="")
+        public async Task<IActionResult> Partial_Coordinator( string StatusID = "", string key = "",  string fromdate = "" , string todate ="" ,string ServiceId = "", int page = 1)
         {
             if (string.IsNullOrEmpty(fromdate))
             {
@@ -80,16 +88,24 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
 
            
-            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate);
+            var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate , ServiceId);
 
             ViewBag.showColumn = await _ColumTableService.GetDetailByController("Coordinator", "Index");
 
             ViewBag.lstService = await _ServiceService.GetAll();
 
             ViewBag.StatusID = StatusID;
+
+            ViewBag.LstServiceId = ServiceId;
+
             ViewBag.fromdateValue = fromdate;
+
+            ViewBag.ServiceValue = ServiceId;
+
             ViewBag.todateValue = todate;
+
             ViewBag.keyValue = key;
+
             ViewBag.Groups = await _GroupService.GetAll();
 
             return PartialView(gridModel);
@@ -296,7 +312,6 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return Json(result);
         }
         #endregion
-
 
         #region Hiện thị cột 
 

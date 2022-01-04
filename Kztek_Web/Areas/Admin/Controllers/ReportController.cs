@@ -180,32 +180,32 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {
             //column header
             var Data_ColumnHeader = new List<SelectListModel_Print_Column_Header>();
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "STT" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Dịch vụ" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số lượng dịch vụ" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số tiền(VNĐ)" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Phụ thu(VNĐ)" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Loại DV" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe đăng kí" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe hoàn thành/đang làm" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe chưa làm" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Ghi chú" });
          
             //
-            var printConfig = PrintHelper.Template_Excel_V1(PrintConfig.HeaderType.TwoColumns, "Theo loại dich vụ", DateTime.Now, SessionCookieHelper.CurrentUser(this.HttpContext).Result, "Kztek", Data_ColumnHeader, 4, 5, 5);
+            var printConfig = PrintHelper.Template_Excel_V1(PrintConfig.HeaderType.TwoColumns, "Tình trạng xe đăng ký", DateTime.Now, SessionCookieHelper.CurrentUser(this.HttpContext).Result, "Kztek", Data_ColumnHeader, 4, 5, 5);
         
             //
             var lstdata = await _ReportService.GetByService(key, page, 10, status, fromdate, todate, isCheckByTime, ServiceId);
-            var lst = new List<ServiceCustom>();
+            var lst = new List<ServiceCustom_Excel>();
             foreach (var item in lstdata)
             {
-                var obj1 = await _ServiceService.GetById(item.ServiceId);
-                var objService = new ServiceCustom();
-                objService.RowNumber = item.RowNumber;
-                objService.ServiceName = obj1.Name;
-                objService.CountService = item.CountService;
-                objService.SumPrice = item.SumPrice;
-                objService.SumSub = item.SumSub;
+              
+                var objService = new ServiceCustom_Excel();
+                objService.ServiceName = item.ServiceName;
+                objService.VehicleRegist = item.VehicleRegist;
+                objService.VehicleNotDo = item.VehicleNotDo;
+                objService.VehicleDone = item.VehicleDone;
+                objService.Note = item.Note;
                 lst.Add(objService);
 
             }
 
-            return await PrintHelper.Excel_Write<ServiceCustom>(httpContext, lst, "Event_" + DateTime.Now.ToString("ddMMyyyyHHmmss"), printConfig);
+            return await PrintHelper.Excel_Write<ServiceCustom_Excel>(httpContext, lst, "Event_" + DateTime.Now.ToString("ddMMyyyyHHmmss"), printConfig);
         }
 
         #endregion

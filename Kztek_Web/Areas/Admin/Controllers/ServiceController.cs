@@ -114,7 +114,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             //ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
             var obj = await _ColumTableService.GetDetailByController("Service", "Index");
+
             ViewBag.StrShows = obj.ColumShows;
+
+            ViewBag.fromdateValue = fromdate;
+
+            ViewBag.todateValue = todate;
 
             ViewBag.AreaCodeValue = AreaCode;
 

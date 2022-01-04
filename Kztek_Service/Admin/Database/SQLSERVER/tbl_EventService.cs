@@ -40,7 +40,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             #region Tạm thời ẩn session, nếu count chậm có thể áp dụng phương án session
             //lấy data từ session
-            //var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
+          //  var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
 
             ////nếu có dữ liệu
             //if (!string.IsNullOrWhiteSpace(sessionValue))
@@ -467,7 +467,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(listData);
         }
 
-        public async Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int pageSize, string statusID, string fromdate, string todate)
+        public async Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int pageSize, string statusID, string fromdate, string todate, string ServiceId)
         {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
@@ -485,8 +485,29 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
-          
 
+            //Service
+            if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
+            {
+                var t = ServiceId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([Service] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
 
 
             //event Code
@@ -530,7 +551,28 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
+            //Service
+            if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
+            {
+                var t = ServiceId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
 
+                    sb.AppendLine("and ([Service] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
             //event Code
             if (!string.IsNullOrWhiteSpace(statusID) && statusID != "00")
             {
@@ -758,7 +800,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         /// Dùng cho giao diện phân tổ
         /// </summary>
         /// <returns></returns>
-        public async Task<List<tbl_Event>> GetListType2(string key = "", string ServiceId = "", string fromdate = "", string ParkingPosittion = "")
+        public async Task<List<tbl_Event>> GetListType2(string key , string ServiceId , string fromdate , string ParkingPosittion )
         {
             var tdate = Convert.ToDateTime(fromdate);
 
@@ -772,7 +814,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("WHERE 1 = 1 AND EventType = 2 AND  IsDeleted = 0");
 
-            sb.AppendLine(string.Format("AND  FORMAT(DivisionDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
+            sb.AppendLine(string.Format("AND  FORMAT(CreatedDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -782,7 +824,50 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
+            //Service
+            if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
+            {
+                var t = ServiceId.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
 
+                    sb.AppendLine("and ([Service] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            //Service
+            if (!string.IsNullOrWhiteSpace(ParkingPosittion) && ParkingPosittion != "00")
+            {
+                var t = ParkingPosittion.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([ParkingPosition] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
             sb.AppendLine(") AS a");
 
 

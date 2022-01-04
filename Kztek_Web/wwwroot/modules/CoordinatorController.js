@@ -56,6 +56,7 @@ var CoordinatorController = {
             StatusID: $("#StatusID").val(),
             fromdate: $("#fromdate").val(),
             todate: $("#todate").val(),
+            ServiceId: $("#ServiceId").val(),
             page: page
         };
 

@@ -18,6 +18,7 @@ namespace Kztek_Library.Helpers
 {
     public static class SqlHelper
     {
+
         public static bool ExcuteCommandToBool(string connect, string command)
         {
             var result = false;
@@ -304,6 +305,7 @@ namespace Kztek_Library.Helpers
            
         }
 
+       
         public static DataTable ExcuteCommandToDataTable(string connect, string command)
         {
             var k = new SqlConnection(connect);

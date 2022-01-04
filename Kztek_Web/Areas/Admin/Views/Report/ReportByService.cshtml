@@ -8,7 +8,7 @@
 }
 
 @{
-    ViewBag.Title = "Theo loại dịch vụ";
+    ViewBag.Title = "Tình trạng xe đăng ký";
 
 }
 
@@ -104,18 +104,18 @@
     <table class="table  table-bordered table-hover">
         <thead>
             <tr>
-                <th class="text-center">STT</th>
+                <th class="text-center">Loại DV</th>
                 <th class="text-center">
-                    Dịch vụ
+                  Số xe đăng kí
                 </th>
                 <th class="text-center">
-                    Số lượng dịch vụ
+                   Số xe hoàn thành/đang làm
                 </th>
                 <th class="text-center">
-                    Số tiền(VNĐ)
+                  Số xe chưa làm
                 </th>
                 <th class="text-center">
-                    Phụ thu(VNĐ)
+                   Ghi chú
                 </th>
 
 
@@ -131,26 +131,20 @@
                     count++;
 
                     <tr @*id="sId_@item.Id"*@>
-                        <td class="text-center">
-                            @count
-                        </td>
-                        <td class="left">
-                            @{
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.ServiceId.ToLower()) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
-                                }
-                            }
+                        <td class="text-left">
+                            @item.ServiceName
                         </td>
                         <td class="center">
-                            @item.CountService
+                           @item.VehicleRegist
                         </td>
                         <td class="center">
-                            @item.SumPrice.ToString("###,###.##")
+                            @item.VehicleDone
                         </td>
                         <td class="center">
-                            @item.SumPrice.ToString("###,###.##")
+                            @item.VehicleNotDo
+                        </td>
+                        <td class="center">
+                            @item.Note
                         </td>
                     </tr>
                 }

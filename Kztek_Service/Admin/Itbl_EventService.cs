@@ -19,7 +19,7 @@ namespace Kztek_Service.Admin
         Task<MessageReport> Update(tbl_Event oldObj);
          Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate, string ServiceId = "", string GroupId = "");
         Task<SelectListModel_Chosen> GetEventype(string id = "", string placeholder = "", string selecteds = "");
-        Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int v, string statusID, string fromdate, string todate);
+        Task<GridModel<tbl_Event>> GetPagingCoordinatort(string key, int page, int v, string statusID, string fromdate, string todate, string ServiceId);
         Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int v, string statusID, string fromdate, string todate);
         Task<tbl_Event> GetByService(string id);
         Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "");

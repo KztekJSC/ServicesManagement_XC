@@ -287,13 +287,28 @@ namespace Kztek_Model.Models
 
     public class ServiceCustom
     {
-        public long RowNumber { get; set; }
+        public string Id { get; set; }
         public string ServiceName { get; set; }
-        public int CountService { get; set; }
-        public decimal SumPrice { get; set; }
-        public decimal SumSub { get; set; }
-        public string ServiceId { get; set; }
+        public int VehicleRegist { get; set; } // eventtype = 2
+        public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
+        public int VehicleNotDo{ get; set; } // eventtype = 3
+        public string Note { get; set; }
 
+    }
+    public class ServiceCustom_Excel
+    {
+       
+        public string ServiceName { get; set; }
+        public int VehicleRegist { get; set; } // eventtype = 2
+        public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
+        public int VehicleNotDo { get; set; } // eventtype = 3
+        public string Note { get; set; }
+
+    }
+    public class Counts
+    {
+        public int Count { get; set; } = 0;
+  
     }
     public class GroupCustom
     {

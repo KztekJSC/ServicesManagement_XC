@@ -33,7 +33,12 @@
         @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
 
     </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
 
+        <span class="lbl">Dịch vụ </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.LstService)
+
+    </div>
     <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
         Từ ngày:
         <div class="input-group">
