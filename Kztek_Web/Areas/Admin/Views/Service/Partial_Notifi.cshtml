@@ -11,6 +11,7 @@
     var objType2 = Model.FirstOrDefault(n => n.EventType == 2);
 
 
+
     <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
         <i class="ace-icon fa fa-bell"></i>
         <span class="badge badge-important">@total</span>
@@ -44,7 +45,7 @@
                     @if (objType2 != null)
                     {
                         <li>
-                            <a href="@Url.Action("Index","Service",new { AreaCode="Admin",StatusID = "2"})">
+                            <a href="@Url.Action("Index","Service",new { AreaCode="Admin",StatusID = "2" })">
                                 <div class="clearfix">
                                     <span class="pull-left">
                                         <i class="btn btn-xs no-hover btn-success fa fa-apple"></i>
@@ -56,11 +57,12 @@
                         </li>
                     }
 
-
+                   
 
                 </ul>
             </div>
         </li>
     </ul>
-
 }
+
+

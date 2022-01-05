@@ -91,8 +91,8 @@ var ServiceController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Service', obj)
             .done(function (data) {
-                $('#boxTable').html('');
-                $('#boxTable').html(data);
+                $('#boxTable1').html('');
+                $('#boxTable1').html(data);
 
                 $("#spCount").text($("#totalCount").val());
             });

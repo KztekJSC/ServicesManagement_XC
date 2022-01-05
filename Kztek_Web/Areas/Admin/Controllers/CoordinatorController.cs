@@ -65,11 +65,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AreaCodeValue = AreaCode;
 
-            ViewBag.todateValue = todate;
+            //ViewBag.todateValue = todate;
 
             ViewBag.keyValue = key;
 
-            ViewBag.fromdateValue = fromdate;
+            //ViewBag.fromdateValue = fromdate;
 
             return View();
            
@@ -77,16 +77,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Partial_Coordinator( string StatusID = "", string key = "",  string fromdate = "" , string todate ="" ,string ServiceId = "", int page = 1)
         {
-            if (string.IsNullOrEmpty(fromdate))
-            {
-                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
-            }
-
-            if (string.IsNullOrEmpty(todate))
-            {
-                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
-            }
-
+           
            
             var gridModel = await _tbl_EventService.GetPagingCoordinatort(key, page, 20, StatusID, fromdate, todate , ServiceId);
 

@@ -77,7 +77,16 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("GROUP BY EventType");
 
             var listData = DatabaseHelper.ExcuteCommandToList<NotifiCustom>(sb.ToString());
-
+            //var lst = new List<NotifiCustom>();
+            //foreach (var item in listData)
+            //{
+            //    var obj = new NotifiCustom();
+            //    obj.TypeNotifi = "1";
+            //    obj.TypeName = item.TypeName;
+            //    obj.Quantity = item.Quantity;
+            //    obj.EventType = item.EventType;
+            //    listData.Add(obj);
+            //}
             return await Task.FromResult(listData);
         }
 
@@ -475,7 +484,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("FROM(");
             sb.AppendLine("  SELECT * FROM [tbl_Event]");
             sb.AppendLine("WHERE 1 =1 AND  EventType != 1 AND IsDeleted = 0");
-            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'",fromdate,todate));
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            }
+            
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -542,7 +555,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1 AND EventType != 1 AND IsDeleted = 0");
-            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            }
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
@@ -617,8 +634,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("SELECT * FROM [tbl_Event]");
 
             sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
-
-            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            }
+         
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
@@ -711,7 +731,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("FROM [tbl_Event] where 1 = 1  AND EventType IN (1,2) AND  IsDeleted = 0");
 
-            sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+            }
+
 
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -860,7 +884,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     {
                         count++;
 
-                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                        sb.AppendLine(string.Format("N'{0}'{1}", item, count == t.Length ? "" : ","));
                     }
 
                     sb.AppendLine(" )) ");
@@ -948,6 +972,58 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                         where n.Service == id
                         select n;
             return await Task.FromResult(query.FirstOrDefault());
+        }
+
+        public async Task<List<NotifiCustom>> NotifiSession2(HttpContext httpContext)
+        {
+            var listData = new List<NotifiCustom>();
+
+            #region Tạm thời ẩn session, nếu count chậm có thể áp dụng phương án session
+            //lấy data từ session
+            //  var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
+
+            ////nếu có dữ liệu
+            //if (!string.IsNullOrWhiteSpace(sessionValue))
+            //{
+            //    listData = JsonConvert.DeserializeObject<List<NotifiCustom>>(sessionValue);
+            //}
+            //else
+            //{
+            //    //nếu chưa có thì lấy từ db
+            //    listData = await GetCountServiceByType12();
+
+            //    //add vào session
+            //    HttpContext.Session.SetString(SessionConfig.NotifiType1Session, JsonConvert.SerializeObject(listData));
+            //}
+            #endregion
+
+            listData = await GetCountServiceByType();
+
+            return listData;
+        }
+
+        private async Task<List<NotifiCustom>> GetCountServiceByType()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SELECT EventType, (CASE WHEN EventType = 1 THEN N'Dịch vụ chưa xác nhận' ELSE N'Dịch vụ đã xác nhận' END) as TypeName, Count(Id) as Quantity FROM [tbl_Event]");
+
+            sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
+
+            sb.AppendLine("GROUP BY EventType");
+
+            var listData = DatabaseHelper.ExcuteCommandToList<NotifiCustom>(sb.ToString());
+            var lst = new List<NotifiCustom>();
+            foreach (var item in listData)
+            {
+                var obj = new NotifiCustom();
+                obj.TypeNotifi = "2";
+                obj.TypeName = item.TypeName;
+                obj.Quantity = item.Quantity;
+                obj.EventType = item.EventType;
+                listData.Add(obj);
+            }
+            return await Task.FromResult(lst);
         }
     }
 }

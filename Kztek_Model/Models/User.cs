@@ -85,7 +85,9 @@ namespace Kztek_Model.Models
         public List<Role> Data_Role { get; set; } = new List<Role>();
 
         public string Avatar { get; set; } = "";
+
         public string GroupIds { get; set; }
+
         public string TypeNotifi { get; set; } //hiển thị thông báo trên header
     }
 

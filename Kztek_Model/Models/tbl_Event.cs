@@ -151,16 +151,16 @@ namespace Kztek_Model.Models
 
     public class tbl_Event_Custom
     {
-      
+
         public long RowNumber { get; set; }
         public string serviceCode { get; set; }
         public string eventTypeName { get; set; }
         public string plateVN { get; set; } //Biển số xe Việt Nam
-      
-       
+
+
         public string plateCN { get; set; } //Biển số xe Trung Quốc
-      
-     
+
+
         public string productType { get; set; } //Loại hàng
         public string weight { get; set; } //Khối lượng hàng    
         public string vehicleType { get; set; } //Loại xe
@@ -168,7 +168,7 @@ namespace Kztek_Model.Models
         public string serviceName { get; set; } //Nhóm hàng
         public string price { get; set; } //Giá dịch vụ
         public string subPrice { get; set; } //Phụ thu
-       
+
         public string StartDate { get; set; } //Ngày bắt đầu công việc
 
         public string EndDate { get; set; } //Ngày kết thúc công việc
@@ -273,7 +273,7 @@ namespace Kztek_Model.Models
     {
         public string GroupId { get; set; } //Biển số
         public int Number { get; set; } //VN hoặc CN
-     
+
     }
 
     public class CountEventByType
@@ -291,13 +291,13 @@ namespace Kztek_Model.Models
         public string ServiceName { get; set; }
         public int VehicleRegist { get; set; } // eventtype = 2
         public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
-        public int VehicleNotDo{ get; set; } // eventtype = 3
+        public int VehicleNotDo { get; set; } // eventtype = 3
         public string Note { get; set; }
 
     }
     public class ServiceCustom_Excel
     {
-       
+
         public string ServiceName { get; set; }
         public int VehicleRegist { get; set; } // eventtype = 2
         public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
@@ -308,7 +308,7 @@ namespace Kztek_Model.Models
     public class Counts
     {
         public int Count { get; set; } = 0;
-  
+
     }
     public class GroupCustom
     {
@@ -336,6 +336,7 @@ namespace Kztek_Model.Models
     {
         public int EventType { get; set; }
         public string TypeName { get; set; }
+        public string TypeNotifi { get; set; }
 
         public int Quantity { get; set; }
 

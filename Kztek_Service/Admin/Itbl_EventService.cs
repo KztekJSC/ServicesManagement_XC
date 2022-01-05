@@ -61,6 +61,6 @@ namespace Kztek_Service.Admin
         /// <param name="HttpContext"></param>
         /// <returns></returns>
         Task<List<NotifiCustom>> NotifiSession1(HttpContext HttpContext);
-
+        Task<List<NotifiCustom>> NotifiSession2(HttpContext httpContext);
     }
 }

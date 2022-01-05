@@ -62,8 +62,8 @@ var CoordinatorController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Coordinator/Partial_Coordinator', obj)
             .done(function (data) {
-                $('#boxTable').html('');
-                $('#boxTable').html(data);
+                $('#boxTable2').html('');
+                $('#boxTable2').html(data);
                 $("#spCount").text($("#totalCount").val());
             });
     },

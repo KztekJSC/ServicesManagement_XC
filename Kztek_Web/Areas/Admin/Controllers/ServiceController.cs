@@ -117,9 +117,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.StrShows = obj.ColumShows;
 
-            ViewBag.fromdateValue = fromdate;
+            //ViewBag.fromdateValue = fromdate;
 
-            ViewBag.todateValue = todate;
+            //ViewBag.todateValue = todate;
 
             ViewBag.AreaCodeValue = AreaCode;
 
@@ -130,16 +130,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {
           
 
-            if (string.IsNullOrEmpty(fromdate))
-            {
-                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
-            }
-             
-            if (string.IsNullOrEmpty(todate))
-            {
-                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
-            }
-
+         
             var gridModel = await _tbl_EventService.GetPagingInOut(key, page, 20, StatusID, fromdate, todate, ServiceId, GroupId);
 
             ViewBag.Groups = await _GroupService.GetAll();
@@ -275,7 +266,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
                await LogHelper.WriteLogupdateService(oldObj.Id.ToString(), ActionConfig.Update, "tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext, jsStrOld, jsStrNew);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Service");
             }
             else
             {
@@ -500,11 +491,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             var listData = new List<NotifiCustom>();
 
-            if (user != null && user.TypeNotifi == "1")
+            if (user != null && user.TypeNotifi == "1" || user.TypeNotifi == "2")
             {
                 listData = await _tbl_EventService.NotifiSession1(HttpContext);
             }
-
+          
             return PartialView(listData);
         }
         #endregion
