@@ -276,6 +276,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return PartialView(objService);
         }
 
+        public async Task<IActionResult> Modal_InfoDetail(string id)
+        {
+            var objService = await _tbl_EventService.GetById(id);
+            return PartialView(objService);
+        }
+
         public async Task<IActionResult> SaveService(tbl_Event model)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");

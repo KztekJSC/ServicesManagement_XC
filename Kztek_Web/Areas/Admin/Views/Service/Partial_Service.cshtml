@@ -45,6 +45,8 @@
                 <th class="text-center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")? "" : "none")">Tổ bốc xếp</th>
                 <th class="text-left" idata="15" style="display :@string.Format("{0}",shows.Contains("15")? "" : "none")">Ảnh CN </th>
                 <th class="text-left" idata="16" style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
+                <th class="text-left" idata="17" style="display :@string.Format("{0}",shows.Contains("17")? "" : "none")">Vị trí đỗ </th>
+                <th class="text-left" idata="18" style="display :@string.Format("{0}",shows.Contains("18")? "" : "none")">Ngày tạo </th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -58,132 +60,140 @@
                 {
                     count++;
 
-                    <tr id="sId_@item.Id">
-                        <td class="text-center stt" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
-                            @count
-                        </td>
-                        <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
-                            @item.ServiceCode
-                        </td>
+            <tr id="sId_@item.Id">
+                <td class="text-center stt" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
+                    @count
+                </td>
+                <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
+                    @item.ServiceCode
+                </td>
 
-                        <td class="text-center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                <td class="text-center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
 
-                            @if (item.EventType == 1)
+                    @if (item.EventType == 1)
+                    {
+                        <span class="label label-grey">Chờ xác nhận</span>
+                    }
+                    else if (item.EventType == 2)
+                    {
+                        <span class="label label-yellow ">Đã xác nhận</span>
+                    }
+
+
+
+                </td>
+                <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                    @item.PlateVN
+                </td>
+                <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
+                    @item.PlateCN
+                </td>
+                <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
+                    @item.ProductType
+                </td>
+                <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                    @item.Weight
+                </td>
+                <td class="center" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
+                    @item.VehicleType
+                </td>
+                <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
+                    @item.ProductGroup
+                </td>
+                <td class="center" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
+                    @{
+                        if (item.Service != null)
+                        {
+
+                            var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
+                            if (obj1 != null)
                             {
-                                <span class="label label-grey">Chờ xác nhận</span>
+                                <span>@obj1.Name</span>
                             }
-                            else if (item.EventType == 2)
+                        }
+                    }
+                </td>
+                <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
+                    @item.Price.ToString("###,###.##")
+                </td>
+                <td class="center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
+                    @item.SubPrice.ToString("###,###.##")
+                </td>
+                <td class="center" idata="13" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">
+                    @item.Description
+                </td>
+                <td class="center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")   ? "" : "none")">
+                    @{
+                        var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                        if (obj != null)
+                        {
+                            <span>@obj.Name</span>
+                        }
+                    }
+                </td>
+                <td class="center" idata="15" style="display :@string.Format("{0}",shows.Contains("15")   ? "" : "none")">
+                    <div class="ace-thumbnails clearfix">
+
+                        @if (!string.IsNullOrWhiteSpace(item.ImageCN))
+                        {
+                            var newobj = new ImageFPTModel
                             {
-                                <span class="label label-yellow ">Đã xác nhận</span>
-                            }
+                                Filename = item.ImageCN,
+                                Type = "INOUT",
+                                Description = "Ảnh"
+                            };
+                            @await Component.InvokeAsync("ImageFPT", newobj)
+
+                        }
+                    </div>
+
+                </td>
+                <td class="center" idata="16" style="display :@string.Format("{0}",shows.Contains("16")   ? "" : "none")">
+                    <div class="ace-thumbnails clearfix">
+                        @if (!string.IsNullOrWhiteSpace(item.ImageVN))
+                        {
+                            var newobj = new ImageFPTModel
+                            {
+                                Filename = item.ImageVN,
+                                Type = "INOUT",
+                                Description = "Ảnh"
+                            };
+                            @await Component.InvokeAsync("ImageFPT", newobj)
+
+                        }
+                    </div>
+
+                </td>
+                <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("17")   ? "" : "none")">
+                    @item.ParkingPosition
+                </td>
+                <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("18")   ? "" : "none")">
+                    @item.CreatedDate.ToString("dd/MM/yyyy")
+                </td>
+                <td class="center">
+
+                    <div class="btn-group">
+                        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                   {
+                       ControllerName = "Service",
+                       ActionName = "Update",
+                       RecordId = "",
+                       model = new { id = item.Id },
+                       Auth_Value = authModel
+                   })
+                        @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                        {
+    ControllerName = "Service",
+    ActionName = "Delete",
+    RecordId = item.Id,
+    model = null,
+    Auth_Value = authModel
+    })
+                    </div>
+                </td>
 
 
-
-                        </td>
-                        <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
-                            @item.PlateVN
-                        </td>
-                        <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
-                            @item.PlateCN
-                        </td>
-                        <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
-                            @item.ProductType
-                        </td>
-                        <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
-                            @item.Weight
-                        </td>
-                        <td class="center" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
-                            @item.VehicleType
-                        </td>
-                        <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
-                            @item.ProductGroup
-                        </td>
-                        <td class="center" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
-                            @{
-                                if (item.Service != null)
-                                {
-
-                                    var obj1 = lst != null ? lst.FirstOrDefault(n => n.Id.ToLower() == item.Service.ToLower()) : null;
-                                    if (obj1 != null)
-                                    {
-                                        <span>@obj1.Name</span>
-                                    }
-                                }
-                            }
-                        </td>
-                        <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
-                            @item.Price.ToString("###,###.##")
-                        </td>
-                        <td class="center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
-                            @item.SubPrice.ToString("###,###.##")
-                        </td>
-                        <td class="center" idata="13" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">
-                            @item.Description
-                        </td>
-                        <td class="center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")   ? "" : "none")">
-                            @{
-                                var obj = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
-                                }
-                            }
-                        </td>
-                        <td class="center" idata="15" style="display :@string.Format("{0}",shows.Contains("15")   ? "" : "none")">
-                            <div class="ace-thumbnails clearfix">
-
-                                @if (!string.IsNullOrWhiteSpace(item.ImageCN))
-                                {
-                                    var newobj = new ImageFPTModel
-                                    {
-                                        Filename = item.ImageCN,
-                                        Type = "INOUT",
-                                        Description = "Ảnh"
-                                    };
-                                    @await Component.InvokeAsync("ImageFPT", newobj)
-
-                                }
-                            </div>
-
-                        </td>
-                        <td class="center" idata="16" style="display :@string.Format("{0}",shows.Contains("16")   ? "" : "none")">
-                            <div class="ace-thumbnails clearfix">
-                                @if (!string.IsNullOrWhiteSpace(item.ImageVN))
-                                {
-                                    var newobj = new ImageFPTModel
-                                    {
-                                        Filename = item.ImageVN,
-                                        Type = "INOUT",
-                                        Description = "Ảnh"
-                                    };
-                                    @await Component.InvokeAsync("ImageFPT", newobj)
-
-                                }
-                            </div>
-
-                        </td>
-                        <td class="center">
-
-                            <div class="btn-group">
-                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                           {
-                               ControllerName = "Service",
-                               ActionName = "Update",
-                               RecordId = "",
-                               model = new { id = item.Id },
-                               Auth_Value = authModel
-                           })
-                                @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                                {
-            ControllerName = "Service",
-            ActionName = "Delete",
-            RecordId = item.Id,
-            model = null,
-            Auth_Value = authModel
-            })
-                            </div>
-                        </td>
-                    </tr>
+            </tr>
                 }
             }
         </tbody>

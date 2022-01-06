@@ -19,6 +19,12 @@
         CoordinatorController.ModalInforCoordior(id);
 
     });
+    
+    $('body').on('click', '.btnDetail', function () {
+        var id = $(this).attr("idata");
+        CoordinatorController.ModalInforDetailCoordior(id);
+
+    });
     $('body').on('click', '#ModalInfor #btnCompleted', function () {
         CoordinatorController.SaveService();
     });
@@ -85,6 +91,19 @@ var CoordinatorController = {
                     toastr.error(data.Message);
                 }
 
+            });
+    },
+    
+    ModalInforDetailCoordior: function (id) {
+        var obj = {
+            id: id
+        };
+
+        JSHelper.AJAX_LoadDataPOST('/Admin/Coordinator/Modal_InfoDetail', obj)
+            .done(function (data) {
+                $("#boxModal1").html(data);
+                $("#ModalInforDetail").modal("show");
+                JSLoader.load_MaskInput();
             });
     },
     ModalInforCoordior: function (id) {

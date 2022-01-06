@@ -145,6 +145,8 @@ var ServiceController = {
             .done(function (data) {
                 $('#tblVehicle tbody').html('');
                 $('#tblVehicle tbody').html(data);
+                $("#countPt").text($("#totalCount").val());
+                
             });
     },
     PartialGroup: function () {
