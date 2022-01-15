@@ -43,10 +43,10 @@
                 <th class="text-center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")? "" : "none") ">Phụ thu</th>
                 <th class="text-center" idata="13" style="display :@string.Format("{0}",shows.Contains("13")? "" : "none")">Ghi chú </th>
                 <th class="text-center" idata="14" style="display :@string.Format("{0}",shows.Contains("14")? "" : "none")">Tổ bốc xếp</th>
-                <th class="text-left" idata="15" style="display :@string.Format("{0}",shows.Contains("15")? "" : "none")">Ảnh CN </th>
-                <th class="text-left" idata="16" style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
-                <th class="text-left" idata="17" style="display :@string.Format("{0}",shows.Contains("17")? "" : "none")">Vị trí đỗ </th>
-                <th class="text-left" idata="18" style="display :@string.Format("{0}",shows.Contains("18")? "" : "none")">Ngày tạo </th>
+                <th class="text-center" idata="15" style="display :@string.Format("{0}",shows.Contains("15")? "" : "none")">Ảnh CN </th>
+                <th class="text-center" idata="16" style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
+                <th class="text-center" idata="17" style="display :@string.Format("{0}",shows.Contains("17")? "" : "none")">Vị trí đỗ </th>
+                <th class="text-center" idata="18" style="display :@string.Format("{0}",shows.Contains("18")? "" : "none")">Ngày tạo </th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -168,7 +168,7 @@
                     @item.ParkingPosition
                 </td>
                 <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("18")   ? "" : "none")">
-                    @item.CreatedDate.ToString("dd/MM/yyyy")
+                    @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
                 </td>
                 <td class="center">
 

@@ -91,6 +91,7 @@ var ServiceController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/Partial_Service', obj)
             .done(function (data) {
+              /*  JSLoader.load_ViewImage();*/
                 $('#boxTable1').html('');
                 $('#boxTable1').html(data);
 

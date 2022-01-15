@@ -131,8 +131,9 @@ namespace Kztek_Library.Helpers
 
                 new SelectListModel { ItemValue = "", ItemText = "Không hiển thị thông báo"},
                                         new SelectListModel { ItemValue = "1", ItemText = "Thông báo cho tài khoản giao dịch viên"},
-                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"}
-                                       
+                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"},
+                                          new SelectListModel { ItemValue = "3", ItemText = "Thông báo cho tài khoản tổ bốc xếp"}
+
                                     };
             return list;
         }

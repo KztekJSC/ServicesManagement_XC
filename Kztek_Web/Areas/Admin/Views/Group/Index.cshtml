@@ -1,12 +1,12 @@
 ﻿@model Kztek_Core.Models.GridModel<Kztek_Model.Models.Group>
-
+@using Kztek_Library.Models
 @{
     var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
 }
 
 <div class="page-header">
     <h1>
-       Danh sách tổ (<span>@Model.TotalIem</span>)
+        Danh sách tổ (<span>@Model.TotalIem</span>)
     </h1>
 </div>
 
@@ -65,14 +65,14 @@
 </div>
 <div class="hr hr-18 dotted hr-24"></div>
 
-<div class="row">
+<div class="row" id="txttable">
     <div class="col-xs-12">
         <table class="table  table-bordered table-hover">
             <thead>
                 <tr>
                     <th class="text-center">Mã tổ</th>
                     <th class="text-center">Tên tổ</th>
-                    <th class="text-center">Mô tả</th>                  
+                    <th class="text-center">Mô tả</th>
                     <th class="text-center" width="80"> </th>
                 </tr>
             </thead>
@@ -82,41 +82,57 @@
                 {
                     foreach (var item in Model.Data)
                     {
-                <tr class="">
-                    <td class="text-left">
-                        @item.Code
-                    </td>
-                    <td class="text-left">
-                        @item.Name
-                    </td>
+                        <tr class="">
+                            <td class="text-left">
+                                @item.Code
+                            </td>
+                            <td class="text-left">
+                                @item.Name
+                            </td>
 
-                    <td class="text-left">
-                        @item.Description
-                    </td>
-                   
+                            <td class="text-left">
+                                @item.Description
+                            </td>
 
-                    <td class="center">
-                        <div class="btn-group">
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-    ControllerName = "Group",
-    ActionName = "Update",
-    RecordId = "",
-    model = new { id = item.Id },
-    Auth_Value = authModel
-})
+                            <td class="center" >
+                                <div class="ace-thumbnails clearfix">
 
-                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                            {
-  ControllerName = "Group",
-  ActionName = "Delete",
-  RecordId = item.Id,
-  model = null,
-  Auth_Value = authModel
-})
-                        </div>
-                    </td>
-                </tr>
+                                    @if (!string.IsNullOrWhiteSpace(item.Description))
+                                    {
+                                        var newobj = new ImageFPTModel
+                                        {
+                                            Filename = item.Description,
+                                            Type = "INOUT",
+                                            Description = "Ảnh"
+                                        };
+                                        @await Component.InvokeAsync("ImageFPT", newobj)
+
+                                    }
+                                </div>
+
+                            </td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+            ControllerName = "Group",
+            ActionName = "Update",
+            RecordId = "",
+            model = new { id = item.Id },
+            Auth_Value = authModel
+        })
+
+                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                                    {
+          ControllerName = "Group",
+          ActionName = "Delete",
+          RecordId = item.Id,
+          model = null,
+          Auth_Value = authModel
+        })
+                                </div>
+                            </td>
+                        </tr>
                     }
                 }
             </tbody>
@@ -142,8 +158,34 @@
 <input type="hidden" id="noti" value="@await Component.InvokeAsync("Language", new { path = "MESSAGEREPORT:NOTIFICATION" })" />
 @section scripts{
     <script>
-        $(document).ready(function () {
 
+   
+        $(document).ready(function () {
+            var $overflow = '';
+            var colorbox_params = {
+                rel: 'colorbox',
+                reposition: true,
+                scalePhotos: true,
+                scrolling: false,
+                previous: '<i class="ace-icon fa fa-arrow-left"></i>',
+                next: '<i class="ace-icon fa fa-arrow-right"></i>',
+                close: '&times;',
+                current: '{current} of {total}',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                onOpen: function () {
+                    $overflow = document.body.style.overflow;
+                    document.body.style.overflow = 'hidden';
+                },
+                onClosed: function () {
+                    document.body.style.overflow = $overflow;
+                },
+                onComplete: function () {
+                    $.colorbox.resize();
+                }
+            };
+
+            $('#txttable tbody .ace-thumbnails [data-rel="colorbox').colorbox(colorbox_params);
             $(".btnDelete").click(function () {
                 var cmd = $(this);
                 var id = cmd.attr('idata');

@@ -21,6 +21,7 @@ namespace Kztek_Web.Components.ChosenSelect
 
         public async Task<IViewComponentResult> InvokeAsync(SelectListModel_Chosen model)
         {
+            ViewBag.CurrentUser = await SessionCookieHelper.CurrentUser(this.HttpContext);
             return View(await Task.FromResult(model));
         }
     }

@@ -23,7 +23,7 @@ namespace Kztek_Service.Admin
         Task<GridModel<tbl_Event>> GetPagingConfirmGroup(HttpContext httpContext, string key, int page, int v, string statusID, string fromdate, string todate);
         Task<tbl_Event> GetByService(string id);
         Task<SelectListModel_Chosen> GetEventypeService(string id = "", string placeholder = "", string selecteds = "");
-        Task<tbl_Event_Cus> GetByCustomById(string id);
+        Task<tbl_Event_Cus> GetByCustomById(string id,HttpContext context);
         Task<SelectListModel_Chosen> GetEventypeCoordination(string id = "", string placeholder = "", string selecteds = "");
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Kztek_Service.Admin
         /// Dùng cho giao diện phân tổ
         /// </summary>
         /// <returns></returns>
-        Task<List<tbl_Event>> GetListType2(string key = "", string ServiceId = "", string fromdate = "", string ParkingPosittion = "");
+        Task<List<tbl_Event>> GetListType2(string key = "", string ServiceId = "", string fromdate = "", string ParkingPosittion = "" );
 
         /// <summary>
         /// Đếm số lượng dịch vụ đã giao của từng tổ

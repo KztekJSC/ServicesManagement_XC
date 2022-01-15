@@ -65,11 +65,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AreaCodeValue = AreaCode;
 
-            //ViewBag.todateValue = todate;
+            ViewBag.todateValue = todate;
 
             ViewBag.keyValue = key;
 
-            //ViewBag.fromdateValue = fromdate;
+            ViewBag.fromdateValue = fromdate;
 
             return View();
            

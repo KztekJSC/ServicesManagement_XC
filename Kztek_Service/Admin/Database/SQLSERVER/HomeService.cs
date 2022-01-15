@@ -62,7 +62,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 3 OR EventType = 4)");
+            sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1  AND ( EventType = 3 OR EventType = 4) AND  IsDeleted = 0");
 
             if (!string.IsNullOrEmpty(keyReplace))
             {

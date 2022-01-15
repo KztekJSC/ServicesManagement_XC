@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Dịch vụ đã xác nhận";
- 
+    
 }
 
 <div class="page-header">
@@ -95,8 +95,44 @@
 @section scripts{
     <script src="~/modules/ServiceController.js"></script>
     <script src="~/modules/Signalr.js"></script>
+  
     <script>
      
+
+            //jQuery(function ($) {
+            //        var $overflow = '';
+            //var colorbox_params = {
+            //    rel: 'colorbox',
+            //reposition: true,
+            //scalePhotos: true,
+            //scrolling: false,
+            //previous: '<i class="ace-icon fa fa-arrow-left"></i>',
+            //next: '<i class="ace-icon fa fa-arrow-right"></i>',
+            //close: '&times;',
+            //current: '{current} of {total}',
+            //maxWidth: '100%',
+            //maxHeight: '100%',
+            //onOpen: function () {
+            //    $overflow = document.body.style.overflow;
+            //document.body.style.overflow = 'hidden';
+            //            },
+            //onClosed: function () {
+            //    document.body.style.overflow = $overflow;
+            //            },
+            //onComplete: function () {
+            //    $.colorbox.resize();
+            //            }
+            //        };
+
+            //    $('#boxTable1 tbody .ace-thumbnails [data-rel="colorbox').colorbox(colorbox_params);
+            //$("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+
+            //$(document).one('ajaxloadstart.page', function (e) {
+            //    $('#colorbox, #cboxOverlay').remove();
+            //        });
+            //    })
+  
         $(document).ready(function () {
             ServiceController.PartialService(1);
             $('#columnId').change(function () {
@@ -109,8 +145,29 @@
                 ServiceController.AddValueSelect(str, "Service", "Index");
 
             });
-
-
+            var colorbox_params = {
+                rel: 'colorbox',
+                reposition: true,
+                scalePhotos: true,
+                scrolling: false,
+                previous: '<i class="ace-icon fa fa-arrow-left"></i>',
+                next: '<i class="ace-icon fa fa-arrow-right"></i>',
+                close: '&times;',
+                current: '{current} of {total}',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                onOpen: function () {
+                    $overflow = document.body.style.overflow;
+                    document.body.style.overflow = 'hidden';
+                },
+                onClosed: function () {
+                    document.body.style.overflow = $overflow;
+                },
+                onComplete: function () {
+                    $.colorbox.resize();
+                }
+            };
+            $('#boxTable1 tbody .ace-thumbnails [data-rel="colorbox').colorbox(colorbox_params);
             //$('[data-spzoom]').spzoom({
             //    width: 350,
             //    height: 350,

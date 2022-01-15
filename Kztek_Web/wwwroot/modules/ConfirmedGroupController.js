@@ -65,8 +65,8 @@ var ConfirmedGroupController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/ConfirmedGroup/Partial_ConfirmedGroup', obj)
             .done(function (data) {
-                $('#boxTable').html('');
-                $('#boxTable').html(data);
+                $('#boxTable2').html('');
+                $('#boxTable2').html(data);
 
                 $("#spCount").text($("#totalCount").val());
             });
