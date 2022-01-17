@@ -551,8 +551,29 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(") as C1");
             sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+            //var lstOrderbyCreadate = new List<tbl_Event>();
 
+            //foreach (var item in listData)
+            //{
+            //    if (item.EventType == 2 )
+            //    {
+            //        listData.OrderByDescending(n => n.CreatedDate);
+            //    }
+            //    else if (item.EventType == 3)
+            //    {
+            //        listData.OrderBy(n => n.DivisionDate);
+            //    }
+            //    else if (item.EventType == 5)
+            //    {
+            //        listData.OrderByDescending(n => n.ModifiedDate);
+            //    }
+            //    else if (item.EventType == 6)
+            //    {
+            //        listData.OrderByDescending(n => n.EndDate);
+            //    }
+            //}
 
+            
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
@@ -631,7 +652,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("SELECT * FROM (");
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} ASC) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 
@@ -834,7 +855,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             var sb = new StringBuilder();
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 

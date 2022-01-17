@@ -91,15 +91,23 @@
                 </td>
                 <td class="text-center">
 
-                    @if (item.EventType == 3)
+               
+                    @switch (item.EventType)
                     {
-                        <span class="label" style="background-color: #c00000 ">Chưa thực hiện</span>
+                        case 2:
+                            <span class="label label-grey">Chưa phân tổ</span>
+                            break;
+                        case 3:
+                            <span class="label label-yellow">Đã phân tổ</span>
+                            break;
+                        case 4:
+                            <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                            break;
+                        case 5:
+                            <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
+                            break;
+                      
                     }
-                    else if (item.EventType == 4)
-                    {
-                        <span class="label" style="background-color: #385822">Đang thực hiện</span>
-                    }
-
 
 
                 </td>
