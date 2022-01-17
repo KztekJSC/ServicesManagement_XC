@@ -104,7 +104,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                         {
                             if (!string.IsNullOrEmpty(arrPlateCN[j]))
                             {
-                                var plateCN = arrPlateCN[i].Trim();
+                                var plateCN = arrPlateCN[j].Trim();
 
                                 var obj = new tbl_Event()
                                 {
