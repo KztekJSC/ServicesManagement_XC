@@ -79,78 +79,109 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
         public async Task<MessageReport> Create(tbl_Event_POST model)
         {
-            var obj = new tbl_Event()
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                Code = model.code,
-                PlateVN = model.plateVN,
-                ImageVN = model.imageVN,
-                TimeInVN = !string.IsNullOrEmpty(model.timeInVN) ? Convert.ToDateTime(model.timeInVN) : DateTime.MaxValue,
-                TimeOutVN = DateTime.MaxValue,
-                VehicleStatusVN = !string.IsNullOrEmpty(model.timeInVN) ? 1 : 0,
+                //Lấy id dịch vụ từ db
+                var idService = await GetIdService(model.service, model.serviceCode);
 
-                PlateCN = model.plateCN,
-                ImageCN = model.imageCN,
-                TimeInCN = !string.IsNullOrEmpty(model.timeInCN) ? Convert.ToDateTime(model.timeInCN) : DateTime.MaxValue,
-                TimeOutCN = DateTime.MaxValue,
-                VehicleStatusCN = !string.IsNullOrEmpty(model.timeInCN) ? 1 : 0,
+                //tách ra từng biển số VN
+                var arrPlateVN = model.plateVN.Split(",");
 
-                Description = model.description,
-  
-                Price = model.price,
-                SubPrice = model.subPrice,
-                ServiceCode = model.serviceCode,
-                Service = model.service,
+                //tách ra từng biển số VN
+                var arrPlateCN = model.plateCN.Split(",");
 
-                VehicleType = model.vehicleType,
-                Weight = model.weight,
-                ProductType = model.productType,
-                ProductGroup = model.productGroup,
-                EventType = 1, //chờ xác nhận
-                PaymentStatus = model.paymentStatus,
+                //lặp từng biển số VN
+                for(int i = 0; i < arrPlateVN.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(arrPlateVN[i]))
+                    {
+                        var plateVN = arrPlateVN[i].Trim();
 
-                BB_Table = model.bb_Table,
-                BB_Id = model.bb_Id,
+                        //lặp từng biển số VN
+                        for (int j = 0; j < arrPlateCN.Length; j++)
+                        {
+                            if (!string.IsNullOrEmpty(arrPlateCN[j]))
+                            {
+                                var plateCN = arrPlateCN[i].Trim();
 
-                Cost = 0,
-                IsDeleted = false,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                StartDate = DateTime.MaxValue,
-                EndDate = DateTime.MaxValue,
-                ConfirmDate = DateTime.MaxValue,
-                DivisionDate = DateTime.MaxValue,
-                ParkingPosition = "",
-                GroupId = ""           
-            };
+                                var obj = new tbl_Event()
+                                {
+                                    Id = Guid.NewGuid().ToString(),
+                                    Code = model.code,
 
-            if(obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
-            {
-                obj.EventType = 2; //Đã xác nhận nếu 2 xe đều vào bãi
-            }
+                                    PlateVN = plateVN,
+                                    ImageVN = model.imageVN,
+                                    TimeInVN = !string.IsNullOrEmpty(model.timeInVN) ? Convert.ToDateTime(model.timeInVN) : DateTime.MaxValue,
+                                    TimeOutVN = DateTime.MaxValue,
+                                    VehicleStatusVN = !string.IsNullOrEmpty(model.timeInVN) ? 1 : 0,
 
-            //Lấy id dịch vụ từ db
-            var idService = await GetIdService(obj.Service,obj.ServiceCode);
+                                    PlateCN = plateCN,
+                                    ImageCN = model.imageCN,
+                                    TimeInCN = !string.IsNullOrEmpty(model.timeInCN) ? Convert.ToDateTime(model.timeInCN) : DateTime.MaxValue,
+                                    TimeOutCN = DateTime.MaxValue,
+                                    VehicleStatusCN = !string.IsNullOrEmpty(model.timeInCN) ? 1 : 0,
 
-            //gán lại id dịch vụ
-            obj.Service = idService;
+                                    Description = model.description,
 
-            var result = await _tbl_EventRepository.Add(obj);
+                                    Price = model.price,
+                                    SubPrice = model.subPrice,
+                                    ServiceCode = model.serviceCode,
+                                    Service = model.service,
 
-            if (result.isSuccess)
-            {
+                                    VehicleType = model.vehicleType,
+                                    Weight = model.weight,
+                                    ProductType = model.productType,
+                                    ProductGroup = model.productGroup,
+                                    EventType = 1, //chờ xác nhận
+                                    PaymentStatus = model.paymentStatus,
+
+                                    BB_Table = model.bb_Table,
+                                    BB_Id = model.bb_Id,
+
+                                    Cost = 0,
+                                    IsDeleted = false,
+                                    CreatedDate = DateTime.Now,
+                                    ModifiedDate = DateTime.Now,
+                                    StartDate = DateTime.MaxValue,
+                                    EndDate = DateTime.MaxValue,
+                                    ConfirmDate = DateTime.MaxValue,
+                                    DivisionDate = DateTime.MaxValue,
+                                    ParkingPosition = "",
+                                    GroupId = ""
+                                };
+
+                                if (obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+                                {
+                                    obj.EventType = 2; //Đã xác nhận nếu 2 xe đều vào bãi
+                                }
+
+                                //gán lại id dịch vụ
+                                obj.Service = idService;
+
+                                result = await _tbl_EventRepository.Add(obj);
+                            }                              
+                        }
+                    }                 
+                }
+
                 result = new MessageReport(true, "Thành công");
 
-                //nếu xe CN và VN đều vào bãi thì loại lại danh sách
-                if(obj.EventType == 2)
+                //Nếu có thời gian vào của xe CN và VN thì loại lại danh sách
+                if(!string.IsNullOrEmpty(model.timeInVN) && !string.IsNullOrEmpty(model.timeInCN))
                 {
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
                 }
-
+               
                 //load lại thông báo cho dg viên
                 await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
             }
-
+            catch (Exception ex)
+            {
+                result = new MessageReport(false, ex.Message);
+            }
+           
             return result;
         }
 
