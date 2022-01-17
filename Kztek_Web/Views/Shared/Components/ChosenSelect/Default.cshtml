@@ -1,13 +1,16 @@
 @model Kztek_Library.Models.SelectListModel_Chosen
 @{ 
+    var obj = (Kztek_Library.Models.SessionModel)ViewBag.CurrentUser;
+}
+@{ 
     var list = !string.IsNullOrEmpty(Model.Selecteds) ? Model.Selecteds.Split(',').ToList() : new List<string>();
 }
-<select @string.Format("{0}", Model.isMultiSelect ? "multiple=''" : "")  class='chosen-select form-control @string.Format("{0}", Model.isMultiSelect ? "tag-input-style" : "")' id="@Model.IdSelectList" name="@Model.IdSelectList" data-placeholder="@Model.Placeholder">
+<select @string.Format("{0}", Model.isMultiSelect ? "multiple=''" : "")  class='chosen-select form-control  @string.Format("{0}", Model.isMultiSelect ? "tag-input-style" : "")' id="@Model.IdSelectList" name="@Model.IdSelectList" data-placeholder="@Model.Placeholder">
     @foreach (var item in Model.Data)
     {       
         if (list.Any(n => n.Equals(item.ItemValue)))
         {
-            <option value="@item.ItemValue" selected>@item.ItemText</option>
+            <option value="@item.ItemValue" selected >@item.ItemText</option>
             
         } 
         else

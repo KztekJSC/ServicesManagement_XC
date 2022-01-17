@@ -64,7 +64,9 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "13", ItemText = "Ghi chú"},
                                         new SelectListModel { ItemValue = "14", ItemText = "Tổ bốc xếp"},
                                           new SelectListModel { ItemValue = "15", ItemText = "Ảnh CN"},
-                                             new SelectListModel { ItemValue = "16", ItemText = "Ảnh VN"}
+                                             new SelectListModel { ItemValue = "16", ItemText = "Ảnh VN"},
+                                              new SelectListModel { ItemValue = "17", ItemText = "Vị trí đỗ"},
+                                                new SelectListModel { ItemValue = "18", ItemText = "Ngày tạo"}
                                     };
             return list;
         }
@@ -84,7 +86,8 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "8", ItemText = "Dịch vụ"},
                                         new SelectListModel { ItemValue = "9", ItemText = "Tổ bốc xếp"},
                                           new SelectListModel { ItemValue = "10", ItemText = "Bắt đầu"},
-                                             new SelectListModel { ItemValue = "11", ItemText = "Kết thúc"}
+                                             new SelectListModel { ItemValue = "11", ItemText = "Kết thúc"},
+                                               new SelectListModel { ItemValue = "12", ItemText = "Ngày tạo"}
                                     };
             return list;
         }
@@ -128,8 +131,9 @@ namespace Kztek_Library.Helpers
 
                 new SelectListModel { ItemValue = "", ItemText = "Không hiển thị thông báo"},
                                         new SelectListModel { ItemValue = "1", ItemText = "Thông báo cho tài khoản giao dịch viên"},
-                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"}
-                                       
+                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"},
+                                          new SelectListModel { ItemValue = "3", ItemText = "Thông báo cho tài khoản tổ bốc xếp"}
+
                                     };
             return list;
         }

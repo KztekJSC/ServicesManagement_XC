@@ -39,7 +39,7 @@
                 <th class="text-center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">Tổ thực hiện</th>
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Bắt đầu </th>
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Kết thúc</th>
-
+                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">Ngày tạo</th>
             </tr>
         </thead>
 
@@ -51,105 +51,115 @@
                 {
                     count++;
 
-                    <tr>
-                        <td class="center">
-                            @if (item.EventType == 5)
-                            {
-                                <button class="btn btn-xs btn-primary btnOK" idata="@item.Id" style="background-color:#085AA2!important ">
+            <tr>
+                <td class="center">
+                    @if (item.EventType == 5)
+                    {
+                        <button class="btn btn-xs btn-primary btnOK" idata="@item.Id" style="background-color:#085AA2!important ">
 
-                                    Xác nhận
-                                </button>
-                            }
+                            Xác nhận
+                        </button>
+                    }
+                    else if (item.EventType == 6)
+                    {
+                        <button class="btn btn-xs  btnDetail" idata="@item.Id" style="background-color:#085AA2!important ">
 
-                            @*@if (item.EventType != 6)
-                                {
-                                    <button class="btn btn-xs btn-danger btnDelete" idata="@item.Id" style="background-color:#C43119 !important;">
+                            Chi tiết
+                        </button>
+                    }
 
-                                        Xóa
-                                    </button>
-                                }*@
-                        </td>
-                        <td class="text-left" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
-                            @item.ServiceCode
-                        </td>
+                    @*@if (item.EventType != 6)
+        {
+            <button class="btn btn-xs btn-danger btnDelete" idata="@item.Id" style="background-color:#C43119 !important;">
 
-                        <td class="text-center" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
-                            @switch (item.EventType)
-                            {
-                                case 2:
-                                    <span class="label label-grey">Chưa phân tổ</span>
-                                    break;
-                                case 3:
-                                    <span class="label label-yellow">Đã phân tổ</span>
-                                    break;
-                                case 4:
-                                    <span class="label" style="background-color: #385822">Đang thực hiện</span>
-                                    break;
-                                case 5:
-                                    <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
-                                    break;
-                                case 6:
-                                    <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
-                                    break;
-                            }
-                        </td>
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
-                            @item.PlateVN
-                        </td>
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
-                            @item.PlateCN
-                        </td>
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
-                            @item.ProductType
-                        </td>
-                        @*<td class="center">
-                                @item.Weight
-                            </td>*@
-                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
-                            @item.VehicleType
-                        </td>
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
-                            @item.ProductGroup
-                        </td>
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
-                            @{
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
-                                }
-                            }
-                        </td>
-                        @*<td class="center">
-                                @item.Price.ToString("###,###.##")
-                            </td>
-                            <td class="center">
-                                @item.SubPrice.ToString("###,###.##")
-                            </td>*@
+                Xóa
+            </button>
+        }*@
+                </td>
+                <td class="text-left" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
+                    @item.ServiceCode
+                </td>
 
-                        <td class="center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
-                            @{
-                                var obj1 = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
-                                if (obj1 != null)
-                                {
-                                    <span>@obj1.Name</span>
-                                }
-                            }
-                        </td>
-                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
-                            @if (item.StartDate.Date != DateTime.MaxValue.Date)
-                            {
-                                @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
-                            }
+                <td class="text-center" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
+                    @switch (item.EventType)
+                    {
+                        case 2:
+                            <span class="label label-grey">Chưa phân tổ</span>
+                            break;
+                        case 3:
+                            <span class="label label-yellow">Đã phân tổ</span>
+                            break;
+                        case 4:
+                            <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                            break;
+                        case 5:
+                            <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
+                            break;
+                        case 6:
+                            <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                            break;
+                    }
+                </td>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                    @item.PlateVN
+                </td>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                    @item.PlateCN
+                </td>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
+                    @item.ProductType
+                </td>
+                @*<td class="center">
+            @item.Weight
+        </td>*@
+                <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
+                    @item.VehicleType
+                </td>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                    @item.ProductGroup
+                </td>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
+                    @{
+                        var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                        if (obj != null)
+                        {
+                            <span>@obj.Name</span>
+                        }
+                    }
+                </td>
+                @*<td class="center">
+            @item.Price.ToString("###,###.##")
+        </td>
+        <td class="center">
+            @item.SubPrice.ToString("###,###.##")
+        </td>*@
 
-                        </td>
-                        <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
-                            @if (item.EndDate.Date != DateTime.MaxValue.Date)
-                            {
-                                @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
-                            }
-                        </td>
-                    </tr>
+                <td class="center" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
+                    @{
+                        var obj1 = lstGroup != null ? lstGroup.FirstOrDefault(n => n.Id.ToLower() == item.GroupId.ToLower()) : null;
+                        if (obj1 != null)
+                        {
+                            <span>@obj1.Name</span>
+                        }
+                    }
+                </td>
+                <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
+                    @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                    {
+                        @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
+                    }
+
+                </td>
+                <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
+                    @if (item.EndDate.Date != DateTime.MaxValue.Date)
+                    {
+                        @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
+                    }
+                </td>
+                <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
+                  @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
+                </td>
+            </tr>
                 }
             }
         </tbody>

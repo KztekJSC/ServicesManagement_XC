@@ -65,11 +65,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.AreaCodeValue = AreaCode;
 
-            //ViewBag.todateValue = todate;
+            ViewBag.todateValue = todate;
 
             ViewBag.keyValue = key;
 
-            //ViewBag.fromdateValue = fromdate;
+            ViewBag.fromdateValue = fromdate;
 
             return View();
            
@@ -273,6 +273,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> Modal_Info(string id)
         {
             var objService = await _tbl_EventService.GetById(id);     
+            return PartialView(objService);
+        }
+
+        public async Task<IActionResult> Modal_InfoDetail(string id)
+        {
+            var objService = await _tbl_EventService.GetById(id);
             return PartialView(objService);
         }
 

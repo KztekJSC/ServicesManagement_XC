@@ -40,7 +40,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             #region Tạm thời ẩn session, nếu count chậm có thể áp dụng phương án session
             //lấy data từ session
-          //  var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
+            //  var sessionValue = HttpContext.Session.GetString(SessionConfig.NotifiType1Session);
 
             ////nếu có dữ liệu
             //if (!string.IsNullOrWhiteSpace(sessionValue))
@@ -117,8 +117,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(result);
         }
 
-        public async Task<tbl_Event_Cus> GetByCustomById(string id)
+        public async Task<tbl_Event_Cus> GetByCustomById(string id, HttpContext context)
         {
+
+            //var user = await SessionCookieHelper.CurrentUser(context);
             var obj = await GetById(id);
             var objService = await _ServiceService.GetById(obj.Service);
             var model = new tbl_Event_Cus()
@@ -396,7 +398,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(model);
         }
 
-        public async Task<List<CountEventByType>> CountEventByType(HttpContext httpContext,string fromdate)
+        public async Task<List<CountEventByType>> CountEventByType(HttpContext httpContext, string fromdate)
         {
             var currentUser = SessionCookieHelper.CurrentUser(httpContext).Result;
             var tdate = Convert.ToDateTime(fromdate);
@@ -454,15 +456,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             {
                 foreach (var item in list)
                 {
-                    var objCount =  listData.FirstOrDefault(n => n.EventType == item.EventType);
+                    var objCount = listData.FirstOrDefault(n => n.EventType == item.EventType);
 
-                    if(objCount != null)
+                    if (objCount != null)
                     {
                         objCount.Number = item.Number;
                     }
                 }
 
-                var objTotal = listData.FirstOrDefault(n => n.EventType == 99 );
+                var objTotal = listData.FirstOrDefault(n => n.EventType == 99);
                 //foreach (var item1 in listData)
                 //{
                 //    if (item1.EventType == 3 || item1.EventType == 4 || item1.EventType == 5)
@@ -486,9 +488,9 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("WHERE 1 =1 AND  EventType != 1 AND IsDeleted = 0");
             if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
             {
-                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
             }
-            
+
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -549,15 +551,36 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(") as C1");
             sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
+            //var lstOrderbyCreadate = new List<tbl_Event>();
 
+            //foreach (var item in listData)
+            //{
+            //    if (item.EventType == 2 )
+            //    {
+            //        listData.OrderByDescending(n => n.CreatedDate);
+            //    }
+            //    else if (item.EventType == 3)
+            //    {
+            //        listData.OrderBy(n => n.DivisionDate);
+            //    }
+            //    else if (item.EventType == 5)
+            //    {
+            //        listData.OrderByDescending(n => n.ModifiedDate);
+            //    }
+            //    else if (item.EventType == 6)
+            //    {
+            //        listData.OrderByDescending(n => n.EndDate);
+            //    }
+            //}
 
+            
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1 AND EventType != 1 AND IsDeleted = 0");
             if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
             {
-                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
             }
 
             if (!string.IsNullOrEmpty(keyReplace))
@@ -619,15 +642,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(model);
         }
 
-        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate, string ServiceId , string GroupId )
+        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string statusID, string fromdate, string todate, string ServiceId, string GroupId)
         {
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
+
 
             var sb = new StringBuilder();
 
             sb.AppendLine("SELECT * FROM (");
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} ASC) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 
@@ -636,9 +661,9 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
             if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
             {
-                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
             }
-         
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
                 sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
@@ -733,7 +758,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
             {
-                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", fromdate, todate));
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
             }
 
 
@@ -824,13 +849,13 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         /// Dùng cho giao diện phân tổ
         /// </summary>
         /// <returns></returns>
-        public async Task<List<tbl_Event>> GetListType2(string key , string ServiceId , string fromdate , string ParkingPosittion )
+        public async Task<List<tbl_Event>> GetListType2(string key, string ServiceId, string fromdate, string ParkingPosittion)
         {
             var tdate = Convert.ToDateTime(fromdate);
 
             var sb = new StringBuilder();
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) AS RowNumber,a.*", "CreatedDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} asc) AS RowNumber,a.*", "CreatedDate"));
 
             sb.AppendLine("FROM(");
 
@@ -838,16 +863,19 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("WHERE 1 = 1 AND EventType = 2 AND  IsDeleted = 0");
 
+
             sb.AppendLine(string.Format("AND  FORMAT(CreatedDate,'yyyyMMdd') = '{0}' ", tdate.ToString("yyyyMMdd")));
-            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
+            var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "").Replace(",","") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("AND (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+                sb.AppendLine(string.Format("AND ( REPLACE(REPLACE(  REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),',',''),' ','') LIKE '%{0}%'  OR  REPLACE(REPLACE(  REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),',',''),' ','') LIKE '%{0}%' ", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' )", key));
             }
+
             //Service
             if (!string.IsNullOrWhiteSpace(ServiceId) && ServiceId != "00")
             {

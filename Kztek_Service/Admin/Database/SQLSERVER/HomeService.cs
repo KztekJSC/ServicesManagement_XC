@@ -19,7 +19,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} desc) as RowNumber,a.*", "StartDate"));
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
-            sb.AppendLine("WHere 1 =1 and ( EventType = 3 OR EventType = 4) and  IsDeleted = 0");
+            sb.AppendLine("WHERE 1 =1 AND EventType IN (2 , 3 ,4 ,5 ) AND  IsDeleted = 0");
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
@@ -62,7 +62,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             // Tính tổng
             sb.Clear();
             sb.AppendLine("SELECT COUNT(*) TotalCount");
-            sb.AppendLine("FROM [tbl_Event] where 1 = 1  and ( EventType = 3 OR EventType = 4)");
+            sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1  AND EventType IN (2 , 3 ,4 ,5 ) AND  IsDeleted = 0");
 
             if (!string.IsNullOrEmpty(keyReplace))
             {

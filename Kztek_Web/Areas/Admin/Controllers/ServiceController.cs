@@ -117,9 +117,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.StrShows = obj.ColumShows;
 
-            //ViewBag.fromdateValue = fromdate;
+            ViewBag.fromdateValue = fromdate;
 
-            //ViewBag.todateValue = todate;
+            ViewBag.todateValue = todate;
 
             ViewBag.AreaCodeValue = AreaCode;
 
@@ -166,11 +166,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpGet]
-        public async Task<IActionResult> Update(string id, int pageNumber = 1, string AreaCode = "")
+        public async Task<IActionResult> Update(string id, int pageNumber = 1, string AreaCode = "" )
         {
-            var model = await _tbl_EventService.GetByCustomById(id);
+            var model = await _tbl_EventService.GetByCustomById(id, this.HttpContext);
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
+            ViewBag.GetCurrentUser = await SessionCookieHelper.CurrentUser(this.HttpContext); 
             return View(model);
         }
         /// <summary>
@@ -187,7 +188,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
         public async Task<IActionResult> Update(tbl_Event_Cus model, int pageNumber = 1, string AreaCode = "")
-        {
+            {
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
             //Kiểm tra
@@ -197,30 +198,49 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 ViewBag.Error = await LanguageHelper.GetLanguageText("MESSAGE:RECORD:NOTEXISTS");
                 return View(model);
             }
-            var oldObj1 = await _tbl_EventService.GetByCustomById(model.Id.ToString());
+            var oldObj1 = await _tbl_EventService.GetByCustomById(model.Id.ToString(), this.HttpContext);
 
-
-            if (!ModelState.IsValid)
+            var user = await SessionCookieHelper.CurrentUser(HttpContext);
+            if (user.isAdmin )
             {
-                return View(oldObj);
+                if (!ModelState.IsValid)
+                {
+                    return View(oldObj);
+                }
+                var s = Convert.ToDecimal(model.price);
+                oldObj.PlateVN = model.plateVN;
+                oldObj.PlateCN = model.plateCN;
+                oldObj.ProductType = model.productType;
+                oldObj.Weight = Convert.ToDecimal(model.weight);
+                oldObj.VehicleType = model.vehicleType;
+                oldObj.ServiceCode = model.serviceCode;
+                oldObj.ProductGroup = model.productGroup;
+                oldObj.Price = Convert.ToDecimal(model.price);
+                //oldObj.EventType = 2;
+                oldObj.SubPrice = Convert.ToDecimal(model.subPrice);
+                oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
+                oldObj.Description = model.description;
+                //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
+                oldObj.ParkingPosition = model.ParkingPosition;
+                oldObj.CreatedDate = DateTime.Now;
+                oldObj.ModifiedDate = DateTime.Now;
             }
-            var s = Convert.ToDecimal(model.price);
-            oldObj.PlateVN = model.plateVN;
-            oldObj.PlateCN = model.plateCN;
-            oldObj.ProductType = model.productType;
-            oldObj.Weight = Convert.ToDecimal( model.weight);
-            oldObj.VehicleType = model.vehicleType;
-            oldObj.ServiceCode = model.serviceCode;
-            oldObj.ProductGroup = model.productGroup;       
-            oldObj.Price = Convert.ToDecimal( model.price);
-            //oldObj.EventType = 2;
-            oldObj.SubPrice = Convert.ToDecimal(model.subPrice);
-            oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
-            oldObj.Description = model.description;
-            //oldObj.DivisionDate = model.DivisionDate != null ? model.DivisionDate : DateTime.MinValue;
-            oldObj.ParkingPosition = model.ParkingPosition;
-            oldObj.CreatedDate = DateTime.Now;
-            oldObj.ModifiedDate = DateTime.Now;
+            else
+            {
+                if (user.TypeNotifi == "1")
+                {
+                    oldObj.ParkingPosition = model.ParkingPosition;
+
+                }
+                else if(user.TypeNotifi == "2")
+                {
+                    oldObj.Description = model.description;
+                }
+                else if (user.TypeNotifi == "3")
+                {
+                    oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
+                }
+            }
             //oldObj.TimeInVN =
         
             //Thực hiện cập nhậts
@@ -253,7 +273,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 NewModel.plateVN = model.plateVN;
                 NewModel.plateCN = model.plateCN;
                 NewModel.productType = model.productType;
-                NewModel.weight = model.weight.ToString();
+                NewModel.weight = model.weight != null ? model.weight : "" ;
                 NewModel.vehicleType = model.vehicleType;
                 NewModel.serviceCode = model.serviceCode;
                 NewModel.productGroup = model.productGroup;
@@ -314,6 +334,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             ViewBag.LstParkingPosit = await _ServiceService.SelectChoseParkingPosittion(selecteds: ParkingPosittion);
 
+            ViewBag.Fromdate = fromdate;
+       
             return View();
         }
 
@@ -371,7 +393,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Modal_Assign(string id)
         {          
-            var objService = await _tbl_EventService.GetByCustomById(id);
+            var objService = await _tbl_EventService.GetByCustomById(id,this.HttpContext);
 
             ViewBag.Group = await GetAllGroup();
 
@@ -410,7 +432,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Modal_UpdateGroup(string id)
         {
-            var objService = await _tbl_EventService.GetByCustomById(id);
+            var objService = await _tbl_EventService.GetByCustomById(id, this.HttpContext);
 
             ViewBag.Group = await GetAllGroup();
 
