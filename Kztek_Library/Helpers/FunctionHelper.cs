@@ -191,7 +191,7 @@ namespace Kztek_Library.Helpers
 
         public static async Task<string> ReplaceSpaceToPlus(string text)
         {
-            return await Task.FromResult(Regex.Replace(text, @"\s+", "-").Trim());
+            return await Task.FromResult(Regex.Replace(text, @"\s+", "").Trim());
         }
 
         public static async Task<string> GetComputerName(string clientIP)
