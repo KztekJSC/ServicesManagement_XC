@@ -80,6 +80,53 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
+
+        private async Task<dynamic> GetAllParkingPostion(string selecteds, string id = "ParkingPosition")
+        {
+            var data = await GetAllPosittion();
+
+
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = ""
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen
+            {
+                Data = cus,
+                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
+                IdSelectList = id,
+                isMultiSelect = false,
+                Selecteds = selecteds
+            };
+
+            return model;
+        }
+        public async Task<List<SelectListModel>> GetAllPosittion()
+        {
+            var list = new List<SelectListModel> { };
+            var lst = await StaticList.ParkingPosittions();
+            if (lst.Any())
+            {
+                foreach (var item in lst)
+                {
+                    list.Add(new SelectListModel { ItemValue = item.ItemValue, ItemText = item.ItemText });
+                }
+            }
+            return list;
+        }
         #endregion
 
         #region Danh sách
@@ -169,11 +216,18 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> Update(string id, int pageNumber = 1, string AreaCode = "" )
         {
             var model = await _tbl_EventService.GetByCustomById(id, this.HttpContext);
+
             ViewBag.AreaCodeValue = AreaCode;
+
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
+
             ViewBag.GetCurrentUser = await SessionCookieHelper.CurrentUser(this.HttpContext); 
+
+            ViewBag.GetParkingPositon = await GetAllParkingPostion(model.ParkingPosition);
             return View(model);
         }
+
+      
         /// <summary>
         /// Thực hiện cập nhật
         /// </summary>
@@ -191,6 +245,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.AllGroup = await GetAllGroup(model.GroupId);
+            ViewBag.GetParkingPositon = await GetAllParkingPostion(model.ParkingPosition);
             //Kiểm tra
             var oldObj = await _tbl_EventService.GetById(model.Id.ToString());
             if (oldObj == null)
@@ -265,6 +320,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 oldModel.subPrice = (oldObj1.subPrice);
                 oldModel.GroupId = oldObj1.GroupId != null ? oldObj.GroupId : "";
                 oldModel.description = oldObj1.description;
+                oldModel.PackageNumber = oldObj1.PackageNumber;
                 var jsStrOld = Newtonsoft.Json.JsonConvert.SerializeObject(oldModel);
 
                 //thông tin mới
@@ -283,6 +339,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 NewModel.subPrice = (model.subPrice);
                 NewModel.GroupId = model.GroupId != null ? model.GroupId : "";
                 NewModel.description = model.description;
+                oldModel.PackageNumber = model.PackageNumber;
                 var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
                await LogHelper.WriteLogupdateService(oldObj.Id.ToString(), ActionConfig.Update, "tbl_Event", JsonConvert.SerializeObject(oldObj), HttpContext, jsStrOld, jsStrNew);
 
@@ -513,9 +570,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
             var listData = new List<NotifiCustom>();
 
-            if (user != null && user.TypeNotifi == "1" || user.TypeNotifi == "2")
+            if (user != null && user.TypeNotifi == "1" )
             {
                 listData = await _tbl_EventService.NotifiSession1(HttpContext);
+            }
+            else if (user != null && user.TypeNotifi == "2")
+            {
+                listData = await _tbl_EventService.NotifiSession2(HttpContext);
             }
           
             return PartialView(listData);

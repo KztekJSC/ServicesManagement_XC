@@ -285,7 +285,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> SaveService(tbl_Event model)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
-
+            var oldObj = await _tbl_EventService.GetByCustomById(model.Id, this.HttpContext);
             var obj = await _tbl_EventService.GetById(model.Id);
 
             if (obj != null)
@@ -300,6 +300,37 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 obj.PackageNumber = model.PackageNumber;
                 obj.Description = model.Description;
                 result = await _tbl_EventService.Update(obj);
+
+                if (result.isSuccess)
+                {
+
+                    var oldModel = new tbl_Event_Cus();
+                    oldModel.plateVN = oldObj.plateVN;
+                    oldModel.plateCN = oldObj.plateCN;
+                    oldModel.productGroup = oldObj.productGroup;
+                    oldModel.weight = Convert.ToDecimal(oldObj.weight).ToString();
+                    oldModel.EventType = oldObj.EventType;
+                    oldModel.vehicleType = oldObj.vehicleType;
+                    oldModel.PackageNumber = oldObj.PackageNumber;
+                    oldModel.serviceCode = oldObj.serviceCode;
+                    oldModel.description = oldModel.description;
+                    var jsStrOld = Newtonsoft.Json.JsonConvert.SerializeObject(oldModel);
+
+                    //thông tin mới
+
+                    var NewModel = new tbl_Event_Cus();
+                    NewModel.plateVN = model.PlateVN;
+                    NewModel.plateCN = model.PlateCN;
+                    NewModel.productGroup = model.ProductGroup;
+                    NewModel.weight = Convert.ToDecimal(model.Weight).ToString();
+                    NewModel.EventType = 5;
+                    NewModel.vehicleType = model.VehicleType;
+                    NewModel.PackageNumber = model.PackageNumber;
+                    NewModel.serviceCode = model.ServiceCode;
+                    NewModel.description = model.Description;
+                    var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
+                    await LogHelper.WriteLogupdateService(obj.Id.ToString(), "Xác nhận hoàn thành DV", "tbl_Event", JsonConvert.SerializeObject(obj), HttpContext, jsStrOld, jsStrNew);
+                }
             }
             else
             {

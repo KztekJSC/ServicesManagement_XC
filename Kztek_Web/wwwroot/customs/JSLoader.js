@@ -214,7 +214,7 @@ var JSLoader = {
             }
         };
 
-        $('#boxTable1 .ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
         $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
 
 

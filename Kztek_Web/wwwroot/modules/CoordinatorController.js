@@ -70,6 +70,7 @@ var CoordinatorController = {
             .done(function (data) {
                 $('#boxTable2').html('');
                 $('#boxTable2').html(data);
+              
                 $("#spCount").text($("#totalCount").val());
             });
     },

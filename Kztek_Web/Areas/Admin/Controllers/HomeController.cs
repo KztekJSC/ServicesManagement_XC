@@ -41,7 +41,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         }
 
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string Groupid = "", string key = "", int page = 1, string AreaCode = "")
+        public async Task<IActionResult> Index(string Groupid = "", string key = "", int page = 1, string AreaCode = "", string StatusID = "")
         {
             ////kiểm tra session xem có lưu ngôn ngữ không nếu có thì lấy không mặc định là "vi"
             //string sessionValue = HttpContext.Session.GetString(SessionConfig.Kz_Language);
@@ -51,12 +51,16 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //LanguageHelper.GetLang(sessionValue);
 
             ViewBag.Groups = await _GroupService.GetaSelectModelChoseGroup(selecteds: Groupid);
+
             ViewBag.keyValue = key; 
+
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
 
             return View();
         }
-        public async Task<IActionResult> Partial_Data(string Groupid = "", string key = "", string fromdate = "", string todate = "", int page = 1)
+        public async Task<IActionResult> Partial_Data(string Groupid = "", string key = "", string fromdate = "", string todate = "", int page = 1, string StatusID = "")
         {
 
 
@@ -70,13 +74,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
             }
 
-            var gridModel = await _HomeService.GetPagingInOut(key, page, 20, Groupid, fromdate, todate);
+            var gridModel = await _HomeService.GetPagingInOut(key, page, 20, Groupid, fromdate, todate , StatusID);
 
             #region Giao diện
 
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
             ViewBag.Groupid = Groupid;
             ViewBag.Groups = await _GroupService.GetAll();
+            ViewBag.Evencode = StatusID;
             ViewBag.lstService = await _ServiceService.GetAll();
             return PartialView(gridModel);
             #endregion

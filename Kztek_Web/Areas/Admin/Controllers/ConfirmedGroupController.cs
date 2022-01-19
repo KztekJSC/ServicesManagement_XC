@@ -64,7 +64,13 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {
        
             ViewBag.lstService = await _ServiceService.GetAll();
+
+            ViewBag.AuthValue = await AuthHelper.CheckAuthAction("ConfirmedGroup", this.HttpContext);
+
             var gridModel = await _tbl_EventService.GetPagingConfirmGroup(this.HttpContext,key, page, 20, StatusID, fromdate, "");
+
+            ViewBag.Groups = await _GroupService.GetAll();
+
             return PartialView(gridModel);
 
         }
@@ -129,10 +135,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(oldObj);
             }
 
+            oldObj.Id = model.Id;
+            oldObj.GroupId = model.GroupId != null ? model.GroupId : "";
 
-         
-            oldObj.EndDate = DateTime.Now;
-            oldObj.EventType = 6;
             //Thực hiện cập nhậts
             var result = await _tbl_EventService.Update(oldObj);
 
@@ -211,7 +216,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> UpdateService(string id, int type)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
-
+            var oldObj = await _tbl_EventService.GetByCustomById(id, this.HttpContext);
             var obj = await _tbl_EventService.GetById(id);
 
             if(obj != null)
@@ -222,15 +227,42 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     obj.EventType = 4; //bắt đầu
                     obj.StartDate = DateTime.Now;
                     obj.ModifiedDate = DateTime.Now;
+
                 }
                 else
                 {
                     obj.EventType = 5; //chờ duyệt
                     obj.EndDate = DateTime.Now;
                     obj.ModifiedDate = DateTime.Now;
+
+                  
                 }
 
                 result = await _tbl_EventService.Update(obj);
+                if (result.isSuccess)
+                {
+
+                    //thông tin cũ
+
+                    var oldModel = new tbl_Event_Cus();
+                    oldModel.PackageNumber = oldObj.PackageNumber;
+                    oldModel.weight = oldObj.weight.ToString();
+                    oldModel.vehicleType = oldObj.vehicleType;
+                    oldModel.description = oldObj.description;
+                    oldModel.EventType = oldObj.EventType;
+                    var jsStrOld = Newtonsoft.Json.JsonConvert.SerializeObject(oldModel);
+
+                    //thông tin mới
+
+                    var NewModel = new tbl_Event_Cus();
+                    NewModel.PackageNumber = obj.PackageNumber;
+                    NewModel.weight = obj.Weight.ToString();
+                    NewModel.vehicleType = obj.VehicleType;
+                    NewModel.description = obj.Description;
+                    NewModel.EventType = 4;
+                    var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
+                    await LogHelper.WriteLogupdateService(obj.Id.ToString(), "Bắt đầu", "tbl_Event", JsonConvert.SerializeObject(obj), HttpContext, jsStrOld, jsStrNew);
+                }
             }
             else
             {
@@ -252,21 +284,48 @@ namespace Kztek_Web.Areas.Admin.Controllers
         public async Task<IActionResult> SaveService(tbl_Event model)
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
-
+            var oldObj = await _tbl_EventService.GetByCustomById(model.Id , this.HttpContext);
             var obj = await _tbl_EventService.GetById(model.Id);
-
+          
             if (obj != null)
             {
                 obj.EventType = 5; //chờ duyệt
                 obj.EndDate = DateTime.Now;
                 obj.ModifiedDate = DateTime.Now;
-
                 obj.ServiceCode = model.ServiceCode;
                 obj.VehicleType = model.VehicleType;
                 obj.Weight = model.Weight;
                 obj.PackageNumber = model.PackageNumber;
 
                 result = await _tbl_EventService.Update(obj);
+                if (result.isSuccess)
+                {
+
+                    var oldModel = new tbl_Event_Cus();
+                    oldModel.plateVN = oldObj.plateVN;
+                    oldModel.plateCN = oldObj.plateCN;
+                    oldModel.productGroup = oldObj.productGroup;
+                    oldModel.weight = Convert.ToDecimal(oldObj.weight).ToString();
+                    oldModel.EventType = oldObj.EventType;
+                    oldModel.vehicleType = oldObj.vehicleType;
+                    oldModel.PackageNumber = oldObj.PackageNumber;
+                    oldModel.serviceCode = oldObj.serviceCode;
+                    var jsStrOld = Newtonsoft.Json.JsonConvert.SerializeObject(oldModel);
+
+                    //thông tin mới
+
+                    var NewModel = new tbl_Event_Cus();
+                    NewModel.plateVN = model.PlateVN;
+                    NewModel.plateCN = model.PlateCN;
+                    NewModel.productGroup = model.ProductGroup;
+                    NewModel.weight = Convert.ToDecimal(model.Weight).ToString();
+                    NewModel.EventType = 5;
+                    NewModel.vehicleType = model.VehicleType;
+                    NewModel.PackageNumber = model.PackageNumber;
+                    NewModel.serviceCode = model.ServiceCode;
+                    var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
+                    await LogHelper.WriteLogupdateService(obj.Id.ToString(), "Kết thúc", "tbl_Event", JsonConvert.SerializeObject(obj), HttpContext, jsStrOld, jsStrNew);
+                }
             }
             else
             {

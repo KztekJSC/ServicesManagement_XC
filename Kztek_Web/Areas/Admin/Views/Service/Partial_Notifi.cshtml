@@ -10,6 +10,8 @@
     //đã xác nhận
     var objType2 = Model.FirstOrDefault(n => n.EventType == 2);
 
+    //đã phân tổ
+    var objType3 = Model.FirstOrDefault(n => n.EventType == 3);
 
 
     <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
@@ -57,7 +59,21 @@
                         </li>
                     }
 
-                   
+
+                    @if (objType3 != null)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Service",new { AreaCode="Admin",StatusID = "3" })">
+                                <div class="clearfix">
+                                    <span class="pull-left">
+                                        <i class="btn btn-xs no-hover btn-default fa fa-car"></i>
+                                        @objType3.TypeName
+                                    </span>
+                                    <span class="pull-right badge badge-success">@objType3.Quantity</span>
+                                </div>
+                            </a>
+                        </li>
+                    }
 
                 </ul>
             </div>

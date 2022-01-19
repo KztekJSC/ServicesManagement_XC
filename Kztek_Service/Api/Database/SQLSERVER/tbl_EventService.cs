@@ -2,7 +2,9 @@
 using Kztek_Data.Repository;
 using Kztek_Library.Helpers;
 using Kztek_Model.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
     {
         private Itbl_EventRepository _tbl_EventRepository;
         private IServiceRepository _ServiceRepository;
+
+        public HttpContext HttpContext { get; private set; }
+
         public tbl_EventService(Itbl_EventRepository _tbl_EventRepository, IServiceRepository _ServiceRepository)
         {
             this._tbl_EventRepository = _tbl_EventRepository;
@@ -140,9 +145,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
-
+                await LogHelper.WriteLog(obj.Id.ToString(), "Thêm mới API", "tbl_Event", JsonConvert.SerializeObject(obj).ToString(), this.HttpContext);
                 //nếu xe CN và VN đều vào bãi thì loại lại danh sách
-                if(obj.EventType == 2)
+                if (obj.EventType == 2)
                 {
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
                 }

@@ -131,13 +131,16 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             model.plateCN = obj.PlateCN;
             model.productType = obj.ProductType;
             model.weight = obj.Weight.ToString();
-            model.vehicleType = obj.ProductType;
+            model.vehicleType = obj.VehicleType;
             model.productGroup = obj.ProductGroup;
             model.service = obj.Service;
             model.ParkingPosition = obj.ParkingPosition;
             model.price = obj.Price.ToString("###,###.##");
             model.subPrice = obj.SubPrice.ToString("###,###.##");
             model.GroupId = obj.GroupId;
+            model.PackageNumber = obj.PackageNumber;
+            model.EventType = obj.EventType;
+            model.serviceCode = obj.ServiceCode;
             model.description = obj.Description;
             model.serviceName = objService.Name;
             return await Task.FromResult(model);
@@ -548,31 +551,17 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 }
             }
             sb.AppendLine(")as a");
+
             sb.AppendLine(") as C1");
+
             sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
+
+            sb.AppendLine(" ORDER BY  (CASE  WHEN EventType = 2  THEN CreatedDate END) ASC,(    CASE WHEN EventType = 3 THEN DivisionDate END ) ASC, ");
+
+            sb.AppendLine(" (CASE WHEN EventType = 5 THEN ModifiedDate END ) ASC,(CASE WHEN EventType = 6 THEN EndDate END ) ASC ");
+
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
-            //var lstOrderbyCreadate = new List<tbl_Event>();
-
-            //foreach (var item in listData)
-            //{
-            //    if (item.EventType == 2 )
-            //    {
-            //        listData.OrderByDescending(n => n.CreatedDate);
-            //    }
-            //    else if (item.EventType == 3)
-            //    {
-            //        listData.OrderBy(n => n.DivisionDate);
-            //    }
-            //    else if (item.EventType == 5)
-            //    {
-            //        listData.OrderByDescending(n => n.ModifiedDate);
-            //    }
-            //    else if (item.EventType == 6)
-            //    {
-            //        listData.OrderByDescending(n => n.EndDate);
-            //    }
-            //}
-
+           
             
             // Tính tổng
             sb.Clear();
@@ -652,13 +641,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine("SELECT * FROM (");
 
-            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} ASC) AS RowNumber,a.*", "CreatedDate"));
+            sb.AppendLine(string.Format("SELECT ROW_NUMBER () OVER ( ORDER BY {0} ASC) AS RowNumber,a.*", "EventType"));
 
             sb.AppendLine("FROM(");
 
             sb.AppendLine("SELECT * FROM [tbl_Event]");
 
             sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
+
+            
             if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
             {
                 sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
@@ -746,6 +737,8 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             sb.AppendLine(string.Format("WHERE RowNumber BETWEEN (({0}-1) * {1} + 1) AND ({0} * {1})", page, pageSize));
 
+            sb.AppendLine(" ORDER BY  (CASE  WHEN EventType = 1  THEN CreatedDate END) ASC,(    CASE WHEN EventType = 2 THEN CreatedDate END ) ASC ");
+       
             var listData = DatabaseHelper.ExcuteCommandToList<tbl_Event>(sb.ToString());
 
 
@@ -1034,24 +1027,15 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine("SELECT EventType, (CASE WHEN EventType = 1 THEN N'Dịch vụ chưa xác nhận' ELSE N'Dịch vụ đã xác nhận' END) as TypeName, Count(Id) as Quantity FROM [tbl_Event]");
+            sb.AppendLine(" SELECT EventType, (CASE WHEN EventType = 1 THEN N'Dịch vụ chưa xác nhận' WHEN EventType = 2 THEN  N'Dịch vụ đã xác nhận/Cặp xe chưa phân tổ'  WHEN EventType = 3 THEN N'Cặp xe đã phân tổ'  END) as TypeName, Count(Id) as Quantity FROM [tbl_Event]");
 
-            sb.AppendLine("WHERE 1 =1 AND EventType IN (1,2) AND  IsDeleted = 0");
+            sb.AppendLine("  WHERE 1 =1 AND EventType IN (1,2,3) AND  IsDeleted = 0");
 
             sb.AppendLine("GROUP BY EventType");
 
             var listData = DatabaseHelper.ExcuteCommandToList<NotifiCustom>(sb.ToString());
-            var lst = new List<NotifiCustom>();
-            foreach (var item in listData)
-            {
-                var obj = new NotifiCustom();
-                obj.TypeNotifi = "2";
-                obj.TypeName = item.TypeName;
-                obj.Quantity = item.Quantity;
-                obj.EventType = item.EventType;
-                listData.Add(obj);
-            }
-            return await Task.FromResult(lst);
+           
+            return await Task.FromResult(listData);
         }
     }
 }

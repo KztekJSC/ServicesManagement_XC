@@ -143,7 +143,7 @@ namespace Kztek_Model.Models
         public string StartDate { get; set; } //Ngày bắt đầu công việc
         public string ParkingPosition { get; set; }//Vị trí đỗ
         public string EndDate { get; set; } //Ngày kết thúc công việc
-
+        public int PackageNumber { get; set; }//Số kiện
         public string DivisionDate { get; set; } //Ngày phân tổ
         public int EventType { get; set; }
         public string EventTypeName { get; set; }

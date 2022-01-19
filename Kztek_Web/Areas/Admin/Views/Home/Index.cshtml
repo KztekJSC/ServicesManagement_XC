@@ -14,19 +14,24 @@
 {
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
 
-    <div class="row">
-        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-            Từ khóa
-            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số|Loại hàng..." class="form-control" />
-        </div>
-
-        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-
-            <span class="lbl">Tổ </span>
-            @await Component.InvokeAsync("ChosenSelect", ViewBag.Groups)
-
-        </div>
+<div class="row">
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+        Từ khóa
+        <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số|Loại hàng..." class="form-control" />
     </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Trạng thái sự kiện </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+
+    </div>
+    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+        <span class="lbl">Tổ </span>
+        @await Component.InvokeAsync("ChosenSelect", ViewBag.Groups)
+
+    </div>
+</div>
 
 
     <div class="row">
@@ -61,6 +66,7 @@
             var obj = {
                 key: $("input[name=key]").val(),
                 Groupid: $("#GroupId").val(),
+                StatusID: $("#StatusID").val(),
                 page: page
             };
 

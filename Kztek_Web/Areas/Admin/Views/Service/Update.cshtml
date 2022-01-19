@@ -46,7 +46,7 @@
         {
             @Html.HiddenFor(n => n.Id)
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-
+            @Html.Hidden("IsAdmin", currentUser.isAdmin)
             @Html.Hidden("TypeNotifi", currentUser.TypeNotifi)
             @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
 
@@ -132,8 +132,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Vị trí đỗ</label>
                 <div class="col-sm-3 col-xs-12">
-                    <input type="text" name="ParkingPosition" value="@Model.ParkingPosition" class="form-control" placeholder=" " @string.Format("{0} ", (currentUser != null && (currentUser.isAdmin || currentUser.TypeNotifi == "1")) ? "" : "disabled") />
-
+                    @await Component.InvokeAsync("ChosenSelect", ViewBag.GetParkingPositon)
                 </div>
             </div>
             <div class="form-group">
@@ -163,13 +162,18 @@
     <script src="~/js/ext/price_format.js"></script>
     <script>
         $(document).ready(function () {
-
-           if ($("#TypeNotifi").val() == "1" || $("#TypeNotifi").val() == "2" )
-           {
-               $('.chosen-select').prop('disabled', true).trigger('chosen:updated');
-           } else if ($("#TypeNotifi").val() == "3") {
-               $('.chosen-select').prop('disabled', false).trigger('chosen:updated');
-           }
+                   
+            if ($("#IsAdmin").val()== "True") {
+                $('.chosen-select').prop('disabled', false).trigger('chosen:updated');
+            } else if ($("#IsAdmin").val() == "False")
+        {
+                if ($("#TypeNotifi").val() == "1" || $("#TypeNotifi").val() == "2") {
+                    $('.chosen-select').prop('disabled', true).trigger('chosen:updated');
+                } else if ($("#TypeNotifi").val() == "3" ) {
+                    $('.chosen-select').prop('disabled', false).trigger('chosen:updated');
+                }
+            }
+          
 
         });
 

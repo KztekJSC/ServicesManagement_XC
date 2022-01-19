@@ -94,7 +94,7 @@ var ServiceController = {
               /*  JSLoader.load_ViewImage();*/
                 $('#boxTable1').html('');
                 $('#boxTable1').html(data);
-
+                JSLoader.load_ViewImage();
                 $("#spCount").text($("#totalCount").val());
             });
     },
@@ -132,7 +132,8 @@ var ServiceController = {
             }
         });
                
-        },
+    },
+
     PartialVehicle: function () {
         var obj = {
             key: $("input[name=key]").val(),

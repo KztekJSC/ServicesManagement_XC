@@ -12,7 +12,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 {
     public class HomeService : IHomeService
     {
-        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string groupid, string fromdate, string todate)
+        public async Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int pageSize, string groupid, string fromdate, string todate, string StatusID)
         {
             var sb = new StringBuilder();
             sb.AppendLine("SELECT * FROM (");
@@ -31,7 +31,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             }
 
 
-            //event Code
+            //group
             if (!string.IsNullOrWhiteSpace(groupid) && groupid != "00")
             {
                 var t = groupid.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -40,6 +40,28 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     var count = 0;
 
                     sb.AppendLine("and ([GroupId] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+            //event Code
+            if (!string.IsNullOrWhiteSpace(StatusID) && StatusID != "00")
+            {
+                var t = StatusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
 
                     foreach (var item in t)
                     {
@@ -73,7 +95,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' OR  ProductType LIKE '%{0}%' )", key));
             }
 
-            //event Code
+            //group
             if (!string.IsNullOrWhiteSpace(groupid) && groupid != "00")
             {
                 var t = groupid.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -82,6 +104,29 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     var count = 0;
 
                     sb.AppendLine("and ([GroupId] IN ( ");
+
+                    foreach (var item in t)
+                    {
+                        count++;
+
+                        sb.AppendLine(string.Format("'{0}'{1}", item, count == t.Length ? "" : ","));
+                    }
+
+                    sb.AppendLine(" )) ");
+
+
+                }
+            }
+
+            //event Code
+            if (!string.IsNullOrWhiteSpace(StatusID) && StatusID != "00")
+            {
+                var t = StatusID.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                if (t.Any())
+                {
+                    var count = 0;
+
+                    sb.AppendLine("and ([EventType] IN ( ");
 
                     foreach (var item in t)
                     {

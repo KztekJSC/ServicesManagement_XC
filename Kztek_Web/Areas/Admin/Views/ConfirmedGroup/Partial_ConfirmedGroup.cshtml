@@ -3,6 +3,8 @@
 
 @{
     var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+    var authModel = (Kztek_Library.Models.AuthActionModel)ViewBag.AuthValue;
+    var objGr = (List<Kztek_Model.Models.Group>)ViewBag.Groups;
 }
 @Html.Hidden("totalCount", Model.TotalIem)
 
@@ -22,9 +24,9 @@
                 </th>
                 <th class="text-center">Loại hàng </th>
 
-                <th class="text-center">Nhóm</th>
+                <th class="text-center">Nhóm hàng</th>
                 <th class="text-center">Dịch vụ</th>
-
+                <th class="text-center">Tổ </th>
 
                 <th class="text-center">Bắt đầu</th>
                 <th class="text-center">Kết thúc</th>
@@ -38,94 +40,122 @@
                 foreach (var item in Model.Data)
                 {
                     count++;
-                    <tr>
-                        <td class="center">
-                            @if (item.EventType == 3)
-                            {
-                               
-                                    <button class="btn btn-xs btn-primary btnStart" idata="@item.Id" style="background-color:#085AA2!important ">
+            <tr>
+                <td class="center">
+                    @if (item.EventType == 3)
+                    {
 
-                                        Bắt đầu
-                                    </button>
-                                
-                            }
-                            else if (item.EventType == 4)
-                            {
-                                <button class="btn btn-xs btn-danger btnEnd" idata="@item.Id" style="background-color:#C43119 !important;">
+                        <button class="btn btn-xs btn-primary btnStart" idata="@item.Id" style="background-color:#085AA2!important ">
 
-                                    Kết thúc
-                                </button>
-                            }
-                        </td>
-                        <td class="text-center">
+                            Bắt đầu
+                        </button>
 
-                            @{
-                                if (item.EventType == 3)
-                                {
-                                    <span class="label label-yellow">Đã phân tổ</span>
-                                }
-                                else if (item.EventType == 4)
-                                {
-                                    <span class="label" style="background-color: #385822">Đang thực hiện</span>
-                                }
-                                else if (item.EventType == 6)
-                                {
-                                    <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
-                                }
-                                else if (item.EventType == 5)
-                                {
-                                    <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
-                                }
+                    }
+                    else if (item.EventType == 4)
+                    {
+                        <button class="btn btn-xs btn-danger btnEnd" idata="@item.Id" style="background-color:#C43119 !important;">
 
+                            Kết thúc
+                        </button>
+                    }
+                </td>
+                <td class="text-center">
 
-                            }
-
-                        </td>
-                        <td class="center">
-                            @item.PlateVN
-                        </td>
-                        <td class="center">
-                            @item.PlateCN
-                        </td>
-                        <td class="center">
-                            @item.ProductType
-                        </td>
-
-                        <td class="center">
-                            @item.ProductGroup
-                        </td>
-                        <td class="center">
-                            @{
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
-                                }
-                            }
-
-                        </td>
+                    @{
+                        if (item.EventType == 3)
+                        {
+                            <span class="label label-yellow">Đã phân tổ</span>
+                        }
+                        else if (item.EventType == 4)
+                        {
+                            <span class="label" style="background-color: #385822">Đang thực hiện</span>
+                        }
+                        else if (item.EventType == 6)
+                        {
+                            <span class="label" style="background-color: #c00000 ">Hoàn thành</span>
+                        }
+                        else if (item.EventType == 5)
+                        {
+                            <span class="label" style="background-color: #7b0fa2 ">Chờ duyệt</span>
+                        }
 
 
-                        <td class="center">
-                            @if (item.StartDate.Date != DateTime.MaxValue.Date)
-                            {
-                                @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
-                            }
+                    }
 
-                        </td>
-                        <td class="center">
+                </td>
+                <td class="center">
+                    @item.PlateVN
+                </td>
+                <td class="center">
+                    @item.PlateCN
+                </td>
+                <td class="center">
+                    @item.ProductType
+                </td>
 
-                            @{
-                                if (item.EndDate.Date != DateTime.MaxValue.Date)
-                                {
-                                    @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
-                                }
+                <td class="center">
+                    @item.ProductGroup
+                </td>
+                <td class="center">
+                    @{
+                        var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                        if (obj != null)
+                        {
+                            <span>@obj.Name</span>
+                        }
+                    }
 
-                            }
-                        </td>
+                </td>
+                <td class="center">
+                    @{
+                        var objlst = objGr != null ? objGr.FirstOrDefault(n => n.Id == item.GroupId) : null;
+                        if (objlst != null)
+                        {
+                            <span>@objlst.Name</span>
+                        }
+                    }
+
+                </td>
 
 
-                    </tr>
+                <td class="center">
+                    @if (item.StartDate.Date != DateTime.MaxValue.Date)
+                    {
+                        @item.StartDate.ToString("dd/MM/yyyy HH:mm:ss")
+                    }
+
+                </td>
+                <td class="center">
+
+                    @{
+                        if (item.EndDate.Date != DateTime.MaxValue.Date)
+                        {
+                            @item.EndDate.ToString("dd/MM/yyyy HH:mm:ss")
+                        }
+
+                    }
+                </td>
+                @if (item.EventType == 3)
+                {
+                    <td class="center">
+
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                       {
+                           ControllerName = "ConfirmedGroup",
+                           ActionName = "Update",
+                           RecordId = "",
+                           model = new { id = item.Id },
+                           Auth_Value = authModel
+                       })
+
+                        </div>
+                    </td>
+
+
+                }
+
+            </tr>
 
 
                 }

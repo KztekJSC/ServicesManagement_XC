@@ -4,8 +4,8 @@
 
 @{
 
-    ViewBag.Title = "Tổ CN xác nhận";
-
+    ViewBag.Title = "Thay đổi tổ bốc xếp";
+    var controller = "";
 
 }
 
@@ -70,75 +70,40 @@
                 </div>
             </div>
 
+
             <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> Loại xe </label>
+                <label class="col-sm-3 control-label no-padding-right">Tổ bốc xếp</label>
                 <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("VehicleType", Model.VehicleType, new { @class = "form-control", @placeholder = "Loại xe", @disabled = "disabled" })
-                    @Html.ValidationMessage("VehicleType", "", new { @class = "text-danger" })
+                    @await Component.InvokeAsync("ChosenSelect", ViewBag.AllGroup)
                 </div>
             </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Loại hàng </label>
+                <div class="col-sm-3 col-xs-12">
+                    @Html.TextBox("ProductGroup", Model.ProductGroup, new { @class = "form-control", @placeholder = "Loại hàng", @disabled = "disabled" })
 
+                </div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right"> Loại hàng </label>
                 <div class="col-sm-3 col-xs-12">
                     @Html.TextBox("ProductType", Model.ProductType, new { @class = "form-control", @placeholder = "Loại hàng", @disabled = "disabled" })
-                    @Html.ValidationMessage("ProductType", "", new { @class = "text-danger" })
+
                 </div>
             </div>
 
 
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> Số lượng </label>
-                <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("Quantity", Model.Quantity, new { @class = "form-control", @placeholder = "Số lượng", @disabled = "disabled" })
-                    @Html.ValidationMessage("Quantity", "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label no-padding-right"> Vị trí đỗ </label>
-                <div class="col-sm-3 col-xs-12">
-                    @Html.TextBox("ParkingPosition", Model.ParkingPosition, new { @class = "form-control", @placeholder = "Vị trí đỗ", @disabled = "disabled" })
-                    @Html.ValidationMessage("ParkingPosition", "", new { @class = "text-danger" })
-                </div>
-            </div>
-          
-                <div class="row">
-                    <div class="col-md-offset-3 col-md-8">
-                        <button class=" btnService btnStart " type="button" idata="@Model.Id"  @string.Format("{0}",( Model.EventType == 4 || Model.EventType == 5  ||  Model.EventType == 6) ? "disabled" :  "" ) >
-                            <i class="fa fa-check mr-1"></i>
-                            Bắt đầu
-                        </button>
 
 
-                        <button class=" btnCancel  " type="submit"  @string.Format("{0}",( Model.EventType == 3 || Model.EventType == 5  ||  Model.EventType == 6) ? "disabled" :  "" )>
-                            <i class="fa fa-check mr-1"></i>
-                            Đã làm xong
-                        </button>
-                    </div>
-                </div>
-           
-      
-            <div class="ace-settings-container" id="ace-settings-container" style="position: fixed; top: 155px;">
-                <div class="btn btn-app btn-xs btn-grey ace-settings-btn open" id="ace-settings-btn">
-                    <i class="ace-icon fa fa-cog bigger-130"></i>
-                </div>
 
-                <div class="ace-settings-box clearfix open" id="ace-settings-box">
-                    <!-- /.pull-left -->
-                    <div class="bg-rightbox">
-                        <div class="clearfix lineButton">
-                            <div class="col-md-12 input-group">
-
-                                <a href='@Url.Action("Index", "ConfirmedGroup",Model )' class="btn btn-yellow">
-                                    <i class="ace-icon fa fa-chevron-circle-left bigger-110"></i>
-                                    @await Component.InvokeAsync("Language", new { path = "BODY:BUTTON:BACKTOLIST" })
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.pull-left -->
-                </div><!-- /.ace-settings-box -->
-            </div>
+            @await Html.PartialAsync("~/Views/Shared/Partials/ButtonPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+             {
+           ControllerName = "ConfirmedGroup",
+           ActionName = "Update",
+           RecordId = "",
+           model = new { AreaCode = ViewBag.AreaCodeValue },
+           Auth_Value = null
+       })
 
         }
     </di>
