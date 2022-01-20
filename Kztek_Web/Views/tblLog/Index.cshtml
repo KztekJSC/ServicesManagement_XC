@@ -103,7 +103,7 @@
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:SubSystemCode" }) </th>
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:ObjectName" }) </th>
                     <th class="center hidden-480">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:Action" }) </th>
-                    @*<th class="text-left">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" }) </th>*@
+                    <th class="text-left">@await Component.InvokeAsync("Language", new { path = "BODY:TABLE:DESCRIPTION" }) </th>
                     <th class="center">Thông tin cũ </th>
                     <th class="center">Thông tin mới </th>
                 </tr>
@@ -138,235 +138,238 @@
                     <td class="text-left hidden-480">
                         @item.Actions
                     </td>
-                    @*<td class="text-left hidden-480">
+                    <td class="text-left hidden-480">
                         @item.Description
-                    </td>*@
-                <td class="text-left">
-                    @{
-                        if (item.OldInfo != null)
-                        {
-                            var objOld = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.OldInfo);
-                            if (objOld.serviceCode != null)
+                    </td>
+                    @*<td class="text-left hidden-480">
+            @item.Description
+        </td>*@
+                    <td class="text-left">
+                        @{
+                            if (item.OldInfo != null)
                             {
-                                <p>Số trang : @objOld.serviceCode</p>
-                            }
-                            else
-                            {
+                                var objOld = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.OldInfo);
+                                if (objOld.serviceCode != null)
+                                {
+                                    <p>Số trang : @objOld.serviceCode</p>
+                                }
+                                else
+                                {
 
-                            }
-                            if (objOld.PackageNumber != 0)
-                            {
-                                <p>Số kiện : @objOld.PackageNumber</p>
-                            }
-                            else
-                            {
+                                }
+                                if (objOld.PackageNumber != 0)
+                                {
+                                    <p>Số kiện : @objOld.PackageNumber</p>
+                                }
+                                else
+                                {
 
-                            }
-                            if (objOld.EventType != 0)
-                            {
-                                <p>Trạng thái : @objOld.EventType</p>
-                            }
-                            else
-                            {
+                                }
+                                if (objOld.EventType != 0)
+                                {
+                                    <p>Trạng thái : @objOld.EventType</p>
+                                }
+                                else
+                                {
 
-                            }
-                            if (objOld.plateVN != null || objOld.plateVN == "")
-                            {
-                                <p>Biển số VN : @objOld.plateVN</p>
-                            }
-                            else
-                            {
+                                }
+                                if (objOld.plateVN != null || objOld.plateVN == "")
+                                {
+                                    <p>Biển số VN : @objOld.plateVN</p>
+                                }
+                                else
+                                {
 
+                                }
+
+                                if (objOld.plateCN == null || objOld.plateCN == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Biển số TQ: @objOld.plateCN</p>
+                                }
+                                if (objOld.productType == null)
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Loại hàng : @objOld.productType</p>
+                                }
+                                if (objOld.weight == null || objOld.weight == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Khối lượng: @objOld.weight</p>
+                                }
+
+                                if (objOld.vehicleType != null || objOld.vehicleType != "")
+                                {
+                                    <p>Loại xe : @objOld.vehicleType</p>
+                                }
+                                else if (objOld.vehicleType == "")
+                                {
+
+                                }
+
+
+                                if (objOld.price == null || objOld.price == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Giá dịch vụ : @objOld.price</p>
+                                }
+                                if (objOld.subPrice == null || objOld.subPrice == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Phụ thu : @objOld.subPrice</p>
+                                }
+                                if (objOld.ParkingPosition == null || objOld.ParkingPosition == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Vị trí đỗ : @objOld.ParkingPosition</p>
+                                }
+                                if (objOld.description == null || objOld.description == "")
+                                {
+
+                                }
+                                else
+                                {
+                                    <p>Ghi chú : @objOld.description</p>
+                                }
                             }
 
-                            if (objOld.plateCN == null || objOld.plateCN == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Biển số TQ: @objOld.plateCN</p>
-                            }
-                            if (objOld.productType == null)
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Loại hàng : @objOld.productType</p>
-                            }
-                            if (objOld.weight == null || objOld.weight == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Khối lượng: @objOld.weight</p>
-                            }
-
-                            if (objOld.vehicleType != null || objOld.vehicleType != "")
-                            {
-                                <p>Loại xe : @objOld.vehicleType</p>
-                            }
-                            else if (objOld.vehicleType == "")
-                            {
-
-                            }
 
 
-                            if (objOld.price == null || objOld.price == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Giá dịch vụ : @objOld.price</p>
-                            }
-                            if (objOld.subPrice == null || objOld.subPrice == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Phụ thu : @objOld.subPrice</p>
-                            }
-                            if (objOld.ParkingPosition == null || objOld.ParkingPosition == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Vị trí đỗ : @objOld.ParkingPosition</p>
-                            }
-                            if (objOld.description == null || objOld.description == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Ghi chú : @objOld.description</p>
-                            }
                         }
 
+                    </td>
+                    <td class="text-left">
+                        @{
+                            if (item.NewInfo != null)
+                            {
+                                var objNew = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.NewInfo);
+                                if (objNew.serviceCode != null)
+                                {
+                                    <p>Số trang : @objNew.serviceCode</p>
+                                }
+                                else
+                                {
+
+                                }
 
 
-                    }
+                                if (objNew.PackageNumber != 0)
+                                {
+                                    <p>Số kiện : @objNew.PackageNumber</p>
+                                }
+                                else
+                                {
 
-                </td>
-                <td class="text-left">
-                    @{
-                        if (item.NewInfo != null)
-                        {
-                            var objNew = Newtonsoft.Json.JsonConvert.DeserializeObject<Kztek_Model.Models.tbl_Event_Cus>(item.NewInfo);
-                            if (objNew.serviceCode != null)
-                            {
-                                <p>Số trang : @objNew.serviceCode</p>
-                            }
-                            else
-                            {
+                                }
 
-                            }
+                                if (objNew.EventType != 0)
+                                {
+                                    <p>Trạng thái: @objNew.EventType</p>
+                                }
+                                else
+                                {
 
+                                }
+                                if (objNew.plateVN != null || objNew.plateVN == "")
+                                {
+                                    <p>Biển số VN : @objNew.plateVN</p>
+                                }
+                                else
+                                {
 
-                            if (objNew.PackageNumber != 0)
-                            {
-                                <p>Số kiện : @objNew.PackageNumber</p>
-                            }
-                            else
-                            {
+                                }
 
-                            }
+                                if (objNew.plateCN == null || objNew.plateCN == "")
+                                {
 
-                            if (objNew.EventType != 0)
-                            {
-                                <p>Trạng thái: @objNew.EventType</p>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
+                                    <p>Biển số TQ: @objNew.plateCN</p>
+                                }
+                                if (objNew.productType == null)
+                                {
 
-                            }
-                            if (objNew.plateVN != null || objNew.plateVN == "")
-                            {
-                                <p>Biển số VN : @objNew.plateVN</p>
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
+                                    <p>Loại hàng : @objNew.productType</p>
+                                }
+                                if (objNew.weight == null || objNew.weight == "")
+                                {
 
-                            }
+                                }
+                                else
+                                {
+                                    <p>Khối lượng: @objNew.weight</p>
+                                }
 
-                            if (objNew.plateCN == null || objNew.plateCN == "")
-                            {
+                                if (objNew.vehicleType != null || objNew.vehicleType != "")
+                                {
+                                    <p>Loại xe : @objNew.vehicleType</p>
+                                }
+                                else if (objNew.vehicleType == "")
+                                {
 
-                            }
-                            else
-                            {
-                                <p>Biển số TQ: @objNew.plateCN</p>
-                            }
-                            if (objNew.productType == null)
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Loại hàng : @objNew.productType</p>
-                            }
-                            if (objNew.weight == null || objNew.weight == "")
-                            {
-
-                            }
-                            else
-                            {
-                                <p>Khối lượng: @objNew.weight</p>
-                            }
-
-                            if (objNew.vehicleType != null || objNew.vehicleType != "")
-                            {
-                                <p>Loại xe : @objNew.vehicleType</p>
-                            }
-                            else if (objNew.vehicleType == "")
-                            {
-
-                            }
+                                }
 
 
-                            if (objNew.price == null || objNew.price == "")
-                            {
+                                if (objNew.price == null || objNew.price == "")
+                                {
 
-                            }
-                            else
-                            {
-                                <p>Giá dịch vụ : @objNew.price</p>
-                            }
-                            if (objNew.subPrice == null || objNew.subPrice == "")
-                            {
+                                }
+                                else
+                                {
+                                    <p>Giá dịch vụ : @objNew.price</p>
+                                }
+                                if (objNew.subPrice == null || objNew.subPrice == "")
+                                {
 
-                            }
-                            else
-                            {
-                                <p>Phụ thu : @objNew.subPrice</p>
-                            }
-                            if (objNew.ParkingPosition == null || objNew.ParkingPosition == "")
-                            {
+                                }
+                                else
+                                {
+                                    <p>Phụ thu : @objNew.subPrice</p>
+                                }
+                                if (objNew.ParkingPosition == null || objNew.ParkingPosition == "")
+                                {
 
-                            }
-                            else
-                            {
-                                <p>Vị trí đỗ : @objNew.ParkingPosition</p>
-                            }
-                            if (objNew.description == null || objNew.description == "")
-                            {
+                                }
+                                else
+                                {
+                                    <p>Vị trí đỗ : @objNew.ParkingPosition</p>
+                                }
+                                if (objNew.description == null || objNew.description == "")
+                                {
 
+                                }
+                                else
+                                {
+                                    <p>Ghi chú : @objNew.description</p>
+                                }
                             }
-                            else
-                            {
-                                <p>Ghi chú : @objNew.description</p>
-                            }
+
+
+
                         }
-
-
-
-                    }
-                </td>
+                    </td>
                 </tr>
                     }
                 }
