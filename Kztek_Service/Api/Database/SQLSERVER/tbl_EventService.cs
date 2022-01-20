@@ -214,7 +214,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                 result = await _tbl_EventRepository.Add(obj);
                                 //Luu log
 
-                                await LogHelper.WriteLogAPI(obj.ToString(), "Thêm từ API", "tbl_Event", JsonConvert.SerializeObject(obj).ToString());
+                                await LogHelper.WriteLogAPI(obj.Id.ToString(), "Thêm mới", "tbl_Event", JsonConvert.SerializeObject(obj).ToString());
                             }                              
                         }
                     }                 
