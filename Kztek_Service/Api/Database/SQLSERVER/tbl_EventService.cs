@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Mvc;
 namespace Kztek_Service.Api.Database.SQLSERVER
 {
     public class tbl_EventService : Itbl_EventService
@@ -18,6 +18,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         private Itbl_EventRepository _tbl_EventRepository;
         private IServiceRepository _ServiceRepository;
         private IEventInRepository _EventInRepository;
+        public HttpContext httpContext { get; set; }
         public tbl_EventService(Itbl_EventRepository _tbl_EventRepository, IServiceRepository _ServiceRepository, IEventInRepository _EventInRepository)
         {
             this._tbl_EventRepository = _tbl_EventRepository;
@@ -95,7 +96,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 //tách ra từng biển số VN
                 var arrPlateVN = model.plateVN.Split(",");
 
-                //tách ra từng biển số VN
+                //tách ra từng biển số CN
                 var arrPlateCN = model.plateCN.Split(",");
 
                 //Nếu không có thời gian vào VN hoặc không có thời gian vào CN thì lấy danh sách sự kiện vào để kiểm tra
@@ -211,18 +212,25 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                 obj.Service = idService;
 
                                 result = await _tbl_EventRepository.Add(obj);
+                                //Luu log
+
+                                await LogHelper.WriteLogAPI(obj.ToString(), "Thêm từ API", "tbl_Event", JsonConvert.SerializeObject(obj).ToString());
                             }                              
                         }
                     }                 
                 }
 
                 result = new MessageReport(true, "Thành công");
+                if (result.isSuccess)
+                {
+                    //loại lại danh sách
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
 
-                //loại lại danh sách
-                await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
-
-                //load lại thông báo cho dg viên
-                await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
+                   
+                    //load lại thông báo cho dg viên
+                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
+                }
+             
             }
             catch (Exception ex)
             {
