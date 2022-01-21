@@ -22,6 +22,8 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Dịch vụ</th>
+                                <th>Xe VN</th>
+                                <th>Xe CN</th>
                                 <th>Loại hàng</th>
                                 <th>Nhóm hàng</th>
                                 <th>Trạng thái</th>
@@ -36,28 +38,31 @@
                                 foreach (var item in Model)
                                 {
                                     count++;
-                                    <tr>
-                                        <td>@count</td>
-                                        <td>@item.serviceName</td>
-                                        <td>@item.productType</td>
-                                        <td>@item.productGroup</td>
-                                        <td class="text-center">
-                                            @if (!string.IsNullOrEmpty(item.EventTypeName))
-                                            {
-                                                @Html.Raw(item.EventTypeName)
-                                            }
-                                        </td>
-                                        <td class="text-center">@item.StartDate
-                                        </td>
-                                        <td class="text-center">
-                                            @if (item.EventType == 3)
-                                            {
-                                                <a class="green btnUpdateGroup" href="javascript:void(0)" title="Chọn tổ" idata="@item.Id">
-                                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                                </a>
-                                            }
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.serviceName</td>
+                                <td>@item.plateVN</td>
+                                <td>@item.plateCN</td>
+                                <td>@item.productType</td>
+                                <td>@item.productGroup</td>
+                                <td class="text-center">
+                                    @if (!string.IsNullOrEmpty(item.EventTypeName))
+                                    {
+                                        @Html.Raw(item.EventTypeName)
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @item.StartDate
+                            </td>
+                            <td class="text-center">
+                                @if (item.EventType == 3)
+                                {
+                                    <a class="green btnUpdateGroup" href="javascript:void(0)" title="Chọn tổ" idata="@item.Id">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
+                                }
+                            </td>
+                            </tr>
                                 }
 
                             }

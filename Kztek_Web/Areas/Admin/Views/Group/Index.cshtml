@@ -94,23 +94,7 @@
                                 @item.Description
                             </td>
 
-                            <td class="center" >
-                                <div class="ace-thumbnails clearfix">
 
-                                    @if (!string.IsNullOrWhiteSpace(item.Description))
-                                    {
-                                        var newobj = new ImageFPTModel
-                                        {
-                                            Filename = item.Description,
-                                            Type = "INOUT",
-                                            Description = "Ảnh"
-                                        };
-                                        @await Component.InvokeAsync("ImageFPT", newobj)
-
-                                    }
-                                </div>
-
-                            </td>
                             <td class="center">
                                 <div class="btn-group">
                                     @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
