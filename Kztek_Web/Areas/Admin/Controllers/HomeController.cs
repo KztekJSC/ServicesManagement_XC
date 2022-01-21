@@ -81,7 +81,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.AuthValue = await AuthHelper.CheckAuthAction("Home", this.HttpContext);
             ViewBag.Groupid = Groupid;
             ViewBag.Groups = await _GroupService.GetAll();
-            ViewBag.Evencode = StatusID;
+            ViewBag.StatusID = StatusID;
             ViewBag.lstService = await _ServiceService.GetAll();
             return PartialView(gridModel);
             #endregion

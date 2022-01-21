@@ -52,14 +52,14 @@
 
 <div class="hr hr-18 dotted hr-24"></div>
 
-<div class="row" id="boxTable">
+<div class="row" id="boxTableHome">
 
 </div>
 
 
 @section scripts{
    
-    @*<script src="~/modules/HomeController.js"></script>*@
+    <script src="~/modules/HomeController.js"></script>
     <script>
         function PartialService(page) {
 
@@ -72,8 +72,8 @@
 
             JSHelper.AJAX_LoadDataPOST('/Admin/Home/Partial_Data', obj)
                 .done(function (data) {
-                    $('#boxTable').html('');
-                    $('#boxTable').html(data);
+                    $('#boxTableHome').html('');
+                    $('#boxTableHome').html(data);
 
                     $("#spCount").text($("#totalCount").val());
                 });

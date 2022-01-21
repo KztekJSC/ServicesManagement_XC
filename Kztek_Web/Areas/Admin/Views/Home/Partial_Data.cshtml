@@ -124,14 +124,14 @@
         <div class="pull-right">
 
 
-            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Service", "Home", new
+            @Html.GeneratePagingFooterAjax(Model.TotalPage, Model.TotalIem, Model.PageIndex, Model.PageSize, "pagination", x => Url.Action("Partial_Data", "Home", new
        {
            page = x,
            key = ViewBag.keyValue,
            Groupid = ViewBag.Groupid,
-           StatusID = ViewBag.Evencode 
+           StatusID = ViewBag.StatusID
 
-            }))
+       }))
         </div>
     </div>
 }

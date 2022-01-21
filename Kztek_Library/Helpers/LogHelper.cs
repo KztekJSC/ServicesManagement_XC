@@ -157,7 +157,7 @@ namespace Kztek_Library.Helpers
             t.IPAddress = "";
             t.ObjectName = objId;
             t.SubSystemCode = classname;
-            t.UserName = "";
+            t.UserName = "API";
 
             var str = new StringBuilder();
 
