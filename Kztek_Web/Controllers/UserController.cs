@@ -63,7 +63,7 @@ namespace Kztek_Web.Controllers
             //Kiểm tra có dữ liệu chưa
             if (list.Any())
             {
-                foreach (var item in list.ToList())
+                foreach (var item in list.OrderBy(n => n.Name).ToList())
                 {
                     //Nếu có thì duyệt tiếp để lưu vào list
                     lst.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });

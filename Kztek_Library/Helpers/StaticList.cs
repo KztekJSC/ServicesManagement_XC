@@ -129,10 +129,10 @@ namespace Kztek_Library.Helpers
         {
             var list = new List<SelectListModel> {
 
-                new SelectListModel { ItemValue = "", ItemText = "Không hiển thị thông báo"},
-                                        new SelectListModel { ItemValue = "1", ItemText = "Thông báo cho tài khoản giao dịch viên"},
-                                        new SelectListModel { ItemValue = "2", ItemText = "Thông báo cho tài khoản điều phối"},
-                                          new SelectListModel { ItemValue = "3", ItemText = "Thông báo cho tài khoản tổ bốc xếp"}
+                new SelectListModel { ItemValue = "", ItemText = "- Lựa chọn -"},
+                                        new SelectListModel { ItemValue = "1", ItemText = "Tài khoản giao dịch viên"},
+                                        new SelectListModel { ItemValue = "2", ItemText = "Tài khoản điều phối"},
+                                          new SelectListModel { ItemValue = "3", ItemText = "Tài khoản tổ bốc xếp"}
 
                                     };
             return list;
