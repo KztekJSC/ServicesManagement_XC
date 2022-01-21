@@ -57,6 +57,7 @@ var HomeController = {
         var obj = {
             key: $("input[name=key]").val(),
             GroupId: $("#GroupId").val(),
+            StatusID: $("#StatusID").val(),
             page: page
         };
 

@@ -64,7 +64,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
             var pageList = query.ToPagedList(pageNumber, pageSize);
 
-            var model = GridModelHelper<tblLog>.GetPage(pageList.OrderByDescending(n => n.Date).ToList(), pageNumber, pageSize, pageList.TotalItemCount, pageList.PageCount);
+            var model = GridModelHelper<tblLog>.GetPage(pageList.OrderByDescending (n => n.Date).ToList(), pageNumber, pageSize, pageList.TotalItemCount, pageList.PageCount);
 
             return await Task.FromResult(model);
         }
