@@ -132,13 +132,17 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Vị trí đỗ</label>
                 <div class="col-sm-3 col-xs-12">
-                    @await Component.InvokeAsync("ChosenSelect", ViewBag.GetParkingPositon)
+                    <input type="text" name="ParkingPosition" value="@Model.ParkingPosition" class="form-control" placeholder=" " @string.Format("{0} ", (currentUser != null && (currentUser.isAdmin || currentUser.TypeNotifi == "1")) ? "" : "disabled") />
+
+                </div>
+                <div class="col-sm-3 col-xs-12">
+                    @*@await Component.InvokeAsync("ChosenSelect", ViewBag.GetParkingPositon)*@
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label no-padding-right">Ghi chú</label>
                 <div class="col-sm-3 col-xs-12">
-                    <textarea name="description" class="form-control" @string.Format("{0} ", (currentUser != null && (currentUser.isAdmin || currentUser.TypeNotifi == "2")) ? "" : "disabled")>@Model.description</textarea>
+                    <textarea name="description" class="form-control" @string.Format("{0} ", (currentUser != null && (currentUser.isAdmin || currentUser.TypeNotifi == "2" || currentUser.TypeNotifi == "1" )) ? "" : "disabled")>@Model.description</textarea>
                 </div>
             </div>
 

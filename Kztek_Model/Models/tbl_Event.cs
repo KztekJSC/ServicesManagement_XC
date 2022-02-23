@@ -290,7 +290,8 @@ namespace Kztek_Model.Models
         public string Id { get; set; }
         public string ServiceName { get; set; }
         public int VehicleRegist { get; set; } // eventtype = 2
-        public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
+        public int VehicleDone { get; set; } // eventtype =  6
+        public int VehicleDoning { get; set; } // eventtype = 4 , 5
         public int VehicleNotDo { get; set; } // eventtype = 3
         public string Note { get; set; }
 
@@ -300,8 +301,9 @@ namespace Kztek_Model.Models
 
         public string ServiceName { get; set; }
         public int VehicleRegist { get; set; } // eventtype = 2
-        public int VehicleDone { get; set; } // eventtype = 4 , 5, 6
         public int VehicleNotDo { get; set; } // eventtype = 3
+        public int VehicleDoning { get; set; } // eventtype = 4 , 5
+        public int VehicleDone { get; set; } // eventtype =  6
         public string Note { get; set; }
 
     }

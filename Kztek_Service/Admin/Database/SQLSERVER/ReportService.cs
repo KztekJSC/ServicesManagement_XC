@@ -155,8 +155,12 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                     // số xe đăng kí
                     obj.VehicleRegist = await GetCountVehicleRegister(item["Id"].ToString(),isCheckByTime , fromdate, todate);
 
-                    // số xe đã hoàn thành / đang làm
+                    // số xe đã hoàn thành 
                     obj.VehicleDone = await GetCountVehicleDone(item["Id"].ToString() , isCheckByTime, fromdate, todate);
+
+                    // số xe đã đang làm
+                    obj.VehicleDoning = await GetCountVehicleDoning(item["Id"].ToString(), isCheckByTime, fromdate, todate);
+
 
                     // số xe chưa làm
                     obj.VehicleNotDo = await GetCountVehicleNotDo(item["Id"].ToString(), isCheckByTime, fromdate, todate);
@@ -183,6 +187,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
 
                 obj1.VehicleDone += item1.VehicleDone;
 
+                obj1.VehicleDoning += item1.VehicleDoning;
             }
             lst.Add(obj1);        
             return lst;
@@ -261,7 +266,74 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             int Count = 0;
             var str = new StringBuilder();
             str.AppendLine("SELECT COUNT(EventType) AS 'Count' FROM tbl_Event WHERE ");
-            str.AppendLine(string.Format("Service = '{0}' AND EventType IN ( 4,5,6)", id));
+            str.AppendLine(string.Format("Service = '{0}' AND EventType IN ( 6)", id));
+            switch (isCheckByTime)
+            {
+
+                case "0"://tg bắt đầu
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        str.AppendLine(string.Format("AND StartDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        str.AppendLine(string.Format("AND StartDate < '{0}'", tdate));
+                    }
+                    break;
+
+                case "1"://phân tổ
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate >= fdate);
+                        str.AppendLine(string.Format("AND DivisionDate >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        //query = query.Where(n => n.ExpireDate < tdate);
+                        str.AppendLine(string.Format("AND [DivisionDate] < '{0}'", tdate));
+                    }
+                    break;
+                case "2"://kết thúc
+                    if (!string.IsNullOrWhiteSpace(fromdate))
+                    {
+                        var fdate = Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd");
+
+                        str.AppendLine(string.Format("AND [EndDate] >= '{0}'", fdate));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(todate))
+                    {
+                        var tdate = Convert.ToDateTime(todate).AddDays(1).ToString("yyyy/MM/dd");
+
+                        str.AppendLine(string.Format("AND [EndDate] < '{0}'", tdate));
+                    }
+                    break;
+
+
+                default:
+                    break;
+            }
+            var obj = DatabaseHelper.ExcuteCommandToModel<Counts>(str.ToString());
+            Count = obj.Count;
+            return Count;
+        }
+
+        private async Task<int> GetCountVehicleDoning(string id, string isCheckByTime, string fromdate, string todate)
+        {
+            int Count = 0;
+            var str = new StringBuilder();
+            str.AppendLine("SELECT COUNT(EventType) AS 'Count' FROM tbl_Event WHERE ");
+            str.AppendLine(string.Format("Service = '{0}' AND EventType IN (4,5)", id));
             switch (isCheckByTime)
             {
 

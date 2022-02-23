@@ -181,6 +181,37 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return model;
         }
 
+        public async Task<SelectListModel_Multi> SelectColumnAssignment(string controller = "", string action = "", string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
+        {
+            var data = StaticList.ListDisplay_DisplayAssignment();
+            var obj = await _ColumTableService.GetDetailByController(controller, action);
+
+            selecteds = obj != null ? obj.ColumShows : "";
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Multi()
+            {
+                IdSelectList = "columnId",
+                Selecteds = selecteds,
+                Placeholder = placeholder,
+                //isMultiSelect = true,
+                Data = cus.ToList(),
+
+            };
+            return model;
+        }
+
         public async Task<SelectListModel_Multi> SelectColumnCoor(string controller = "", string action = "",string id = "", string placeholder = "", string selecteds = "", bool isMultipule = false)
         {
             var data = StaticList.ListCoordinator_Display();

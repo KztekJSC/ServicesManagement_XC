@@ -14,25 +14,48 @@
 {
     @Html.Hidden("AreaCode", (string)ViewBag.AreaCodeValue)
 
-<div class="row">
-    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-        Từ khóa
-        <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số|Loại hàng..." class="form-control" />
+    <div class="row">
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ khóa
+            <input type="text" name="key" value="@ViewBag.keyValue" placeholder="Biển số|Loại hàng..." class="form-control" />
+        </div>
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Trạng thái sự kiện </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+
+        </div>
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+
+            <span class="lbl">Tổ </span>
+            @await Component.InvokeAsync("ChosenSelect", ViewBag.Groups)
+
+        </div>
     </div>
-    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+    <div class="row">
 
-        <span class="lbl">Trạng thái sự kiện </span>
-        @await Component.InvokeAsync("ChosenSelect", ViewBag.Eventype)
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Từ ngày:
+            <div class="input-group">
+                @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
 
+            </div>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
+            Đến ngày:
+            <div class="input-group">
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+
+            </div>
+        </div>
     </div>
-    <div class="col-md-2 col-lg-2 col-xs-12 col-sm-12 divboxmd">
-
-        <span class="lbl">Tổ </span>
-        @await Component.InvokeAsync("ChosenSelect", ViewBag.Groups)
-
-    </div>
-</div>
-
 
     <div class="row">
         <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
@@ -42,7 +65,7 @@
                 <i class="fa fa-refresh" aria-hidden="true"></i>
                 Reset
             </a>
-         
+
 
         </div>
     </div>
@@ -58,7 +81,7 @@
 
 
 @section scripts{
-   
+
     <script src="~/modules/HomeController.js"></script>
     <script>
         function PartialService(page) {
@@ -67,6 +90,8 @@
                 key: $("input[name=key]").val(),
                 Groupid: $("#GroupId").val(),
                 StatusID: $("#StatusID").val(),
+                fromdate: $("#fromdate").val(),
+                todate: $("#todate").val(),
                 page: page
             };
 
@@ -78,7 +103,7 @@
                     $("#spCount").text($("#totalCount").val());
                 });
         };
-     
+
         $(document).ready(function () {
             PartialService(1);
             $('body').on('click', '#pagService li a', function () {

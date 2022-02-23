@@ -199,7 +199,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     EndDate = DateTime.MaxValue,
                                     ConfirmDate = DateTime.MaxValue,
                                     DivisionDate = DateTime.MaxValue,
-                                    ParkingPosition = "",
+                                    ParkingPosition = "Chưa có vị trí đỗ",
                                     GroupId = ""
                                 };
 

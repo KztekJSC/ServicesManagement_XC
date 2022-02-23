@@ -106,16 +106,20 @@
             <tr>
                 <th class="text-center">Loại DV</th>
                 <th class="text-center">
-                  Số xe đăng kí
+                    Số xe đăng kí
+                </th>
+
+                <th class="text-center">
+                    Số xe chưa làm
                 </th>
                 <th class="text-center">
-                   Số xe hoàn thành/đang làm
+                    Số xe đang làm
                 </th>
                 <th class="text-center">
-                  Số xe chưa làm
+                    Số xe hoàn thành
                 </th>
                 <th class="text-center">
-                   Ghi chú
+                    Ghi chú
                 </th>
 
 
@@ -130,23 +134,27 @@
                 {
                     count++;
 
-                    <tr @*id="sId_@item.Id"*@>
-                        <td class="text-left">
-                            @item.ServiceName
-                        </td>
-                        <td class="center">
-                           @item.VehicleRegist
-                        </td>
-                        <td class="center">
-                            @item.VehicleDone
-                        </td>
-                        <td class="center">
-                            @item.VehicleNotDo
-                        </td>
-                        <td class="center">
-                            @item.Note
-                        </td>
-                    </tr>
+            <tr @*id="sId_@item.Id"*@>
+                <td class="text-left">
+                    @item.ServiceName
+                </td>
+                <td class="center">
+                    @item.VehicleRegist
+                </td>
+                <td class="center">
+                    @item.VehicleNotDo
+                </td>
+                <td class="center">
+                    @item.VehicleDoning
+                </td>
+
+                <td class="center">
+                    @item.VehicleDone
+                </td>
+                <td class="center">
+                    @item.Note
+                </td>
+            </tr>
                 }
             }
         </tbody>

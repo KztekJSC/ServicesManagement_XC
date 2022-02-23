@@ -1,52 +1,105 @@
 ﻿@model List<Kztek_Model.Models.tbl_Event>
 @{
     var lst = (List<Kztek_Model.Models.Service>)ViewBag.lstService;
+    var shows = new List<string>();
+
+    var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn != null ? (Kztek_Model.Models.ColumTable)ViewBag.showColumn : new Kztek_Model.Models.ColumTable();
+
+    shows = objColum.ColumShows != null ? objColum.ColumShows.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() : shows;
+
+
 }
 @Html.Hidden("totalCount", Model.Count)
-@if (Model != null && Model.Count > 0)
-{
-    var count = 0;
-    foreach (var item in Model)
-    {
-        count++;
+<div style="height:700px;overflow:auto">
+    <table class="table  table-bordered table-hover" id="">
+        <thead>
+            <tr>
+                <th class="text-center" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">STT</th>
 
-        <tr>
-            <td class="text-center">
-                @count
-            </td>
+                <th class="text-center" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">Số trang</th>
 
-            <td class="center">
-                @item.PlateVN
-            </td>
-            <td class="center">
-                @item.PlateCN
-            </td>
-            <td class="text-left">
-                @item.ServiceCode
-            </td>
-            <td class="center">
-                @{
-                    var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
-                    if (obj != null)
-                    {
-                        <span>@obj.Name</span>
-                    }
+                <th class="text-center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                    Xe VN
+                </th>
+                <th class="text-center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                    Xe CN
+                </th>
+                <th class="text-center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">Loại xe</th>
+
+                <th class="text-center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">Khối lượng</th>
+
+                <th class="text-center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">Dịch vụ</th>
+
+                <th class="text-center" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">Giá dịch vụ</th>
+
+                <th class="text-center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">Vị trí đỗ  </th>
+
+                <th class="text-center" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Ngày tạo </th>
+
+                <th class="text-center">Phân tổ</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+                var count = 0;
+                foreach (var item in Model)
+                {
+                    count++;
+
+                    <tr>
+                        <td class="text-center" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
+                            @count
+                        </td>
+                        <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
+                            @item.ServiceCode
+                        </td>
+                        <td class="center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                            @item.PlateVN
+                        </td>
+                        <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                            @item.PlateCN
+                        </td>
+
+                        <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
+                            @item.VehicleType
+                        </td>
+                        <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
+                            @item.Weight
+                        </td>
+
+
+                        <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                            @{
+                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                                if (obj != null)
+                                {
+                                    <span>@obj.Name</span>
+                                }
+                            }
+
+                        </td>
+                        <td class="text-left" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
+                            @item.Price.ToString("###,##.##")
+                        </td>
+                        <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
+                            @item.ParkingPosition
+
+                        </td>
+                        <td class="text-left" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
+                            @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
+                        </td>
+                        <td class="center">
+                            <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
+                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            </a>
+
+                        </td>
+                    </tr>
                 }
+            }
 
-            </td>
-            <td class="center">
-                @item.ParkingPosition
-
-            </td>
-            <td class="text-left">
-                @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
-            </td>
-            <td class="center">
-                <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
-                    <i class="ace-icon fa fa-pencil bigger-130"></i>
-                </a>
-
-            </td>
-        </tr>
-    }
-}
+        </tbody>
+    </table>
+</div>

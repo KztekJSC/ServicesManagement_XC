@@ -181,9 +181,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //column header
             var Data_ColumnHeader = new List<SelectListModel_Print_Column_Header>();
             Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Loại DV" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe đăng kí" });
-            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe hoàn thành/đang làm" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe đăng kí" });        
             Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe chưa làm" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe đang làm" });
+            Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Số xe hoàn thành" });
             Data_ColumnHeader.Add(new SelectListModel_Print_Column_Header { ItemText = "Ghi chú" });
          
             //
@@ -198,6 +199,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 var objService = new ServiceCustom_Excel();
                 objService.ServiceName = item.ServiceName;
                 objService.VehicleRegist = item.VehicleRegist;
+                objService.VehicleDoning = item.VehicleDoning;
                 objService.VehicleNotDo = item.VehicleNotDo;
                 objService.VehicleDone = item.VehicleDone;
                 objService.Note = item.Note;

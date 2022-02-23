@@ -1,6 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Điều phối tổ thực hiện dịch vụ";
+
+
 }
 
 <div id="boxModal">
@@ -37,6 +39,7 @@
     </div>
 
 </div>
+<div class="hr hr-18 dotted hr-24"></div>
 
 <div class="row">
     <div class="col-md-3 col-lg-3 col-xs-12 col-sm-12 divboxmd">
@@ -52,34 +55,21 @@
 
     </div>
 </div>
+
+
+<div class="hr hr-18 dotted hr-24"></div>
+<div class="row" style="margin-left: 4px" id="BoxshowColumn">
+
+    @await Component.InvokeAsync("MultiselectColumn", ViewBag.listSlectColumn)
+
+</div>
+
+<div class="hr hr-18 dotted hr-24"></div>
 <div class="row">
 
-    <div class="col-xs-6">
+    <div class="col-xs-6" id="tblVehicle">
         <h3 class="header smaller lighter blue">Danh sách chưa phân tổ (<span id="countPt">0</span>)</h3>
-        <div style="height:700px;overflow:auto">
-            <table class="table  table-bordered table-hover" id="tblVehicle">
-                <thead>
-                    <tr>
-                        <th class="text-center">STT</th>
 
-                        <th class="text-center">
-                            Xe VN
-                        </th>
-                        <th class="text-center">
-                            Xe CN
-                        </th>
-                        <th class="text-center">Mã dịch vụ</th>
-                        <th class="text-center">Dịch vụ</th>
-                        <th class="text-center">Vị trí đỗ  </th>
-                        <th class="text-center">Ngày tạo </th>
-                        <th class="text-center">Phân tổ</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                </tbody>
-            </table>
-        </div>
 
     </div>
 
@@ -115,6 +105,18 @@
             ServiceController.PartialVehicle();
 
             ServiceController.PartialGroup();
+
+
+            $('#columnId').change(function () {
+                var str = "";
+                var cmd = $(this);
+                cmd.parent().find('ul.multiselect-container li.active').each(function () {
+                    var _cmd = $(this);
+                    str += _cmd.find('input[type=checkbox]').val() + ",";
+                });
+                ServiceController.AddValueSelectAsigment(str, "Service", "Assignment");
+
+            });
         });
     </script>
 }

@@ -20,16 +20,22 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("FROM(");
             sb.AppendLine("  select * from [tbl_Event]");
             sb.AppendLine("WHERE 1 =1 AND EventType IN (2 , 3 ,4 ,5 ) AND  IsDeleted = 0");
+
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
+            }
+
             var keyReplace = !String.IsNullOrEmpty(key) ? key.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' or  ProductType LIKE '%{0}%' )", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE N'%{0}%' OR  ProductType LIKE N'%{0}%' OR Weight LIKE N'%{0}%'  OR VehicleType LIKE N'%{0}%' OR ProductGroup LIKE N'%{0}%') ", key));
             }
-
+          
 
             //group
             if (!string.IsNullOrWhiteSpace(groupid) && groupid != "00")
@@ -86,15 +92,19 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             sb.AppendLine("SELECT COUNT(*) TotalCount");
             sb.AppendLine("FROM [tbl_Event] WHERE 1 = 1  AND EventType IN (2 , 3 ,4 ,5 ) AND  IsDeleted = 0");
 
+            if (!string.IsNullOrEmpty(fromdate) && !string.IsNullOrEmpty(todate))
+            {
+                sb.AppendLine(string.Format("AND CreatedDate >= '{0}'  AND CreatedDate <= '{1}'", Convert.ToDateTime(fromdate).ToString("yyyy/MM/dd HH:mm:ss"), Convert.ToDateTime(todate).ToString("yyyy/MM/dd HH:mm:ss")));
+            }
+
             if (!string.IsNullOrEmpty(keyReplace))
             {
-                sb.AppendLine(string.Format("and (  REPLACE(REPLACE([PlateVN], '-', ''), '.', '') LIKE '%{0}%' OR REPLACE(REPLACE([PlateCN], '-', ''), '.', '') LIKE '%{0}%'", keyReplace));
+                sb.AppendLine(string.Format("AND (  REPLACE (REPLACE(REPLACE([PlateVN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%' OR REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", keyReplace));
             }
             if (!string.IsNullOrEmpty(key))
             {
-                sb.AppendLine(string.Format("OR  ServiceCode LIKE '%{0}%' OR  ProductType LIKE '%{0}%' )", key));
+                sb.AppendLine(string.Format("OR  ServiceCode LIKE N'%{0}%' OR  ProductType LIKE N'%{0}%' OR Weight LIKE N'%{0}%'  OR VehicleType LIKE N'%{0}%' OR ProductGroup LIKE N'%{0}%') ", key));
             }
-
             //group
             if (!string.IsNullOrWhiteSpace(groupid) && groupid != "00")
             {

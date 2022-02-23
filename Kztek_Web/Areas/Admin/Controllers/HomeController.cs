@@ -41,7 +41,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         }
 
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string Groupid = "", string key = "", int page = 1, string AreaCode = "", string StatusID = "")
+        public async Task<IActionResult> Index(string Groupid = "", string key = "", int page = 1, string AreaCode = "", string StatusID = "", string fromdate = "", string todate = "")
         {
             ////kiểm tra session xem có lưu ngôn ngữ không nếu có thì lấy không mặc định là "vi"
             //string sessionValue = HttpContext.Session.GetString(SessionConfig.Kz_Language);
@@ -49,12 +49,25 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //    sessionValue = HttpContext.Request.Cookies[CookieConfig.Kz_LanguageCookie];
             //sessionValue = String.IsNullOrEmpty(sessionValue) ? "vi" : sessionValue;
             //LanguageHelper.GetLang(sessionValue);
+            if (string.IsNullOrEmpty(fromdate))
+            {
+                fromdate = DateTime.Now.ToString("dd/MM/yyyy 00:00:00");
+            }
+
+            if (string.IsNullOrEmpty(todate))
+            {
+                todate = DateTime.Now.ToString("dd/MM/yyyy 23:59:59");
+            }
 
             ViewBag.Groups = await _GroupService.GetaSelectModelChoseGroup(selecteds: Groupid);
 
             ViewBag.keyValue = key; 
 
             ViewBag.AreaCodeValue = AreaCode;
+
+            ViewBag.fromdateValue = fromdate;
+
+            ViewBag.todateValue = todate;
 
             ViewBag.Eventype = await _tbl_EventService.GetEventypeCoordination(selecteds: StatusID);
 
@@ -83,6 +96,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.Groups = await _GroupService.GetAll();
             ViewBag.StatusID = StatusID;
             ViewBag.lstService = await _ServiceService.GetAll();
+            ViewBag.fromdateValue = fromdate;
+            ViewBag.todateValue = todate;
             return PartialView(gridModel);
             #endregion
         }

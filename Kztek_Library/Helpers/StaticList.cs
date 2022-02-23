@@ -71,6 +71,25 @@ namespace Kztek_Library.Helpers
             return list;
         }
 
+        public static List<SelectListModel> ListDisplay_DisplayAssignment()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "1", ItemText = "STT"},
+
+                                        new SelectListModel { ItemValue = "2", ItemText = "Số trang"},
+                                    
+                                        new SelectListModel { ItemValue = "3", ItemText = "Xe VN"},
+                                        new SelectListModel { ItemValue = "4", ItemText = "Xe CN"},
+                                        new SelectListModel { ItemValue = "5", ItemText = "Loại xe"},
+                                        new SelectListModel { ItemValue = "6", ItemText = "Khối lượng"},
+                                        new SelectListModel { ItemValue = "7", ItemText = "Dịch vụ"},                                 
+                                        new SelectListModel { ItemValue = "8", ItemText = "Giá dịch vụ"},
+
+                                       new SelectListModel { ItemValue = "9", ItemText = "Vị trí đỗ"},
+                                       new SelectListModel { ItemValue = "10", ItemText = "Ngày tạo"}
+                                    };
+            return list;
+        }
         public static List<SelectListModel> ListCoordinator_Display()
         {
             var list = new List<SelectListModel> {

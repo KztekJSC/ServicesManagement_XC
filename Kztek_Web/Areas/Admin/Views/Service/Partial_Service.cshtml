@@ -10,7 +10,7 @@
 
     var shows = new List<string>();
 
-    var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn;
+    var objColum = (Kztek_Model.Models.ColumTable)ViewBag.showColumn != null ? (Kztek_Model.Models.ColumTable)ViewBag.showColumn : new Kztek_Model.Models.ColumTable();
 
     shows = objColum.ColumShows != null ? objColum.ColumShows.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList() : shows;
 

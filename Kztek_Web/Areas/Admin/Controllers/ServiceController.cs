@@ -162,7 +162,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             //ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Index");
             var obj = await _ColumTableService.GetDetailByController("Service", "Index");
 
-            ViewBag.StrShows = obj.ColumShows;
+            //ViewBag.StrShows = obj.ColumShows;
 
             ViewBag.fromdateValue = fromdate;
 
@@ -285,9 +285,10 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 if (user.TypeNotifi == "1")
                 {
                     oldObj.ParkingPosition = model.ParkingPosition;
+                    oldObj.Description = model.description;
 
                 }
-                else if(user.TypeNotifi == "2")
+                else if(user.TypeNotifi == "2" )
                 {
                     oldObj.Description = model.description;
                 }
@@ -392,7 +393,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.LstParkingPosit = await _ServiceService.SelectChoseParkingPosittion(selecteds: ParkingPosittion);
 
             ViewBag.Fromdate = fromdate;
-       
+
+            ViewBag.listSlectColumn = await _ServiceService.SelectColumnAssignment("Service", "Assignment");
+
+        //    ViewBag.showColumn1 = await _ColumTableService.GetDetailByController("Service", "Assignment");
+
             return View();
         }
 
@@ -403,6 +408,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.LstService = await _ServiceService.SelectChoseService(selecteds: ServiceId);
        
             ViewBag.lstService = await _ServiceService.GetAll();
+
+            ViewBag.showColumn = await _ColumTableService.GetDetailByController("Service", "Assignment");
 
             return PartialView(list);
         }
@@ -560,6 +567,40 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> AddChooseSelectAssignment(string str, string controller, string action)
+        {
+            var obj = StaticList.ListDisplay_DisplayAssignment();
+            var result = new MessageReport(false, "Có lỗi xảy ra");
+            var str1 = "";
+            foreach (var item in obj)
+            {
+                str1 += (item.ItemValue + "-" + item.ItemText) + ",";
+            }
+            var objColum = await _ColumTableService.GetDetailByController(controller, action);
+            if (objColum == null)
+            {
+                var model = new ColumTable();
+                model.Controller = controller;
+                model.Action = action;
+                model.ColumShows = str;
+                model.Columns = str1;
+                model.Id = Guid.NewGuid().ToString();
+                result = await _ColumTableService.Create(model);
+            }
+            else
+            {
+                objColum.ColumShows = str;
+                result = await _ColumTableService.Update(objColum);
+            }
+            //var obj1 = await _ColumTableService.GetDetailByController(controller, action);
+            //var shows = "";
+            //if (result.isSuccess)
+            //{
+            //    shows = obj1.ColumShows;
+            //}
+            //result.Message = shows;
+            return Json(result);
+        }
 
         #endregion
 
