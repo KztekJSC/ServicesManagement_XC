@@ -288,6 +288,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var oldObj = await _tbl_EventService.GetByCustomById(model.Id, this.HttpContext);
             var obj = await _tbl_EventService.GetById(model.Id);
 
+            var objService = await _ServiceService.GetById(model.Service);
+            var objGroup = await _GroupService.GetById(model.GroupId);
+
             if (obj != null)
             {
                 obj.EventType = 6; //Hoàn thành
@@ -300,6 +303,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 obj.PackageNumber = model.PackageNumber;
                 obj.Description = model.Description;
                 result = await _tbl_EventService.Update(obj);
+
 
                 if (result.isSuccess)
                 {
@@ -330,6 +334,35 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     NewModel.description = model.Description;
                     var jsStrNew = Newtonsoft.Json.JsonConvert.SerializeObject(NewModel);
                     await LogHelper.WriteLogupdateService(obj.Id.ToString(), "Xác nhận hoàn thành DV", "tbl_Event", JsonConvert.SerializeObject(obj), HttpContext, jsStrOld, jsStrNew);
+
+                    var objBBEventApi = new tbl_Event_BB();
+                    
+                    objBBEventApi.service = objService != null ?  objService.Name : "";
+                    objBBEventApi.soluong = 1;
+                    objBBEventApi.bb_Table = obj.BB_Table;
+                    objBBEventApi.bb_Id = obj.BB_Id;
+                    //objBBEventApi.ten = objGroup != null ?  objGroup.Name : "";
+
+                    //objBBEventApi.thanhtien = obj.Price.ToString();
+                    //objBBEventApi.phanTramPhuChi = "0";
+                    //objBBEventApi.dongia = "0";
+                    //objBBEventApi.donvi = "Xe";
+                    //objBBEventApi.phuThuKhachHang = obj.SubPrice;
+                    //objBBEventApi.soLuongXeVNSDDV = "0";
+                    var tbl_BB_Data = new tbl_BB_Data();
+                    tbl_BB_Data.ten = objGroup != null ? objGroup.Name : "";
+                    tbl_BB_Data.donvi = "Xe";
+                    tbl_BB_Data.soluong = "1.0";
+                    tbl_BB_Data.dongia = 0;
+                    tbl_BB_Data.thanhtien = Convert.ToInt32( obj.Price);
+                    tbl_BB_Data.phuThuKhachHang = Convert.ToInt32( obj.SubPrice);
+                    tbl_BB_Data.phanTramPhuChi = "0.0";
+                    tbl_BB_Data.soLuongXeVNSDDV = 0;
+
+                    objBBEventApi.dulieus.Add(tbl_BB_Data);
+                    var token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0YjM0MTJlNi1qZGt1LTRkODktYmJmOS03ZWExZmFjNGI4OGMiLCJzdWIiOi" + "JhZG1pbl9wbHkiLCJhdXRoIjoiUk9MRV9BTEVSVF9NQU5BR0VSLFJPTEVfRVhQQU5EX09QRVJBVElPTixST0xFX01BTk" + "FHRVIsUk9MRV9PUEVSQVRPUixST0xFX1NUQVRJU1RJQyxST0xFX1RJQ0tFVF9NQU5BR0VSIiwiZXhwIjo0NzY5ODE0MD"+
+"Y1fQ.yGlV4Qvh3NVBj4gJJkXWAq8H705MBa60mmgtO4rtfYfds4fSErqT2x5WQr2q7MFe55hGoota7jUmBmr4TECp9w";
+                    await ApiHelper.HttpPost("http://xuancuong.baocaoweb.vn:5500/api/themToDichVu", objBBEventApi, token);
                 }
             }
             else

@@ -7,15 +7,16 @@
         @foreach (var item in Model.OrderByDescending(n => n.EventType))
         {
             <div class="col-xs-6 col-sm-2">
-                <div class="infobox @item.ColorClass" style="width:250px">
+                <div class="infobox @item.ColorClass" >
                     <div class="infobox-icon">
                         <i class="ace-icon fa @item.Icon"></i>
                     </div>
 
                     <div class="infobox-data">
                         <span class="infobox-data-number" style="font-weight:bold;font-size:32px">@item.Number</span>
-                        <div class="infobox-content" style="max-width:250px;font-weight:bold;font-size:18px ; margin-right: 100px" >@item.Title</div>
+                        <div class="infobox-content" style="max-width:150px;font-weight:bold;font-size:18px ">@item.Title</div>
                     </div>
+                   
                 </div>
             </div>
         }

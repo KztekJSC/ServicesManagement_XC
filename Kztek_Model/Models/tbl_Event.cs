@@ -114,6 +114,31 @@ namespace Kztek_Model.Models
 
 
     }
+    public class tbl_BB_Data
+    {
+        public string ten { get; set; } // group
+        public string donvi { get; set; } //đơn vị
+        public string soluong { get; set; } //Số lượng
+        public int dongia { get; set; } //đơn giá
+        public int thanhtien { get; set; } //thanh tiền
+        public int phuThuKhachHang { get; set; } //phụ thu
+        public string phanTramPhuChi { get; set; } //
+        public int soLuongXeVNSDDV { get; set; } //số lượng
+
+    }
+    public class  tbl_Event_BB
+    {
+        public int soluong { get; set; } //Số lượng
+        public string service { get; set; } //dịch vụ
+        public string bb_Table { get; set; } //Bảng bb
+        public string bb_Id { get; set; } //Id table bb
+        public List<tbl_BB_Data> dulieus { get; set; } = new List<tbl_BB_Data>();
+        
+      
+
+
+    }
+   
     public class tbl_Event_Cus
     {
         public string Id { get; set; }
