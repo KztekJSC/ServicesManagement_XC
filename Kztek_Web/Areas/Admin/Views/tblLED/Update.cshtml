@@ -7,8 +7,9 @@
     Controller = "tblLED",
     Action = "Update",
     Page = 1,
-    Data_Select_2 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.LedFunction
-  
+    Data_Select_2 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.LedFunction,
+    Data_Select_3 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.RowSelect,
+    Data_Select_4 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.ColumSelect
 
 })
 @section scripts{
@@ -20,6 +21,16 @@
                 var vlue = $(this).val();
                 $('#function_LED').val(vlue);
                 
+            });
+            $("#row").change(function () {
+                var vlue = $(this).val();
+                $('#row_led').val(vlue);
+
+            });
+            $("#column").change(function () {
+                var vlue = $(this).val();
+                $('#column_led').val(vlue);
+
             });
         });
     </script>

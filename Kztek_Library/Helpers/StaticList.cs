@@ -77,12 +77,12 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "1", ItemText = "STT"},
 
                                         new SelectListModel { ItemValue = "2", ItemText = "Số trang"},
-                                    
+
                                         new SelectListModel { ItemValue = "3", ItemText = "Xe VN"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Xe CN"},
                                         new SelectListModel { ItemValue = "5", ItemText = "Loại xe"},
                                         new SelectListModel { ItemValue = "6", ItemText = "Khối lượng"},
-                                        new SelectListModel { ItemValue = "7", ItemText = "Dịch vụ"},                                 
+                                        new SelectListModel { ItemValue = "7", ItemText = "Dịch vụ"},
                                         new SelectListModel { ItemValue = "8", ItemText = "Giá dịch vụ"},
 
                                        new SelectListModel { ItemValue = "9", ItemText = "Vị trí đỗ"},
@@ -93,13 +93,13 @@ namespace Kztek_Library.Helpers
         public static List<SelectListModel> ListCoordinator_Display()
         {
             var list = new List<SelectListModel> {
-                                   
+
 
                                         new SelectListModel { ItemValue = "1", ItemText = "Số trang"},
                                         new SelectListModel { ItemValue = "2", ItemText = "Trạng thái"},
                                         new SelectListModel { ItemValue = "3", ItemText = "Xe VN"},
                                         new SelectListModel { ItemValue = "4", ItemText = "Xe CN"},
-                                          new SelectListModel { ItemValue = "5", ItemText = "Loại hàng"},                                       
+                                          new SelectListModel { ItemValue = "5", ItemText = "Loại hàng"},
                                         new SelectListModel { ItemValue = "6", ItemText = "Loại xe"},
                                         new SelectListModel { ItemValue = "7", ItemText = "Nhóm hàng"},
                                         new SelectListModel { ItemValue = "8", ItemText = "Dịch vụ"},
@@ -209,6 +209,28 @@ namespace Kztek_Library.Helpers
             return await Task.FromResult(list);
         }
 
+        public static async Task<List<SelectListModel>> GetListLed_Column()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "32", ItemText = "32"},
+                                         new SelectListModel { ItemValue = "48", ItemText = "48"},
+                                         new SelectListModel { ItemValue = "64", ItemText = "64"},
+                                         new SelectListModel { ItemValue = "96", ItemText ="96"},
+                                          new SelectListModel { ItemValue = "128", ItemText ="128"}
+                                    };
+            return await Task.FromResult(list);
+        }
+
+        public static async Task<List<SelectListModel>> GetListLed_Row()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "16", ItemText = "16"},
+                                         new SelectListModel { ItemValue = "32", ItemText = "32"},
+                                         new SelectListModel { ItemValue = "48", ItemText ="48"},
+                                         
+                                    };
+            return await Task.FromResult(list);
+        }
         public static async Task<List<SelectListModel>> GetCardType()
         {
             var list = new List<SelectListModel> {
@@ -238,7 +260,7 @@ namespace Kztek_Library.Helpers
             var list = new List<SelectListModel> {
                                          new SelectListModel { ItemValue = "Chưa có vị trí đỗ", ItemText = "Chưa có vị trí đỗ"},
                                          new SelectListModel { ItemValue = "Đã có vị trí đỗ", ItemText = "Đã có vị trí đỗ"},
-                                       
+
                                     };
             return list;
         }

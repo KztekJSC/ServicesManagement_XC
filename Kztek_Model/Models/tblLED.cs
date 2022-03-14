@@ -27,6 +27,10 @@ namespace Kztek_Model.Models
         public int port { get; set; }
 
         public string description { get; set; }
+
+        public int row { get; set; }
+
+        public int column_Led { get; set; }
     }
     public class tblLED_Submit
     {
@@ -50,6 +54,10 @@ namespace Kztek_Model.Models
         public int port { get; set; }
 
         public string description { get; set; }
+
+        public int row { get; set; }
+
+        public int column_Led { get; set; }
 
 
 

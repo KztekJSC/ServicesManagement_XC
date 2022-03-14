@@ -71,6 +71,8 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 FunctionLed = obj.led_Function.ToString(),
                 description = obj.description,
                 port = obj.port,
+                row = obj.row,
+                column_Led = obj.column_Led,
                 controller_Type = obj.controller_Type,
 
             };
