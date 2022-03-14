@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:60034",
+      "applicationUrl": "http://localhost:6015",
       "sslPort": 0
     }
   },
@@ -17,8 +17,11 @@
       "workingDirectory": "D:\\KZTEK\\SOURCE CODE\\Publisher\\VehicleCouting",
       "launchBrowser": true,
       "environmentVariables": {
+        "Key": "Value",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "sqlDebugging": true,
+      "nativeDebugging": true
     },
     "Kztek_Web": {
       "commandName": "IISExpress",

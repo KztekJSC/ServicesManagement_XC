@@ -95,7 +95,8 @@ namespace Kztek_Library.Helpers
         public static async Task<HttpResponseMessage> HttpPost<T>(string uri, T obj, string token = "")
         {
             var url = AppSettingHelper.GetStringFromAppSetting("ConnectionStrings:Host_Api").Result + uri;
-
+            // var s = HttpResponseMessage();
+            var ress = new HttpResponseMessage();
             try
             {
                 if (!string.IsNullOrWhiteSpace(token))
@@ -105,6 +106,8 @@ namespace Kztek_Library.Helpers
 
                 var data = new StringContent(content, Encoding.UTF8, "application/json");
 
+               
+               
                 return await client.PostAsync(url, data);
             }
             catch (System.Exception ex)
@@ -116,6 +119,7 @@ namespace Kztek_Library.Helpers
 
                 return await Task.FromResult(re);
             }
+       
         }
 
         public static async Task<HttpResponseMessage> HttpPut<T>(string uri, T obj, string token = "")

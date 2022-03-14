@@ -288,8 +288,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var oldObj = await _tbl_EventService.GetByCustomById(model.Id, this.HttpContext);
             var obj = await _tbl_EventService.GetById(model.Id);
 
-            var objService = await _ServiceService.GetById(model.Service);
-            var objGroup = await _GroupService.GetById(model.GroupId);
+            var objService = await _ServiceService.GetById(obj.Service);
+            var objGroup = await _GroupService.GetById(obj.GroupId);
 
             if (obj != null)
             {
@@ -341,6 +341,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     objBBEventApi.soluong = 1;
                     objBBEventApi.bb_Table = obj.BB_Table;
                     objBBEventApi.bb_Id = obj.BB_Id;
+                    objBBEventApi.mavuviec = objGroup != null ? objGroup.Code : "";
                     //objBBEventApi.ten = objGroup != null ?  objGroup.Name : "";
 
                     //objBBEventApi.thanhtien = obj.Price.ToString();
@@ -358,11 +359,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     tbl_BB_Data.phuThuKhachHang = Convert.ToInt32( obj.SubPrice);
                     tbl_BB_Data.phanTramPhuChi = "0.0";
                     tbl_BB_Data.soLuongXeVNSDDV = 0;
-
+                   
                     objBBEventApi.dulieus.Add(tbl_BB_Data);
                     var token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0YjM0MTJlNi1qZGt1LTRkODktYmJmOS03ZWExZmFjNGI4OGMiLCJzdWIiOi" + "JhZG1pbl9wbHkiLCJhdXRoIjoiUk9MRV9BTEVSVF9NQU5BR0VSLFJPTEVfRVhQQU5EX09QRVJBVElPTixST0xFX01BTk" + "FHRVIsUk9MRV9PUEVSQVRPUixST0xFX1NUQVRJU1RJQyxST0xFX1RJQ0tFVF9NQU5BR0VSIiwiZXhwIjo0NzY5ODE0MD"+
 "Y1fQ.yGlV4Qvh3NVBj4gJJkXWAq8H705MBa60mmgtO4rtfYfds4fSErqT2x5WQr2q7MFe55hGoota7jUmBmr4TECp9w";
-                    await ApiHelper.HttpPost("http://xuancuong.baocaoweb.vn:5500/api/themToDichVu", objBBEventApi, token);
+                  await ApiHelper.HttpPost("http://xuancuong.baocaoweb.vn:5500/api/themToDichVu", objBBEventApi, token);
+
                 }
             }
             else

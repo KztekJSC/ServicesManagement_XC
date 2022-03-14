@@ -124,6 +124,7 @@ namespace Kztek_Model.Models
         public int phuThuKhachHang { get; set; } //phụ thu
         public string phanTramPhuChi { get; set; } //
         public int soLuongXeVNSDDV { get; set; } //số lượng
+       
 
     }
     public class  tbl_Event_BB
@@ -132,6 +133,7 @@ namespace Kztek_Model.Models
         public string service { get; set; } //dịch vụ
         public string bb_Table { get; set; } //Bảng bb
         public string bb_Id { get; set; } //Id table bb
+        public string mavuviec { get; set; } //ma vũ việc 
         public List<tbl_BB_Data> dulieus { get; set; } = new List<tbl_BB_Data>();
         
       

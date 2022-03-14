@@ -895,20 +895,29 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             if (!string.IsNullOrWhiteSpace(ParkingPosittion) && ParkingPosittion != "00")
             {
                 var t = ParkingPosittion.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                
                 if (t.Any())
                 {
-                    var count = 0;
-
-                    sb.AppendLine("and ([ParkingPosition] IN ( ");
-
-                    foreach (var item in t)
+                    if (t[0] == "Chưa có vị trí đỗ")
                     {
-                        count++;
+                        var count = 0;
 
-                        sb.AppendLine(string.Format("N'{0}'{1}", item, count == t.Length ? "" : ","));
+                        sb.AppendLine("and ([ParkingPosition] IN ( ");
+
+                        foreach (var item in t)
+                        {
+                            count++;
+
+                            sb.AppendLine(string.Format("N'{0}'{1}", item, count == t.Length ? "" : ","));
+                        }
+
+                        sb.AppendLine(" )) ");
                     }
-
-                    sb.AppendLine(" )) ");
+                    else if (t[0] == "Đã có vị trí đỗ")
+                    {
+                        sb.AppendLine("and ([ParkingPosition] NOT IN ( N'Chưa có vị trí đỗ')) ");
+                    }
+                    
 
 
                 }
