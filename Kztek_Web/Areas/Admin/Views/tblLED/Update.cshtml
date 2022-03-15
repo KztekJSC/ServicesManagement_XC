@@ -9,18 +9,19 @@
     Page = 1,
     Data_Select_2 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.LedFunction,
     Data_Select_3 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.RowSelect,
-    Data_Select_4 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.ColumSelect
-
+    Data_Select_4 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.ColumSelect,
+    Data_Select_5 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.FontSizeSelect,
+    Data_Select_6 = (Kztek_Library.Models.SelectListModel_Chosen)ViewBag.ColorSelect
 })
 @section scripts{
     <script src="~/modules/Parking/tblLaneController.js"></script>
     <script>
         $(document).ready(function () {
-          
+
             $("#FunctionLed").change(function () {
                 var vlue = $(this).val();
                 $('#function_LED').val(vlue);
-                
+
             });
             $("#row").change(function () {
                 var vlue = $(this).val();
@@ -30,6 +31,17 @@
             $("#column").change(function () {
                 var vlue = $(this).val();
                 $('#column_led').val(vlue);
+
+            });
+
+            $("#color").change(function () {
+                var vlue = $(this).val();
+                $('#color_led').val(vlue);
+
+            });
+            $("#fontsize").change(function () {
+                var vlue = $(this).val();
+                $('#fontsize_led').val(vlue);
 
             });
         });

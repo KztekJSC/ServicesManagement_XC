@@ -31,6 +31,10 @@ namespace Kztek_Model.Models
         public int row { get; set; }
 
         public int column_Led { get; set; }
+
+        public int fontSize { get; set; }
+
+        public int color { get; set; }
     }
     public class tblLED_Submit
     {
@@ -59,7 +63,9 @@ namespace Kztek_Model.Models
 
         public int column_Led { get; set; }
 
+        public int fontSize { get; set; }
 
+        public int color { get; set; }
 
     }
 }

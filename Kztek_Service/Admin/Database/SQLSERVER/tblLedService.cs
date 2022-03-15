@@ -72,6 +72,8 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 description = obj.description,
                 port = obj.port,
                 row = obj.row,
+                color = obj.color,
+                fontSize = obj.fontSize,
                 column_Led = obj.column_Led,
                 controller_Type = obj.controller_Type,
 

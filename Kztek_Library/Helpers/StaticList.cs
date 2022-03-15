@@ -209,6 +209,36 @@ namespace Kztek_Library.Helpers
             return await Task.FromResult(list);
         }
 
+        public static async Task<List<SelectListModel>>  GetListLed_Color()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "1", ItemText = "Đỏ"},
+                                         new SelectListModel { ItemValue = "2", ItemText = "Xanh"},
+                                         new SelectListModel { ItemValue = "3", ItemText = "Vàng"},
+                                         new SelectListModel { ItemValue = "4", ItemText ="Xanh dương"},
+                                          new SelectListModel { ItemValue = "5", ItemText ="Tím"},
+                                             new SelectListModel { ItemValue = "6", ItemText ="Lục lam"},
+                                          new SelectListModel { ItemValue = "7", ItemText ="Trắng"}
+                                    };
+            return await Task.FromResult(list);
+        }
+        public static async Task<List<SelectListModel>> GetListLed_FontSize()
+        {
+            var list = new List<SelectListModel> {
+                                        new SelectListModel { ItemValue = "7", ItemText = "7"},
+                                         new SelectListModel { ItemValue = "8", ItemText = "8"},
+                                         new SelectListModel { ItemValue = "10", ItemText = "10"},
+                                         new SelectListModel { ItemValue = "12", ItemText ="12"},
+                                          new SelectListModel { ItemValue = "13", ItemText ="13"},
+                                             new SelectListModel { ItemValue = "14", ItemText ="14"},
+                                          new SelectListModel { ItemValue = "16", ItemText ="16"},
+                                          new SelectListModel { ItemValue = "23", ItemText ="23"},
+                                             new SelectListModel { ItemValue = "24", ItemText ="24"},
+                                          new SelectListModel { ItemValue = "25", ItemText ="25"},
+                                            new SelectListModel { ItemValue = "26", ItemText ="26"}
+                                    };
+            return await Task.FromResult(list);
+        }
         public static async Task<List<SelectListModel>> GetListLed_Column()
         {
             var list = new List<SelectListModel> {
@@ -220,14 +250,13 @@ namespace Kztek_Library.Helpers
                                     };
             return await Task.FromResult(list);
         }
-
-        public static async Task<List<SelectListModel>> GetListLed_Row()
+        public static async Task<List<SelectListModel>>  GetListLed_Row()
         {
             var list = new List<SelectListModel> {
                                         new SelectListModel { ItemValue = "16", ItemText = "16"},
                                          new SelectListModel { ItemValue = "32", ItemText = "32"},
                                          new SelectListModel { ItemValue = "48", ItemText ="48"},
-                                         
+
                                     };
             return await Task.FromResult(list);
         }

@@ -20,6 +20,10 @@ namespace Kztek_Library.Models
         public SelectListModel_Chosen Data_Select_3 { get; set; } //List tham số 3 => kiểu chosen
         public SelectListModel_Chosen Data_Select_4 { get; set; } //List tham số 3 => kiểu chosen
 
+        public SelectListModel_Chosen Data_Select_5 { get; set; } //List tham số 3 => kiểu chosen
+
+        public SelectListModel_Chosen Data_Select_6 { get; set; } //List tham số 3 => kiểu chosen
+
         public SelectListModel_Multi Data_SelectMulti_1 { get; set; } //List tham số 1 => kiểu multi
 
         public List<SelectListModel> Dt_1 { get; set; } //List dữ liệu sử dụng

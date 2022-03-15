@@ -36,6 +36,75 @@ namespace Kztek_Web.Areas.Admin.Controllers
         #endregion
 
         #region Thêm mới
+
+        private async Task<SelectListModel_Chosen> GetListColor(string selecteds, string id = "color")
+        {
+            var list = await GetListLed_Color();
+
+            var newobj = new SelectListModel { ItemValue = "", ItemText = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT") };
+
+            list.Insert(0, newobj);
+
+            var model = new SelectListModel_Chosen
+            {
+                Data = list,
+                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
+                IdSelectList = id,
+                isMultiSelect = false,
+                Selecteds = selecteds
+            };
+
+            return model;
+        }
+
+        private async Task<List<SelectListModel>> GetListLed_Color()
+        {
+            var list = new List<SelectListModel> { };
+            var lst = await StaticList.GetListLed_Color();
+            if (lst.Any())
+            {
+                foreach (var item in lst)
+                {
+                    list.Add(new SelectListModel { ItemValue = item.ItemValue, ItemText = item.ItemText });
+                }
+            }
+            return list;
+        }
+
+        private async Task<SelectListModel_Chosen> GetListFontSize(string selecteds, string id = "fontsize")
+        {
+            var list = await GetListFontSize();
+
+            var newobj = new SelectListModel { ItemValue = "", ItemText = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT") };
+
+            list.Insert(0, newobj);
+
+            var model = new SelectListModel_Chosen
+            {
+                Data = list,
+                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
+                IdSelectList = id,
+                isMultiSelect = false,
+                Selecteds = selecteds
+            };
+
+            return model;
+        }
+
+        private async Task<List<SelectListModel>> GetListFontSize()
+        {
+            var list = new List<SelectListModel> { };
+            var lst = await StaticList.GetListLed_FontSize();
+            if (lst.Any())
+            {
+                foreach (var item in lst)
+                {
+                    list.Add(new SelectListModel { ItemValue = item.ItemValue, ItemText = item.ItemText });
+                }
+            }
+            return list;
+        }
+
         private async Task<SelectListModel_Chosen> GetListColumn(string selecteds, string id = "column")
         {
             var list = await GetListLed_Column();
@@ -69,6 +138,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             }
             return list;
         }
+
         private async Task<SelectListModel_Chosen> GetListRow(string selecteds, string id = "row")
         {
             var list = await GetListLed_Row();
@@ -103,7 +173,6 @@ namespace Kztek_Web.Areas.Admin.Controllers
             return list;
         }
     
-
         private async Task<SelectListModel_Chosen> GetListLed_Function(string selecteds, string id = "FunctionLed")
         {
             var list = await GetListLed_Function();
@@ -152,13 +221,19 @@ namespace Kztek_Web.Areas.Admin.Controllers
             model = model == null ? new tblLED_Submit() : model;
             model.row = 32;
             model.column_Led = 48;
+            model.fontSize = 7;
+            model.color = 1;
             ViewBag.LedFunction = await GetListLed_Function(model.FunctionLed);
             ViewBag.RowSelect = await GetListRow(model.row.ToString());
             ViewBag.ColumSelect = await GetListColumn(model.column_Led.ToString());
+            ViewBag.FontSizeSelect = await GetListFontSize(model.fontSize.ToString());
+            ViewBag.ColorSelect = await GetListColor(model.color.ToString());
             return await Task.FromResult(View(model));
         }
 
-    
+      
+
+
 
 
         /// <summary>
@@ -173,12 +248,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>    
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Create(tblLED_Submit model, string function_LED, string row_led, string column_led, bool SaveAndCountinue = false )
+        public async Task<IActionResult> Create(tblLED_Submit model, string function_LED, string row_led, string column_led, string color_led, string fontsize_led, bool SaveAndCountinue = false )
         {
             model.FunctionLed = function_LED;
             ViewBag.LedFunction = await GetListLed_Function(model.FunctionLed);
             ViewBag.RowSelect = await GetListRow(model.row.ToString());
             ViewBag.ColumSelect = await GetListColumn(model.column_Led.ToString());
+            ViewBag.FontSizeSelect = await GetListFontSize(model.fontSize.ToString());
+            ViewBag.ColorSelect = await GetListColor(model.color.ToString());
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -201,8 +278,9 @@ namespace Kztek_Web.Areas.Admin.Controllers
             obj.led_Code = model.led_Code;
             obj.led_Name = model.led_Name;
             obj.row = Convert.ToInt32(row_led);
-
             obj.column_Led = Convert.ToInt32(column_led);
+            obj.color = Convert.ToInt32(color_led);
+            obj.fontSize = Convert.ToInt32(fontsize_led);
             obj.ip_Address = model.ip_Address;
             obj.led_Function = Convert.ToInt32( function_LED);
             obj.description = model.description;
@@ -256,6 +334,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             ViewBag.LedFunction = await GetListLed_Function(model.FunctionLed);
             ViewBag.RowSelect = await GetListRow(model.row.ToString());
             ViewBag.ColumSelect = await GetListColumn(model.column_Led.ToString());
+            ViewBag.FontSizeSelect = await GetListFontSize(model.fontSize.ToString());
+            ViewBag.ColorSelect = await GetListColor(model.color.ToString());
             return View(model);
         }
 
@@ -272,12 +352,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Update(tblLED_Submit model,string function_LED, string row_led, string column_led, int pageNumber = 1)
+        public async Task<IActionResult> Update(tblLED_Submit model,string function_LED, string row_led, string column_led, string color_led, string fontsize_led, int pageNumber = 1)
         {
             model.FunctionLed = function_LED;
             ViewBag.LedFunction = await GetListLed_Function(model.FunctionLed);
             ViewBag.RowSelect = await GetListRow(model.row.ToString());
             ViewBag.ColumSelect = await GetListColumn(model.column_Led.ToString());
+            ViewBag.FontSizeSelect = await GetListFontSize(model.fontSize.ToString());
+            ViewBag.ColorSelect = await GetListColor(model.color.ToString());
             var oldObj = await _tblLedService.GetByID(model.id);
             if (oldObj == null)
             {
@@ -314,6 +396,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
             oldObj.row = Convert.ToInt32(row_led);
             oldObj.column_Led = Convert.ToInt32(column_led);
             oldObj.led_Function = Convert.ToInt32( function_LED);
+            oldObj.color = Convert.ToInt32(color_led);
+            oldObj.fontSize = Convert.ToInt32(fontsize_led);
             oldObj.description = model.description;
             oldObj.port = model.port;
             oldObj.controller_Type = model.controller_Type;

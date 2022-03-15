@@ -167,7 +167,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     TimeInVN = !string.IsNullOrEmpty(timeInVN) ? Convert.ToDateTime(timeInVN) : DateTime.MaxValue,
                                     TimeOutVN = DateTime.MaxValue,
                                     VehicleStatusVN = !string.IsNullOrEmpty(timeInVN) ? 1 : 0,
-
+                                        
                                     PlateCN = plateCN,
                                     ImageCN = model.imageCN,
                                     TimeInCN = !string.IsNullOrEmpty(timeInCN) ? Convert.ToDateTime(timeInCN) : DateTime.MaxValue,
