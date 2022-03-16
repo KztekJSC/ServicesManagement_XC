@@ -88,6 +88,9 @@ namespace Kztek_Model.Models
 
         public string BB_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
         public string BB_Id { get; set; } //Id dịch vụ của Biển Bạc
+
+        
+
     }
 
     public class tbl_Event_POST

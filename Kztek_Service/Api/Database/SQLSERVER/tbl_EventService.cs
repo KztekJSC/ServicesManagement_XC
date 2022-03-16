@@ -29,7 +29,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             return await _tbl_EventRepository.GetOneById(id);
         }
-        public async Task<tbl_Event> GetOneByBBInfo(string tableName,string id)
+        public async Task<tbl_Event> GetOneByBBInfo(string tableName, string id)
         {
             var query = from n in _tbl_EventRepository.Table
                         where !n.IsDeleted && n.BB_Table == tableName && n.BB_Id == id
@@ -44,14 +44,14 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             query.AppendLine("Update tbl_Event");
             query.AppendLine(string.Format("Set VehicleType = N'{0}',", obj.vehicleType));
             query.AppendLine(string.Format("{0} = 1,", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //xe vào
-            query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN",obj.image)); //ảnh xe
+            query.AppendLine(string.Format("{0} = '{1}',", obj.type == "VN" ? "ImageVN" : "ImageCN", obj.image)); //ảnh xe
 
             //đổi sang trạng thái đã xác nhận
             //nếu type == VN thì kiểm tra giờ vào xe CN và ngược lại
             //nếu thời gian vào loại xe CN đã có thì chuyển trang thái sang đã xác nhận ko thì giữ nguyên
             query.AppendLine(string.Format("EventType = (CASE WHEN FORMAT ({0}, 'yyyy-MM-dd') != '9999-12-31' THEN 2 ELSE 1 END),", obj.type == "VN" ? "TimeInCN" : "TimeInVN"));
 
-            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN",Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss") )); //thời gian vào
+            query.AppendLine(string.Format("{0} = '{1}'", obj.type == "VN" ? "TimeInVN" : "TimeInCN", Convert.ToDateTime(obj.time).ToString("MM/dd/yyyy HH:mm:ss"))); //thời gian vào
             query.AppendLine("where IsDeleted = 0 and EventType = 1");
             query.AppendLine(string.Format("and {0} = 0", obj.type == "VN" ? "VehicleStatusVN" : "VehicleStatusCN")); //trạng thái xe chưa vào
             query.AppendLine(string.Format("and REPLACE(REPLACE({0}, '-', ''), '.', '') LIKE '%{1}%'", obj.type == "VN" ? "PlateVN" : "PlateCN", obj.plate.Replace("-", "").Replace(".", "")));
@@ -109,9 +109,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                     listEventIn = await GetEventInByPlates(arr.ToList());
                 }
 
-               
 
-               
+
+
 
                 //lặp từng biển số VN
                 for (int i = 0; i < arrPlateVN.Length; i++)
@@ -167,7 +167,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     TimeInVN = !string.IsNullOrEmpty(timeInVN) ? Convert.ToDateTime(timeInVN) : DateTime.MaxValue,
                                     TimeOutVN = DateTime.MaxValue,
                                     VehicleStatusVN = !string.IsNullOrEmpty(timeInVN) ? 1 : 0,
-                                        
+
                                     PlateCN = plateCN,
                                     ImageCN = model.imageCN,
                                     TimeInCN = !string.IsNullOrEmpty(timeInCN) ? Convert.ToDateTime(timeInCN) : DateTime.MaxValue,
@@ -201,6 +201,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     DivisionDate = DateTime.MaxValue,
                                     ParkingPosition = "Chưa có vị trí đỗ",
                                     GroupId = ""
+
                                 };
 
                                 if (obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
@@ -215,9 +216,9 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                 //Luu log
 
                                 await LogHelper.WriteLogAPI(obj.Id.ToString(), "Thêm mới", "tbl_Event", JsonConvert.SerializeObject(obj).ToString());
-                            }                              
+                            }
                         }
-                    }                 
+                    }
                 }
 
                 result = new MessageReport(true, "Thành công");
@@ -226,17 +227,17 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                     //loại lại danh sách
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
 
-                   
+
                     //load lại thông báo cho dg viên
                     await SignalrHelper.SqlHub.Clients.All.SendAsync("Notifi");
                 }
-             
+
             }
             catch (Exception ex)
             {
                 result = new MessageReport(false, ex.Message);
             }
-           
+
             return result;
         }
 
@@ -244,12 +245,80 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetOneByBBInfo(model.bb_Table,model.bb_Id);
+            var obj = await GetOneByBBInfo(model.bb_Table, model.bb_Id);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
                 return result;
             }
+            // tìm kiếm dich cùng từ 1xe Cn => 2 xe VN theo Biển số xe Cn, CreateDate
+            var obj1 = new tbl_Event();
+            var lst = await GetObjByCreateDateAndPlateCN(obj.PlateCN, obj.CreatedDate);
+            foreach (var item in lst)
+            {
+               
+
+                //obj1.Id = item.Id;
+                //obj1.Service = model.service;
+                //obj1.ServiceCode = model.serviceCode;
+                //obj1.Code = model.code;
+
+                //obj1.PlateVN = model.plateVN;
+                //obj1.ImageVN = model.imageVN;
+
+                //if (!string.IsNullOrEmpty(model.timeInVN))
+                //{
+                //    obj1.TimeInVN = Convert.ToDateTime(model.timeInVN);
+
+                //}
+
+                //obj1.PlateCN = model.plateCN;
+                //obj1.ImageCN = model.imageCN;
+
+                //if (!string.IsNullOrEmpty(model.timeInCN))
+                //{
+                //    obj1.TimeInCN = Convert.ToDateTime(model.timeInCN);
+                //}
+
+                //obj1.ProductType = model.productType;
+                //obj1.Weight = model.weight;
+                //obj1.VehicleType = model.vehicleType;
+                //obj1.ProductGroup = model.productGroup;
+                //obj1.Price = model.price;
+                //obj1.SubPrice = model.subPrice;
+                //obj1.PaymentStatus = model.paymentStatus;
+                //obj1.ModifiedDate = DateTime.Now;
+
+                ////Lấy id dịch vụ từ db
+                //var idService = await GetIdService(obj1.Service, obj1.ServiceCode);
+
+                ////gán lại id dịch vụ
+                //obj1.Service = idService;
+
+
+                ///
+                obj1.StartDate = item.StartDate;
+                obj1.BB_Id = item.BB_Id;
+                obj1.BB_Table = item.BB_Table;
+                obj1.ConfirmDate = item.ConfirmDate;
+                obj1.Cost = item.Cost;
+                obj1.CreatedDate = item.CreatedDate;
+                obj1.Description = item.Description;
+                obj1.DivisionDate = item.DivisionDate;
+                obj1.EndDate = item.EndDate;
+                obj1.EventType = item.EventType;
+                obj1.GroupId = item.GroupId;
+                obj1.IsDeleted = item.IsDeleted;
+                obj1.PackageNumber = item.PackageNumber;
+                obj1.ParkingPosition = item.ParkingPosition;
+                obj1.Quantity = item.Quantity;
+                obj1.StartDate = item.StartDate;
+                
+
+
+                result = await _tbl_EventRepository.Update(obj1);
+            }
+
 
             obj.Service = model.service;
             obj.ServiceCode = model.serviceCode;
@@ -261,6 +330,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             if (!string.IsNullOrEmpty(model.timeInVN))
             {
                 obj.TimeInVN = Convert.ToDateTime(model.timeInVN);
+
             }
 
             obj.PlateCN = model.plateCN;
@@ -276,7 +346,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             obj.VehicleType = model.vehicleType;
             obj.ProductGroup = model.productGroup;
             obj.Price = model.price;
-            obj.SubPrice = model.subPrice;           
+            obj.SubPrice = model.subPrice;
             obj.PaymentStatus = model.paymentStatus;
             obj.ModifiedDate = DateTime.Now;
 
@@ -286,14 +356,27 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             //gán lại id dịch vụ
             obj.Service = idService;
 
-            result = await _tbl_EventRepository.Update(obj);
-
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
             }
 
             return result;
+        }
+
+        private async Task<List<tbl_Event>> GetObjByCreateDateAndPlateCN(string plateCN, DateTime createdDate)
+        {
+            var plate = !String.IsNullOrEmpty(plateCN) ? plateCN.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
+
+            var query = new StringBuilder();
+            query.AppendLine("SELECT * FROM [tbl_Event]");
+
+            query.AppendLine(string.Format("WHERE  REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", plate));
+
+            query.AppendLine(string.Format(" AND  FORMAT(CreatedDate,'yyyyMMddHHmmss') = '{0}'   ", createdDate.ToString("yyyyMMddHHmmss")));
+
+            var obj = DatabaseHelper.ExcuteCommandToList<tbl_Event>(query.ToString());
+            return await Task.FromResult(obj);
         }
 
         public async Task<MessageReport> Delete(tbl_Event_POST model)
@@ -345,7 +428,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 }
 
                 //tạo bản ghi xe vào bãi nếu có dữ liệu biển số và thời gian
-                if(!string.IsNullOrEmpty(model.plate) && !string.IsNullOrEmpty(model.time))
+                if (!string.IsNullOrEmpty(model.plate) && !string.IsNullOrEmpty(model.time))
                 {
                     var eventIn = new EventIn
                     {
@@ -358,7 +441,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
                     await CreateEventIn(eventIn);
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -458,13 +541,13 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         }
         public async Task<MessageReport> CreateEventIn(EventIn model)
         {
-            var result = new MessageReport(false,"Có lỗi xảy ra"); 
+            var result = new MessageReport(false, "Có lỗi xảy ra");
 
             //kiểm tra xe đã có chưa
             var obj = await GetEventInByPlate(model.PlateUnsign);
 
             //đã có thì cập nhật thời gian vào
-            if(obj != null)
+            if (obj != null)
             {
                 obj.TimeIn = model.TimeIn;
 
@@ -531,7 +614,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
 
-            var dataSet = SqlHelper.GetDataSet(connectionString,query.ToString());
+            var dataSet = SqlHelper.GetDataSet(connectionString, query.ToString());
 
             var list = SqlHelper.ConvertTo<EventIn>(dataSet.Tables[0]);
 

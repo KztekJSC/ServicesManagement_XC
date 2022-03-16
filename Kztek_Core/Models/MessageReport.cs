@@ -1,10 +1,12 @@
-namespace Kztek_Core.Models
+﻿namespace Kztek_Core.Models
 {
     public class MessageReport
     {
         public bool isSuccess { get; set; }
 
         public string Message { get; set; }
+
+       
 
         public MessageReport()
         {
@@ -15,6 +17,7 @@ namespace Kztek_Core.Models
         {
             this.isSuccess = isSuccess;
             this.Message = Message;
+         
         }
     }
     public class MessageReportCustom
@@ -22,6 +25,6 @@ namespace Kztek_Core.Models
         public bool isSuccess { get; set; }
 
         public string Message { get; set; }
-        public string CardNumber { get; set; }
+        public string CarđNumber { get; set; }
     }
 }
