@@ -78,6 +78,10 @@
                     <th class="text-center">Loại điều khiển</th>
                     <th class="text-center">Địa chỉ IP</th>
                     <th class="text-center">Port</th>
+                    <th class="text-center">Hàng</th>
+                    <th class="text-center">Cột</th>
+                    <th class="text-center">Màu sắc</th>
+                    <th class="text-center">Cỡ chữ</th>
 
                     <th class="text-center"> </th>
                 </tr>
@@ -88,61 +92,72 @@
                 {
                     foreach (var item in Model.Data)
                     {
-                        <tr class="">
-                            <td class="text-left">
-                                @item.led_Code
-                            </td>
-                            <td class="text-left">
-                                @item.led_Name
-                            </td>
-                            <td class="center">
-                                
-                                @if (item.led_Function == 0)
-                                {
-                                    <span class="label label-sm label-info">Dùng cho cổng</span>
-                                }
-                                else if (item.led_Function == 1)
-                                {
-                                    <span class="label label-sm label-success">Dùng cho phòng giao dịch</span>
-                                }
-                                else if (item.led_Function == 2)
-                                {
-                                    <span class="label label-sm  label-default">Dùng cho kho</span>
-                                }
+                <tr class="">
+                    <td class="text-left">
+                        @item.led_Code
+                    </td>
+                    <td class="text-left">
+                        @item.led_Name
+                    </td>
+                    <td class="center">
 
-                            </td>
-                            <td class="text-left">
-                                @item.controller_Type
-                            </td>
-                            <td class="text-left">
-                                @item.ip_Address
-                            </td>
-                            <td class="text-left">
-                                @item.port
-                            </td>
+                        @if (item.led_Function == 0)
+                        {
+                            <span class="label label-sm label-info">Dùng cho cổng</span>
+                        }
+                        else if (item.led_Function == 1)
+                        {
+                            <span class="label label-sm label-success">Dùng cho phòng giao dịch</span>
+                        }
+                        else if (item.led_Function == 2)
+                        {
+                            <span class="label label-sm  label-default">Dùng cho kho</span>
+                        }
 
-                            <td class="center">
-                                <div class="btn-group">
-                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                                    {
-            ControllerName = "tblLED",
-            ActionName = "Update",
-            RecordId = "",
-            model = new { id = item.id.ToString() },
-            Auth_Value = authModel
-        })
+                    </td>
+                    <td class="text-left">
+                        @item.controller_Type
+                    </td>
+                    <td class="text-center">
+                        @item.ip_Address
+                    </td>
+                    <td class="text-center">
+                        @item.port
+                    </td>
+                    <td class="text-center">
+                        @item.row
+                    </td>
+                    <td class="text-center">
+                        @item.column_Led
+                    </td>
+                    <td class="text-center">
+                        @item.color
+                    </td>
+                    <td class="text-center">
+                        @item.fontSize
+                    </td>
+                    <td class="center">
+                        <div class="btn-group">
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+    ControllerName = "tblLED",
+    ActionName = "Update",
+    RecordId = "",
+    model = new { id = item.id.ToString() },
+    Auth_Value = authModel
+})
 
-                                    @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
-                                    {
-          ControllerName = "tblLED",
-          ActionName = "Delete",
-          RecordId = item.id.ToString(),
-          model = null,
-          Auth_Value = authModel
-        })
-                                </div>
-                            </td>
-                        </tr>
+                            @await Html.PartialAsync("~/Views/Shared/Partials/ActionPartial.cshtml", new Kztek_Library.Models.AuthPartialModel()
+                            {
+  ControllerName = "tblLED",
+  ActionName = "Delete",
+  RecordId = item.id.ToString(),
+  model = null,
+  Auth_Value = authModel
+})
+                        </div>
+                    </td>
+                </tr>
                     }
                 }
             </tbody>
