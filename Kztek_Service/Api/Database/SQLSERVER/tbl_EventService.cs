@@ -252,71 +252,57 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 return result;
             }
             // tìm kiếm dich cùng từ 1xe Cn => 2 xe VN theo Biển số xe Cn, CreateDate
-            var obj1 = new tbl_Event();
-            var lst = await GetObjByCreateDateAndPlateCN(obj.PlateCN, obj.CreatedDate);
+            
+            var lst = await GetObjByCreateDateAndPlateCN(obj.PlateCN, obj.BB_Id);
             foreach (var item in lst)
             {
-               
 
-                //obj1.Id = item.Id;
-                //obj1.Service = model.service;
-                //obj1.ServiceCode = model.serviceCode;
-                //obj1.Code = model.code;
+                if (item.Id != obj.Id)
+                {
 
-                //obj1.PlateVN = model.plateVN;
-                //obj1.ImageVN = model.imageVN;
+                    item.Service = model.service;
+                    item.ServiceCode = model.serviceCode;
+                    item.Code = model.code;
 
-                //if (!string.IsNullOrEmpty(model.timeInVN))
-                //{
-                //    obj1.TimeInVN = Convert.ToDateTime(model.timeInVN);
+                    item.PlateVN = model.plateVN;
+                    item.ImageVN = model.imageVN;
 
-                //}
+                    if (!string.IsNullOrEmpty(model.timeInVN))
+                    {
+                        item.TimeInVN = Convert.ToDateTime(model.timeInVN);
 
-                //obj1.PlateCN = model.plateCN;
-                //obj1.ImageCN = model.imageCN;
+                    }
 
-                //if (!string.IsNullOrEmpty(model.timeInCN))
-                //{
-                //    obj1.TimeInCN = Convert.ToDateTime(model.timeInCN);
-                //}
+                    item.PlateCN = model.plateCN;
+                    item.ImageCN = model.imageCN;
 
-                //obj1.ProductType = model.productType;
-                //obj1.Weight = model.weight;
-                //obj1.VehicleType = model.vehicleType;
-                //obj1.ProductGroup = model.productGroup;
-                //obj1.Price = model.price;
-                //obj1.SubPrice = model.subPrice;
-                //obj1.PaymentStatus = model.paymentStatus;
-                //obj1.ModifiedDate = DateTime.Now;
+                    if (!string.IsNullOrEmpty(model.timeInCN))
+                    {
+                        item.TimeInCN = Convert.ToDateTime(model.timeInCN);
+                    }
 
-                ////Lấy id dịch vụ từ db
-                //var idService = await GetIdService(obj1.Service, obj1.ServiceCode);
+                    item.ProductType = model.productType;
+                    item.Weight = model.weight;
+                    item.VehicleType = model.vehicleType;
+                    item.ProductGroup = model.productGroup;
+                    item.Price = model.price;
+                    item.SubPrice = model.subPrice;
+                    item.PaymentStatus = model.paymentStatus;
+                    item.ModifiedDate = DateTime.Now;
 
-                ////gán lại id dịch vụ
-                //obj1.Service = idService;
+                    //Lấy id dịch vụ từ db
+                    var idService1 = await GetIdService(item.Service, item.ServiceCode);
+
+                    //gán lại id dịch vụ
+                    item.Service = idService1;
 
 
-                ///
-                obj1.StartDate = item.StartDate;
-                obj1.BB_Id = item.BB_Id;
-                obj1.BB_Table = item.BB_Table;
-                obj1.ConfirmDate = item.ConfirmDate;
-                obj1.Cost = item.Cost;
-                obj1.CreatedDate = item.CreatedDate;
-                obj1.Description = item.Description;
-                obj1.DivisionDate = item.DivisionDate;
-                obj1.EndDate = item.EndDate;
-                obj1.EventType = item.EventType;
-                obj1.GroupId = item.GroupId;
-                obj1.IsDeleted = item.IsDeleted;
-                obj1.PackageNumber = item.PackageNumber;
-                obj1.ParkingPosition = item.ParkingPosition;
-                obj1.Quantity = item.Quantity;
-                obj1.StartDate = item.StartDate;
+
+
+                    result = await _tbl_EventRepository.Update(item);
+                }
                 
-
-
-                result = await _tbl_EventRepository.Update(obj1);
+              
             }
 
 
@@ -355,7 +341,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             //gán lại id dịch vụ
             obj.Service = idService;
-
+            result = await _tbl_EventRepository.Update(obj);
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
@@ -364,7 +350,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
             return result;
         }
 
-        private async Task<List<tbl_Event>> GetObjByCreateDateAndPlateCN(string plateCN, DateTime createdDate)
+        private async Task<List<tbl_Event>> GetObjByCreateDateAndPlateCN(string plateCN, string id)
         {
             var plate = !String.IsNullOrEmpty(plateCN) ? plateCN.Replace(".", "").Replace("-", "").Replace(" ", "") : String.Empty;
 
@@ -373,7 +359,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             query.AppendLine(string.Format("WHERE  REPLACE (REPLACE(REPLACE([PlateCN], '-', ''), '.', ''),' ','' ) LIKE '%{0}%'", plate));
 
-            query.AppendLine(string.Format(" AND  FORMAT(CreatedDate,'yyyyMMddHHmmss') = '{0}'   ", createdDate.ToString("yyyyMMddHHmmss")));
+            query.AppendLine(string.Format(" AND  BB_Id = '{0}' ", id));
 
             var obj = DatabaseHelper.ExcuteCommandToList<tbl_Event>(query.ToString());
             return await Task.FromResult(obj);
@@ -383,29 +369,46 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
-            var obj = await GetOneByBBInfo(model.bb_Table, model.bb_Id);
-            if (obj == null)
+            //var obj = await GetOneByBBInfo(model.bb_Table, model.bb_Id);
+
+            var lst = await GetListByBBInfo(model.bb_Table, model.bb_Id);
+            foreach (var item in lst)
             {
-                result = new MessageReport(false, "Bản ghi không tồn tại");
-                return result;
-            }
-
-            obj.IsDeleted = true;
-
-            result = await _tbl_EventRepository.Update(obj);
-
-            if (result.isSuccess)
-            {
-                result = new MessageReport(true, "Thành công");
-
-                //nếu xóa sự kiện 2 xe đã vào bãi thì loại lại danh sách xác nhận
-                if (obj.VehicleStatusVN == 1 && obj.VehicleStatusCN == 1)
+                if (item == null)
                 {
-                    await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
+                    result = new MessageReport(false, "Bản ghi không tồn tại");
+                    return result;
+                }
+
+                item.IsDeleted = true;
+
+                result = await _tbl_EventRepository.Update(item);
+
+                if (result.isSuccess)
+                {
+                    result = new MessageReport(true, "Thành công");
+
+                    //nếu xóa sự kiện 2 xe đã vào bãi thì loại lại danh sách xác nhận
+                    if (item.VehicleStatusVN == 1 && item.VehicleStatusCN == 1)
+                    {
+                        await SignalrHelper.SqlHub.Clients.All.SendAsync("Service");
+                    }
                 }
             }
+            
+
+           
 
             return result;
+        }
+
+        private async Task<List<tbl_Event>> GetListByBBInfo(string bb_Table, string bb_Id)
+        {
+            var query = from n in _tbl_EventRepository.Table
+                        where !n.IsDeleted && n.BB_Table == bb_Table && n.BB_Id == bb_Id
+                        select n;
+
+            return await Task.FromResult(query.ToList());
         }
 
         public async Task<MessageReport> VehicleStatusIn(API_VehicleStatus model)
