@@ -114,8 +114,10 @@
             <tbody>
                 @if (Model.Data.Any())
                 {
+                   
                     foreach (var item in Model.Data)
                     {
+                       
                         <tr>
                             <td class="text-left hidden-480">
                                 @Convert.ToDateTime(item.Date).ToString("dd/MM/yyyy HH:mm:ss")
@@ -140,17 +142,8 @@
                             <td class="text-left hidden-480">
                                 @item.Actions
                             </td>
-                            <td class="text-left hidden-480" id="part4" title="@item.Description">
-
-                                @{
-                                    var s = item.Description;
-                                    var str = item.Description.Split(",");
-                                  @str[0]
-                                   
-                                }
-
-
-
+                            <td class="text-left hidden-480" id="part4_@item">
+                              @item.Description
                             </td>
                             @*<td class="text-left hidden-480">
                                     @item.Description
@@ -412,15 +405,17 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            //var text = $('#linkTitle').text();
-            //$("#part4 > p").mouseover(function () {
-            //    $(this).html(text + $(this).attr('title'));
-            //});
-            //$("#part4 > ").mouseout(function () {
-            //    $(this).empty().append(text);
-            //});
+           
+           
 
-
+            $("#part4 > a").mouseover(function () {
+                var text = $('#linkTitle').text();
+                $(this).html(text + $(this).attr('title'));
+            });
+            $("#part4 >a ").mouseout(function () {
+                var text = $('#linkTitle').text();
+                $(this).empty().append(text);
+            });
             $('#ddlactions').change(function () {
                 var str = '';
                 var cmd = $(this);

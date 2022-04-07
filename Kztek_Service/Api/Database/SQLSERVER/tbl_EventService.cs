@@ -99,6 +99,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 //tách ra từng biển số CN
                 var arrPlateCN = model.plateCN.Split(",");
 
+                await LogHelper.WriteLogAPI("", "Thêm mới", "tbl_Event", JsonConvert.SerializeObject(model).ToString());
                 //Nếu không có thời gian vào VN hoặc không có thời gian vào CN thì lấy danh sách sự kiện vào để kiểm tra
                 if (string.IsNullOrEmpty(model.timeInVN) || string.IsNullOrEmpty(model.timeInCN))
                 {
