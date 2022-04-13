@@ -117,7 +117,11 @@
             $('body').on('click', '.btnSearch', function () {
                 PartialService(1);
             });
+            setTimeout(function () {
 
+                location.reload();
+
+            }, 30000);
         });
     </script>
 }

@@ -37,6 +37,10 @@
 
                 <th class="text-center" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Ngày tạo </th>
 
+                <th class="text-center" idata="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Loại hàng </th>
+
+                <th class="text-center" idata="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">Nhóm hàng </th>
+
                 <th class="text-center">Phân tổ</th>
             </tr>
         </thead>
@@ -49,55 +53,61 @@
                 {
                     count++;
 
-                    <tr>
-                        <td class="text-center" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
-                            @count
-                        </td>
-                        <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
-                            @item.ServiceCode
-                        </td>
-                        <td class="center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
-                            @item.PlateVN
-                        </td>
-                        <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
-                            @item.PlateCN
-                        </td>
+            <tr>
+                <td class="text-center" idata="1" style="display :@string.Format("{0}",shows.Contains("1")   ? "" : "none")">
+                    @count
+                </td>
+                <td class="text-left" idata="2" style="display :@string.Format("{0}",shows.Contains("2")   ? "" : "none")">
+                    @item.ServiceCode
+                </td>
+                <td class="center" idata="3" style="display :@string.Format("{0}",shows.Contains("3")   ? "" : "none")">
+                    @item.PlateVN
+                </td>
+                <td class="center" idata="4" style="display :@string.Format("{0}",shows.Contains("4")   ? "" : "none")">
+                    @item.PlateCN
+                </td>
 
-                        <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
-                            @item.VehicleType
-                        </td>
-                        <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
-                            @item.Weight
-                        </td>
+                <td class="center" idata="5" style="display :@string.Format("{0}",shows.Contains("5")   ? "" : "none")">
+                    @item.VehicleType
+                </td>
+                <td class="center" idata="6" style="display :@string.Format("{0}",shows.Contains("6")   ? "" : "none")">
+                    @item.Weight
+                </td>
 
 
-                        <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
-                            @{
-                                var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
-                                if (obj != null)
-                                {
-                                    <span>@obj.Name</span>
-                                }
-                            }
+                <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                    @{
+                        var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
+                        if (obj != null)
+                        {
+                            <span>@obj.Name</span>
+                        }
+                    }
 
-                        </td>
-                        <td class="text-left" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
-                            @item.Price.ToString("###,##.##")
-                        </td>
-                        <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
-                            @item.ParkingPosition
+                </td>
+                <td class="text-left" idata="8" style="display :@string.Format("{0}",shows.Contains("8")   ? "" : "none")">
+                    @item.Price.ToString("###,##.##")
+                </td>
+                <td class="center" idata="9" style="display :@string.Format("{0}",shows.Contains("9")   ? "" : "none")">
+                    @item.ParkingPosition
 
-                        </td>
-                        <td class="text-left" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
-                            @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
-                        </td>
-                        <td class="center">
-                            <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
-                                <i class="ace-icon fa fa-pencil bigger-130"></i>
-                            </a>
+                </td>
+                <td class="text-left" idata="10" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">
+                    @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
+                </td>
+                <td class="text-left" idata="11" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">
+                    @item.ProductType
+                </td>
+                <td class="text-left" idata="12" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">
+                    @item.ProductGroup
+                </td>
+                <td class="center">
+                    <a class="green btnAssign" href="javascript:void(0)" idata="@item.Id">
+                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
 
-                        </td>
-                    </tr>
+                </td>
+            </tr>
                 }
             }
 

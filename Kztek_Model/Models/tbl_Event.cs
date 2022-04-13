@@ -75,6 +75,7 @@ namespace Kztek_Model.Models
         public int Quantity { get; set; }//Số lượng
 
         public DateTime CreatedDate { get; set; } //Ngày tạo
+        public DateTime TimeIntend { get; set; } //thời gian dự định
 
         public DateTime ModifiedDate { get; set; } //Ngày cập nhật
 
@@ -89,7 +90,7 @@ namespace Kztek_Model.Models
         public string BB_Table { get; set; } //Tên bảng dịch vụ của Biển Bạc
         public string BB_Id { get; set; } //Id dịch vụ của Biển Bạc
 
-        
+
 
     }
 
@@ -127,10 +128,10 @@ namespace Kztek_Model.Models
         public int phuThuKhachHang { get; set; } //phụ thu
         public string phanTramPhuChi { get; set; } //
         public int soLuongXeVNSDDV { get; set; } //số lượng
-       
+
 
     }
-    public class  tbl_Event_BB
+    public class tbl_Event_BB
     {
         public int soluong { get; set; } //Số lượng
         public string service { get; set; } //dịch vụ
@@ -138,12 +139,12 @@ namespace Kztek_Model.Models
         public string bb_Id { get; set; } //Id table bb
         public string mavuviec { get; set; } //ma vũ việc 
         public List<tbl_BB_Data> dulieus { get; set; } = new List<tbl_BB_Data>();
-        
-      
+
+
 
 
     }
-   
+
     public class tbl_Event_Cus
     {
         public string Id { get; set; }
@@ -177,6 +178,7 @@ namespace Kztek_Model.Models
         public string DivisionDate { get; set; } //Ngày phân tổ
         public int EventType { get; set; }
         public string EventTypeName { get; set; }
+        public string TimeIntend { get; set; }
     }
 
     public class tbl_Event_Custom

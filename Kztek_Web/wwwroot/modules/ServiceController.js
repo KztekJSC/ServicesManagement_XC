@@ -221,21 +221,27 @@ var ServiceController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/Modal_Assign', obj)
             .done(function (data) {
+               
                 $("#boxModal").html(data);
                 $("#ModalAssign").modal("show");
+                JSLoader.load_DateTimePicker();
             });
     },
     SaveAssign: function () {
         var gid = $("#GroupId").val();
-
+        var timeintend = $("#TimeIntend").val();
         if (gid === '' || gid === null || typeof gid === 'undefined') {
             toastr.error("Vui lòng chọn tổ thực hiện!");
             return false;
         }
-
+        if (timeintend === '' || timeintend === null || typeof timeintend === 'undefined') {
+            toastr.error("Vui lòng chọn thời gian dự kiến!");
+            return false;
+        }
         var obj = {
             id: $("#serId").val(),
-            groupid: gid
+            groupid: gid,
+            TimeIntend: timeintend
         };
 
         JSHelper.AJAX_HttpPost('/Admin/Service/SaveAssign', obj)

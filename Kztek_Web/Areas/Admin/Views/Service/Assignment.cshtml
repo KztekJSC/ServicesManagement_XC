@@ -100,6 +100,7 @@
 @section scripts{
     <script src="~/modules/ServiceController.js"></script>
     <script src="~/modules/Signalr.js"></script>
+    @*<script src="~/customs/JSLoader.js"></script>*@
     <script>
         $(document).ready(function () {
             ServiceController.PartialVehicle();
@@ -117,6 +118,11 @@
                 ServiceController.AddValueSelectAsigment(str, "Service", "Assignment");
 
             });
+            setTimeout(function () {
+
+                location.reload();
+
+            }, 30000);
         });
     </script>
 }

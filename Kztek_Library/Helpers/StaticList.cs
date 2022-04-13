@@ -66,7 +66,8 @@ namespace Kztek_Library.Helpers
                                           new SelectListModel { ItemValue = "15", ItemText = "Ảnh CN"},
                                              new SelectListModel { ItemValue = "16", ItemText = "Ảnh VN"},
                                               new SelectListModel { ItemValue = "17", ItemText = "Vị trí đỗ"},
-                                                new SelectListModel { ItemValue = "18", ItemText = "Ngày tạo"}
+                                                new SelectListModel { ItemValue = "18", ItemText = "Ngày tạo" },
+                                                 new SelectListModel { ItemValue = "19", ItemText = "Thời gian dự kiến"}
                                     };
             return list;
         }
@@ -86,7 +87,9 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "8", ItemText = "Giá dịch vụ"},
 
                                        new SelectListModel { ItemValue = "9", ItemText = "Vị trí đỗ"},
-                                       new SelectListModel { ItemValue = "10", ItemText = "Ngày tạo"}
+                                       new SelectListModel { ItemValue = "10", ItemText = "Ngày tạo"},
+                                       new SelectListModel { ItemValue = "11", ItemText = "Loại hàng"},
+                                       new SelectListModel { ItemValue = "12", ItemText = "Nhóm hàng"}
                                     };
             return list;
         }
@@ -106,7 +109,8 @@ namespace Kztek_Library.Helpers
                                         new SelectListModel { ItemValue = "9", ItemText = "Tổ bốc xếp"},
                                           new SelectListModel { ItemValue = "10", ItemText = "Bắt đầu"},
                                              new SelectListModel { ItemValue = "11", ItemText = "Kết thúc"},
-                                               new SelectListModel { ItemValue = "12", ItemText = "Ngày tạo"}
+                                               new SelectListModel { ItemValue = "12", ItemText = "Ngày tạo"},
+                                                new SelectListModel { ItemValue = "13", ItemText = "Thời gian dự kiến"}
                                     };
             return list;
         }
@@ -209,7 +213,7 @@ namespace Kztek_Library.Helpers
             return await Task.FromResult(list);
         }
 
-        public static async Task<List<SelectListModel>>  GetListLed_Color()
+        public static async Task<List<SelectListModel>> GetListLed_Color()
         {
             var list = new List<SelectListModel> {
                                         new SelectListModel { ItemValue = "1", ItemText = "Đỏ"},
@@ -250,7 +254,7 @@ namespace Kztek_Library.Helpers
                                     };
             return await Task.FromResult(list);
         }
-        public static async Task<List<SelectListModel>>  GetListLed_Row()
+        public static async Task<List<SelectListModel>> GetListLed_Row()
         {
             var list = new List<SelectListModel> {
                                         new SelectListModel { ItemValue = "16", ItemText = "16"},

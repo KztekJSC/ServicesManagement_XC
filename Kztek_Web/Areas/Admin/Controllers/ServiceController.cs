@@ -460,11 +460,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
             var objService = await _tbl_EventService.GetByCustomById(id,this.HttpContext);
 
             ViewBag.Group = await GetAllGroup();
-
+            ViewBag.TimeIntends = objService.TimeIntend;
             return PartialView(objService);
         }
 
-        public async Task<IActionResult> SaveAssign(string id,string groupid)
+        public async Task<IActionResult> SaveAssign(string id,string groupid , string TimeIntend)
         {
             var result = new MessageReport(false,"Có lỗi xảy ra!");
 
@@ -477,6 +477,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 objService.EventType = 3; //đã phân tổ
 
                 objService.DivisionDate = DateTime.Now;
+
+                objService.TimeIntend = Convert.ToDateTime(TimeIntend);
 
                 result = await _tbl_EventService.Update(objService);
 

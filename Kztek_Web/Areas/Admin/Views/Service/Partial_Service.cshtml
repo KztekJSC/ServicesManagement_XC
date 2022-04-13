@@ -47,6 +47,7 @@
                 <th class="text-center" idata="16" style="display :@string.Format("{0}",shows.Contains("16")? "" : "none")">Ảnh VN </th>
                 <th class="text-center" idata="17" style="display :@string.Format("{0}",shows.Contains("17")? "" : "none")">Vị trí đỗ </th>
                 <th class="text-center" idata="18" style="display :@string.Format("{0}",shows.Contains("18")? "" : "none")">Ngày tạo </th>
+                <th class="text-center" idata="19" style="display :@string.Format("{0}",shows.Contains("19")? "" : "none")">Thời gian dự kiến </th>
                 <th class="text-center"></th>
             </tr>
         </thead>
@@ -164,11 +165,22 @@
                     </div>
 
                 </td>
-                <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("17")   ? "" : "none")">
+                <td class="center" idata="17" style="display :@string.Format("{0}",shows.Contains("17")   ? "" : "none")">
                     @item.ParkingPosition
                 </td>
-                <td class="center" idata="11" style="display :@string.Format("{0}",shows.Contains("18")   ? "" : "none")">
+                <td class="center" idata="18" style="display :@string.Format("{0}",shows.Contains("18")   ? "" : "none")">
                     @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
+                </td>
+                <td class="center" idata="19" style="display :@string.Format("{0}",shows.Contains("19")   ? "" : "none")">
+                    @if (!item.TimeIntend.ToString("yyyy/MM/dd").Contains("2021/01/01"))
+                    {
+                        @item.TimeIntend.ToString("dd/MM/yyyy HH:mm:ss")
+                    }
+                    else
+                    {
+                        <span></span>
+                    }
+                    
                 </td>
                 <td class="center">
 

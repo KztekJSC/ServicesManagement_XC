@@ -354,11 +354,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     tbl_BB_Data.ten = objGroup != null ? objGroup.Name : "";
                     tbl_BB_Data.donvi = "Xe";
                     tbl_BB_Data.soluong = "1.0";
-                    tbl_BB_Data.dongia = 0;
-                    tbl_BB_Data.thanhtien = Convert.ToInt32( obj.Price);
-                    tbl_BB_Data.phuThuKhachHang = Convert.ToInt32( obj.SubPrice);
-                    tbl_BB_Data.phanTramPhuChi = "0.0";
-                    tbl_BB_Data.soLuongXeVNSDDV = 0;
+                    //tbl_BB_Data.dongia = 0;
+                    //tbl_BB_Data.thanhtien = Convert.ToInt32( obj.Price);
+                    //tbl_BB_Data.phuThuKhachHang = Convert.ToInt32( obj.SubPrice);
+                    //tbl_BB_Data.phanTramPhuChi = "0.0";
+                    //tbl_BB_Data.soLuongXeVNSDDV = 0;
                    
                     objBBEventApi.dulieus.Add(tbl_BB_Data);
                     var token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI0YjM0MTJlNi1qZGt1LTRkODktYmJmOS03ZWExZmFjNGI4OGMiLCJzdWIiOi" + "JhZG1pbl9wbHkiLCJhdXRoIjoiUk9MRV9BTEVSVF9NQU5BR0VSLFJPTEVfRVhQQU5EX09QRVJBVElPTixST0xFX01BTk" + "FHRVIsUk9MRV9PUEVSQVRPUixST0xFX1NUQVRJU1RJQyxST0xFX1RJQ0tFVF9NQU5BR0VSIiwiZXhwIjo0NzY5ODE0MD"+

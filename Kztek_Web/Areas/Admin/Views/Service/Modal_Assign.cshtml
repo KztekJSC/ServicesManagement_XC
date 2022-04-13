@@ -59,6 +59,23 @@
                                     @Html.DropDownList("GroupId", new SelectList(ViewBag.Group, "ItemValue", "ItemText"), "- Lựa chọn -", new { @class = "form-control" })
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-3 col-form-label text-sm-right pr-0">
+                                    <label for="id-form-field-name" class="mb-0">
+                                       Thời gian dự kiến
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        @Html.TextBox("TimeIntend", (string)ViewBag.TimeIntends, new { @class = "form-control drp_auto_input1" })
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
