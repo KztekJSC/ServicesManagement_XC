@@ -31,7 +31,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
         #region Danh sách
         [CheckSessionCookie(AreaConfig.Admin)]
-        public async Task<IActionResult> Index(string ServiceId = "", string StatusID = "", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
+        public async Task<IActionResult> Index(string ServiceId = "", string StatusID = "5", string key = "", string chkExport = "0", string fromdate = "", string todate = "", int page = 1, string AreaCode = ""
 )
         {
             var datefrompicker = "";
@@ -352,8 +352,8 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     //objBBEventApi.soLuongXeVNSDDV = "0";
                     var tbl_BB_Data = new tbl_BB_Data();
                     tbl_BB_Data.ten = objGroup != null ? objGroup.Name : "";
-                    tbl_BB_Data.donvi = "Xe";
-                    tbl_BB_Data.soluong = "1.0";
+                    //tbl_BB_Data.donvi = "Xe";
+                    //tbl_BB_Data.soluong = "1.0";
                     //tbl_BB_Data.dongia = 0;
                     //tbl_BB_Data.thanhtien = Convert.ToInt32( obj.Price);
                     //tbl_BB_Data.phuThuKhachHang = Convert.ToInt32( obj.SubPrice);

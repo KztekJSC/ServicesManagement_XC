@@ -121,13 +121,13 @@ namespace Kztek_Model.Models
     public class tbl_BB_Data
     {
         public string ten { get; set; } // group
-        public string donvi { get; set; } //đơn vị
-        public string soluong { get; set; } //Số lượng
-        public int dongia { get; set; } //đơn giá
-        public int thanhtien { get; set; } //thanh tiền
-        public int phuThuKhachHang { get; set; } //phụ thu
-        public string phanTramPhuChi { get; set; } //
-        public int soLuongXeVNSDDV { get; set; } //số lượng
+        //public string donvi { get; set; } //đơn vị
+        //public string soluong { get; set; } //Số lượng
+        //public int dongia { get; set; } //đơn giá
+        //public int thanhtien { get; set; } //thanh tiền
+        //public int phuThuKhachHang { get; set; } //phụ thu
+        //public string phanTramPhuChi { get; set; } //
+        //public int soLuongXeVNSDDV { get; set; } //số lượng
 
 
     }
