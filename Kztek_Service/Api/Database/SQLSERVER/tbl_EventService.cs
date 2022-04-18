@@ -201,6 +201,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     ConfirmDate = DateTime.MaxValue,
                                     DivisionDate = DateTime.MaxValue,
                                     ParkingPosition = "Chưa có vị trí đỗ",
+                                    TimeIntend = DateTime.MaxValue,
                                     GroupId = ""
 
                                 };
@@ -209,7 +210,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                 {
                                     obj.EventType = 2; //Đã xác nhận nếu 2 xe đều vào bãi
                                 }
-
+                                var s1 = obj.TimeInVN;
                                 //gán lại id dịch vụ
                                 obj.Service = idService;
 
