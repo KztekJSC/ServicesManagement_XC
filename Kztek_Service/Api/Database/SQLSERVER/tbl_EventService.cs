@@ -37,7 +37,14 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             return await Task.FromResult(query.FirstOrDefault());
         }
+        public async Task<List<tbl_Event>> GetAllByBBInfo(string tableName, string id)
+        {
+            var query = from n in _tbl_EventRepository.Table
+                        where !n.IsDeleted && n.BB_Table == tableName && n.BB_Id == id
+                        select n;
 
+            return await Task.FromResult(query.ToList());
+        }
         public async Task<bool> UpdateVehicleIn(API_VehicleStatus obj)
         {
             var query = new StringBuilder();
@@ -247,18 +254,21 @@ namespace Kztek_Service.Api.Database.SQLSERVER
         {
             var result = new MessageReport(false, "Có lỗi xảy ra");
 
+            var lsst = await GetAllByBBInfo(model.bb_Table, model.bb_Id);
+            if (lsst == null)
+            {
+                result = new MessageReport(false, "Bản ghi không tồn tại");
+                return result;
+            }
             var obj = await GetOneByBBInfo(model.bb_Table, model.bb_Id);
             if (obj == null)
             {
                 result = new MessageReport(false, "Bản ghi không tồn tại");
                 return result;
             }
-            // tìm kiếm dich cùng từ 1xe Cn => 2 xe VN theo Biển số xe Cn, CreateDate
-            
-            var lst = await GetObjByCreateDateAndPlateCN(obj.PlateCN, obj.BB_Id);
-            foreach (var item in lst)
+            var lstPlateVN = model.plateVN.Split(",");
+            foreach (var item in lsst)
             {
-
                 if (item.Id != obj.Id)
                 {
 
@@ -266,7 +276,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                     item.ServiceCode = model.serviceCode;
                     item.Code = model.code;
 
-                    item.PlateVN = model.plateVN;
+                    item.PlateVN = lstPlateVN[1];
                     item.ImageVN = model.imageVN;
 
                     if (!string.IsNullOrEmpty(model.timeInVN))
@@ -303,16 +313,15 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
                     result = await _tbl_EventRepository.Update(item);
                 }
-                
-              
-            }
+                }
+
 
 
             obj.Service = model.service;
             obj.ServiceCode = model.serviceCode;
             obj.Code = model.code;
 
-            obj.PlateVN = model.plateVN;
+            obj.PlateVN = lstPlateVN[0];
             obj.ImageVN = model.imageVN;
 
             if (!string.IsNullOrEmpty(model.timeInVN))
@@ -619,9 +628,13 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
             var connectionString = AppSettingHelper.GetStringFromFileJson("connectstring", "ConnectionStrings:DefaultConnection").Result;
 
-            var dataSet = SqlHelper.GetDataSet(connectionString, query.ToString());
+            //var listData = DatabaseHelper.ExcuteCommandToList<EventIn>(query.ToString());
 
-            var list = SqlHelper.ConvertTo<EventIn>(dataSet.Tables[0]);
+            var data = SqlHelper.ExcuteCommandToDataTable(connectionString, query.ToString());
+
+
+            var list = SqlHelper.ConvertTo<EventIn>(data);
+
 
             return await Task.FromResult(list);
         }
