@@ -31,13 +31,13 @@ var JSLoader = {
         $('.drp_auto_input1').daterangepicker({
             'applyClass': 'btn-sm btn-success',
             'cancelClass': 'btn-sm btn-default',
-            autoUpdateInput: true,
+           
             locale: {
                 applyLabel: 'Apply',
                 cancelLabel: 'Cancel',
-                format: 'DD/MM/YYYY HH:mm '
+                format: 'DD/MM/YYYY HH:mm'
             },
-            singleDatePicker: true,
+          
             showDropdowns: true
         });
 

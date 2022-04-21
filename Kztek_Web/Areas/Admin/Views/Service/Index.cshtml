@@ -113,11 +113,21 @@
                 ServiceController.AddValueSelect(str, "Service", "Index");
 
             });
-            setTimeout(function () {
+           
+            var activityTimeout = setTimeout(loadData, 30000);
 
+            function resetActive() {
+               /* $(document.body).attr('class', 'active');*/
+                clearTimeout(activityTimeout);
+                activityTimeout = setTimeout(loadData, 30000);
+            }
+
+            function loadData() {
                 location.reload();
+            }
 
-            }, 30000);
+            // Check for mousemove, could add other events here such as checking for key presses ect.
+            $(document).bind('mousemove', function () { resetActive() });
         });
     </script>
 }

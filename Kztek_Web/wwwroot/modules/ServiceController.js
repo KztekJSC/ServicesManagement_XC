@@ -96,6 +96,7 @@ var ServiceController = {
                 $('#boxTable1').html(data);
                 JSLoader.load_ViewImage();
                 $("#spCount").text($("#totalCount").val());
+                
             });
     },
     AddValueSelect: function (str, controller, action) {
@@ -221,10 +222,11 @@ var ServiceController = {
 
         JSHelper.AJAX_LoadDataPOST('/Admin/Service/Modal_Assign', obj)
             .done(function (data) {
-               
+              
                 $("#boxModal").html(data);
-                $("#ModalAssign").modal("show");
                 JSLoader.load_DateTimePicker();
+                $("#ModalAssign").modal("show");
+              
             });
     },
     SaveAssign: function () {

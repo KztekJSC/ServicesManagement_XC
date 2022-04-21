@@ -208,7 +208,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                                     ConfirmDate = DateTime.MaxValue,
                                     DivisionDate = DateTime.MaxValue,
                                     ParkingPosition = "Chưa có vị trí đỗ",
-                                    TimeIntend = Convert.ToDateTime( "2021-01-01 00:00:00.000"),
+                                    TimeIntend = DateTime.Now,
                                     GroupId = ""
 
                                 };
