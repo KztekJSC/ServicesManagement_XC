@@ -620,7 +620,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 {
                     count++;
 
-                    query.AppendLine(string.Format("'{0}'{1}", item, count == plates.Count ? "" : ","));
+                    query.AppendLine(string.Format("'{0}'{1}", item.Trim(), count == plates.Count ? "" : ","));
                 }
 
                 query.AppendLine(" )");
