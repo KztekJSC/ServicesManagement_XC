@@ -15,10 +15,12 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
     {
         private IServiceRepository _ServiceRepository;
         private Itbl_EventService _tbl_EventService;
-        public GroupServieService(IServiceRepository _ServiceRepository, Itbl_EventService _tbl_EventService)
+        private ItblGroupServiceRepository _tblGroupServiceRepository;
+        public GroupServieService(IServiceRepository _ServiceRepository, Itbl_EventService _tbl_EventService , ItblGroupServiceRepository _tblGroupServiceRepository)
         {
             this._ServiceRepository = _ServiceRepository;
             this._tbl_EventService = _tbl_EventService;
+            this._tblGroupServiceRepository = _tblGroupServiceRepository;
         }
 
         public async Task<MessageReport> Create(Service model)
@@ -54,6 +56,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
           
         }
 
+       
         public async Task<GridModel<Service>> GetAllCustomPagingByFirst(string key, string pc, int pageNumber, int pageSize)
         {
             var query = from n in _ServiceRepository.Table
@@ -77,6 +80,27 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<Service> GetById(string id)
         {
             return await _ServiceRepository.GetOneById(id);
+        }
+
+        public async Task<Service_Submit> GetCustomeById(string id)
+        {
+            var model = await GetById(id);
+
+            var obj = new Service_Submit()
+            {
+                Id = model.Id,
+                Code = model.Code,  
+                Groups = new List<string>(),
+                Description = model.Description,
+                Name = model.Name,
+                
+            };
+
+            obj.Groups = (from n in _tblGroupServiceRepository.Table
+                         where n.ServiceId == model.Id
+                         select n.GroupId).ToList();
+
+            return obj;
         }
 
         public async Task<MessageReport> Update(Service oldObj)

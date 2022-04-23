@@ -40,7 +40,7 @@
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("10")   ? "" : "none")">Bắt đầu </th>
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("11")   ? "" : "none")">Kết thúc</th>
                 <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("12")   ? "" : "none")">Ngày tạo</th>
-                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">Thời gian dự kiến</th>
+                <th class="text-center hidden-col" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">Thời gian hoàn thành dự kiến</th>
             </tr>
         </thead>
 
@@ -161,9 +161,9 @@
                     @item.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss")
                 </td>
                 <td class="center hidden-col" style="display :@string.Format("{0}",shows.Contains("13")   ? "" : "none")">
-                    @if (!item.TimeIntend.ToString("yyyy/MM/dd").Contains("2021/01/01"))
+                    @if (item.TimeIntend != null)
                     {
-                        @item.TimeIntend.ToString("dd/MM/yyyy HH:mm:ss")
+                        @item.TimeIntend
                     }
                     else
                     {

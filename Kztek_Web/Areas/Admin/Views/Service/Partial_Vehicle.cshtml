@@ -75,7 +75,7 @@
                 </td>
 
 
-                <td class="center" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
+                <td class="center" id="@item.Service" idata="7" style="display :@string.Format("{0}",shows.Contains("7")   ? "" : "none")">
                     @{
                         var obj = lst != null ? lst.FirstOrDefault(n => n.Id == item.Service) : null;
                         if (obj != null)
@@ -107,6 +107,7 @@
                     </a>
 
                 </td>
+              
             </tr>
                 }
             }

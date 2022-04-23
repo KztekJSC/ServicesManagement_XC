@@ -23,9 +23,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
         private IGroupService _GroupService;
         private IServiceService _ServiceService;
         private IColumTableService _ColumTableService;
-        public ServiceController(Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService, IColumTableService _ColumTableService)
+        private ItblGroupServiceService _tblGroupServiceService;
+        public ServiceController(ItblGroupServiceService _tblGroupServiceService,Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService, IColumTableService _ColumTableService)
         {
             this._tbl_EventService = _tbl_EventService;
+            this._tblGroupServiceService = _tblGroupServiceService;
             this._ColumTableService = _ColumTableService;
             this._ServiceService = _ServiceService;
             this._GroupService = _GroupService;
@@ -33,8 +35,73 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
 
         #region DDL
+        public async Task<List<SelectListModel>> GetAllGroupByService(string service )
+          
+        {
+            var lstIdGr = await _tblGroupServiceService.GetAllByService(service);
+           
+            var lstGr = new List<Kztek_Model.Models.Group>();
+            foreach (var item in lstIdGr)
+            {
+                var obj = new Kztek_Model.Models.Group();
+                var m = await _GroupService.GetById(item.GroupId);
+                if (m != null)
+                {
+                    obj.Id = m.Id;
+                    obj.Code = m.Code;
+                    obj.CreatedDate = m.CreatedDate;
+                    obj.Description = m.Description;
+                    obj.ModifiedDate = m.ModifiedDate;
+                    obj.Name = m.Name;
+                    lstGr.Add(obj);
+                }
 
-        private async Task<SelectListModel_Chosen> GetAllGroup(string selecteds, string id = "GroupID")
+            }
+            var list = new List<SelectListModel> { };
+          
+            if (lstGr.Any())
+            {
+                foreach (var item in lstGr)
+                {
+                    list.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });
+                }
+            }
+            return list;
+        }
+        private async Task<SelectListModel_Chosen> GetSelectModelGroupByService( string service ,string selecteds, string id = "GroupID" )
+        {
+            var data = await GetAllGroupByService(service);
+
+
+            var cus = new List<SelectListModel>();
+            var lst = data;
+            if (lst != null && lst.Count > 0)
+            {
+                cus.Add(new SelectListModel()
+                {
+                    ItemText = "---- Lựa chọn ----",
+                    ItemValue = ""
+                });
+
+                cus.AddRange(data.Select(n => new SelectListModel()
+                {
+                    ItemText = n.ItemText,
+                    ItemValue = n.ItemValue
+                }));
+            }
+
+            var model = new SelectListModel_Chosen
+            {
+                Data = cus,
+                Placeholder = await LanguageHelper.GetLanguageText("STATICLIST:DEFAULT"),
+                IdSelectList = id,
+                isMultiSelect = false,
+                Selecteds = selecteds
+            };
+
+            return model;
+        }
+        private async Task<SelectListModel_Chosen> GetAllGroup( string selecteds, string id = "GroupID")
         {
             var data = await GetAllGroup();
 
@@ -459,11 +526,12 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {          
             var objService = await _tbl_EventService.GetByCustomById(id,this.HttpContext);
 
-            ViewBag.Group = await GetAllGroup();
+            ViewBag.Group = await GetAllGroupByService(objService.service);
             ViewBag.TimeIntends = objService.TimeIntend;
             return PartialView(objService);
         }
 
+      
         public async Task<IActionResult> SaveAssign(string id,string groupid , string TimeIntend)
         {
             var result = new MessageReport(false,"Có lỗi xảy ra!");
@@ -500,7 +568,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         {
             var objService = await _tbl_EventService.GetByCustomById(id, this.HttpContext);
 
-            ViewBag.Group = await GetAllGroup();
+            ViewBag.Group = await GetAllGroupByService(objService.service);
 
             return PartialView(objService);
         }

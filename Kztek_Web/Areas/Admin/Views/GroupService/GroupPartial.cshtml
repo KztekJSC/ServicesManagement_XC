@@ -1,0 +1,21 @@
+﻿@model Kztek_Library.Models.ServiceSelectedModel
+
+<ul class="treeCustom">
+    @if (Model.Data_Group.Any())
+    {
+        foreach (var item in Model.Data_Group)
+        {
+            <li>
+                <label style="margin-bottom: 0px;">
+                    <input type="checkbox" name="chkCheckBox" id="chkCheckBox" value="@item.Id" class="ace chkCheckBox" @string.Format("{0}", Model.Selected.Contains(item.Id) ? "checked" : "") />
+                    <span class="lbl"></span>
+                </label>
+                <span class="liMenuFunction" style="font-weight: 700; color: #333;">
+                    <span> @item.Name</span>
+                </span>
+            </li>
+        }
+    }
+
+
+</ul>

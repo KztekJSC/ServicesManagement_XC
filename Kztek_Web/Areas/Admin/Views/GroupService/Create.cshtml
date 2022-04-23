@@ -1,7 +1,7 @@
 ﻿
-@model Kztek_Model.Models.Service
+@model Kztek_Model.Models.Service_Submit
 
-@await Html.PartialAsync("Partial_Action", new Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.Service>()
+@await Html.PartialAsync("Partial_Action", new Kztek_Library.Models.PartialActionModel<Kztek_Model.Models.Service_Submit>()
 {
     Model = Model,
     Controller = "GroupService",
@@ -20,6 +20,24 @@
 
             $("#BackToList").click(function () {
                 $("#SaveAndCountinue").val('false');
+            });
+
+            $("#frmGroupservice").submit(function () {
+                var lstId = "";
+
+                $("input[name='chkCheckBox']").each(function () {
+                    var cmd = $(this);
+                    var id = cmd.prop("value");
+
+                    if ($(this).is(":checked")) {
+                        lstId = lstId + id + ";";
+                    }
+                });
+
+                $("#Groupids").val(lstId);
+                var s1 = $("#Groupids").val();
+                console.log(s1);
+               
             });
         });
     </script>

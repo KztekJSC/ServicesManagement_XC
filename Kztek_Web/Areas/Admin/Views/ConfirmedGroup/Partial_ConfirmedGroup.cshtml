@@ -27,7 +27,7 @@
                 <th class="text-center">Nhóm hàng</th>
                 <th class="text-center">Dịch vụ</th>
                 <th class="text-center">Tổ </th>
-                <th class="text-center">Thời gian dự kiến</th>
+                <th class="text-center">Thời gian hoàn thành dự kiến</th>
                 <th class="text-center">Bắt đầu</th>
                 <th class="text-center">Kết thúc</th>
                 <th class="text-center"></th>
@@ -118,9 +118,9 @@
 
                 </td>
                 <td class="center">
-                    @if (!item.TimeIntend.ToString("yyyy/MM/dd").Equals("2021/01/01") )
+                    @if (item.TimeIntend != null)
                     {
-                        @item.TimeIntend.ToString("dd/MM/yyyy HH:mm:ss")
+                        @item.TimeIntend
                     }
                     else
                     {

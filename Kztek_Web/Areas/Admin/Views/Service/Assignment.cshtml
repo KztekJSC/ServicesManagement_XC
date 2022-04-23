@@ -118,18 +118,18 @@
                 ServiceController.AddValueSelectAsigment(str, "Service", "Assignment");
 
             });
-            var activityTimeout = setTimeout(loadData, 30000);
+            var activityTimeout = setTimeout(loadData, 600000);
 
             function resetActive() {
               /*  $(document.body).attr('class', 'active');*/
                 clearTimeout(activityTimeout);
-                activityTimeout = setTimeout(loadData, 30000);
+                activityTimeout = setTimeout(loadData, 600000);
             }
 
             function loadData() {
                 location.reload();
             }
-
+           
             // Check for mousemove, could add other events here such as checking for key presses ect.
             $(document).bind('mousemove', function () { resetActive() });
         });

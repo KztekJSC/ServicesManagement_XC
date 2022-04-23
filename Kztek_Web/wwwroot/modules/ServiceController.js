@@ -17,8 +17,8 @@
     $('body').on('click', '.btnSearchAssignment', function () {
         ServiceController.PartialVehicle();
     })
-
-    $('body').on('click', '.btnDelete', function () {
+  
+    $('body').on('click', ' .btnDelete', function () {
         var cmd = $(this);
         var id = cmd.attr('idata');
 
@@ -237,7 +237,7 @@ var ServiceController = {
             return false;
         }
         if (timeintend === '' || timeintend === null || typeof timeintend === 'undefined') {
-            toastr.error("Vui lòng chọn thời gian dự kiến!");
+            toastr.error("Vui lòng chọn Thời gian hoàn thành dự kiến!");
             return false;
         }
         var obj = {

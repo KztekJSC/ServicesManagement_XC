@@ -134,12 +134,12 @@
                     }
                 })
             });
-            var activityTimeout = setTimeout(loadData, 30000);
+            var activityTimeout = setTimeout(loadData, 600000);
 
             function resetActive() {
                 /*  $(document.body).attr('class', 'active');*/
                 clearTimeout(activityTimeout);
-                activityTimeout = setTimeout(loadData, 30000);
+                activityTimeout = setTimeout(loadData, 600000);
             }
 
             function loadData() {

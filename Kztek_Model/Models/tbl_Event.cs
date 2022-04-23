@@ -75,7 +75,7 @@ namespace Kztek_Model.Models
         public int Quantity { get; set; }//Số lượng
 
         public DateTime CreatedDate { get; set; } //Ngày tạo
-        public DateTime TimeIntend { get; set; } //thời gian dự định
+        public Nullable<DateTime> TimeIntend { get; set; } //thời gian dự định
 
         public DateTime ModifiedDate { get; set; } //Ngày cập nhật
 

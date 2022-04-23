@@ -17,9 +17,14 @@ namespace Kztek_Web.Areas.Admin.Controllers
     public class GroupServiceController : Controller
     {
         private IGroupServieService _GroupServieService;
-        public GroupServiceController(IGroupServieService _GroupServieService)
+         private IGroupService _GroupService;
+         private ItblGroupServiceService _tblGroupServiceService;
+
+        public GroupServiceController(IGroupServieService _GroupServieService, IGroupService _GroupService , ItblGroupServiceService _tblGroupServiceService)
         {
+            this._tblGroupServiceService = _tblGroupServiceService;
             this._GroupServieService = _GroupServieService;
+            this._GroupService = _GroupService;
         }
         #region Danh sách
 
@@ -45,10 +50,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>     
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpGet]
-        public async Task<IActionResult> Create(Kztek_Model.Models.Service model)
+        public async Task<IActionResult> Create(Service_Submit model, string AreaCode = "")
         {
-            model = model == null ? new Kztek_Model.Models.Service() : model;
-           
+            model = model == null ? new Service_Submit() : model;
+            model.Data_Group = await _GroupService.GetAll();
+            ViewBag.AreaCodeValue = AreaCode;
             return await Task.FromResult(View(model));
         }
         /// <summary>
@@ -63,7 +69,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>    
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Create(Kztek_Model.Models.Service model, bool SaveAndCountinue = false)
+        public async Task<IActionResult> Create(Service_Submit model, bool SaveAndCountinue = false, string AreaCode = "" , string Groupids = "")
         {
 
 
@@ -71,18 +77,46 @@ namespace Kztek_Web.Areas.Admin.Controllers
             {
                 return View(model);
             }
-
-
+            model.Data_Group = await _GroupService.GetAll();
+            ViewBag.AreaCodeValue = AreaCode;    
+            ViewBag.Groupids  = Groupids;
+            var obj = new Kztek_Model.Models.Service();
             //
-            model.Id = Guid.NewGuid().ToString();
-            model.CreatedDate = DateTime.Now;
-            model.ModifiedDate = DateTime.Now;
+            obj.Id = Guid.NewGuid().ToString();
+            obj.Description = model.Description;         
+            obj.Name = model.Name;
+            obj.Code = model.Code;
+            
+            obj.CreatedDate = DateTime.Now;
+            obj.ModifiedDate = DateTime.Now;
 
             //Thực hiện thêm mới
-            var result = await _GroupServieService.Create(model);
+            if (!string.IsNullOrWhiteSpace(Groupids))
+            {
+                var ks = Groupids.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                model.Groups = new List<string>();
+                foreach (var item in ks)
+                {
+                    model.Groups.Add(item);
+                }
+
+                foreach (var item in model.Groups)
+                {
+                    var t = new tblGroupService()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ServiceId = obj.Id,
+                        GroupId = item
+                    };
+
+                    await _tblGroupServiceService.CreateMap(t);
+                }
+            }
+
+            var result = await _GroupServieService.Create(obj);
             if (result.isSuccess)
             {
-                await LogHelper.WriteLog(model.Id.ToString(), ActionConfig.Create, JsonConvert.SerializeObject(model), HttpContext);
+                await LogHelper.WriteLog(obj.Id.ToString(), ActionConfig.Create, JsonConvert.SerializeObject(obj), HttpContext);
                 if (SaveAndCountinue)
                 {
                     TempData["Success"] = result.Message;
@@ -94,7 +128,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             else
             {
                 ModelState.AddModelError("", result.Message);
-                return View(model);
+                return View(obj);
             }
         }
 
@@ -115,9 +149,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpGet]
-        public async Task<IActionResult> Update(string id, string AreaCode = "", int page = 1, string key = "")
+        public async Task<IActionResult> Update(string id, string AreaCode = "", int page = 1, string key = "" , string Groupids = "")
         {
-            var model = await _GroupServieService.GetById(id);
+            var model = await _GroupServieService.GetCustomeById(id);
+            model.Data_Group = await _GroupService.GetAll();
+            ViewBag.Groupids = Groupids;
             ViewBag.PN = page;
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.keyValue = key;
@@ -138,18 +174,20 @@ namespace Kztek_Web.Areas.Admin.Controllers
         /// <returns></returns>
         [CheckSessionCookie(AreaConfig.Admin)]
         [HttpPost]
-        public async Task<IActionResult> Update(Group obj, string AreaCode = "", int page = 1, string key = "")
+        public async Task<IActionResult> Update(Service_Submit model, string AreaCode = "", int page = 1, string key = "", string Groupids = "")
         {
             //
             ViewBag.keyValue = key;
+            ViewBag.Groupids = Groupids;
             ViewBag.AreaCodeValue = AreaCode;
             ViewBag.PN = page;
             //Kiểm tra
-            var oldObj = await _GroupServieService.GetById(obj.Id);
+            var oldObj = await _GroupServieService.GetById(model.Id);
+            model.Data_Group = await _GroupService.GetAll();
             if (oldObj == null)
             {
                 ViewBag.Error = await LanguageHelper.GetLanguageText("MESSAGE:RECORD:NOTEXISTS");
-                return View(obj);
+                return View(model);
             }
 
 
@@ -159,11 +197,32 @@ namespace Kztek_Web.Areas.Admin.Controllers
                 return View(oldObj);
             }
 
-            oldObj.Id = obj.Id;
-            oldObj.Code = obj.Code;
-            oldObj.Name = obj.Name;
+            oldObj.Id = model.Id;
+            oldObj.Code = model.Code;
+            oldObj.Name = model.Name;
             oldObj.ModifiedDate = DateTime.Now;
+            await _tblGroupServiceService.DeleteMap(oldObj.Id);
+            if (!string.IsNullOrWhiteSpace(Groupids))
+            {
+                var ks = Groupids.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                model.Groups = new List<string>();
+                foreach (var item in ks)
+                {
+                    model.Groups.Add(item);
+                }
 
+                foreach (var item in model.Groups)
+                {
+                    var t = new tblGroupService()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        ServiceId = model.Id,
+                        GroupId = item
+                    };
+
+                    await _tblGroupServiceService.CreateMap(t);
+                }
+            }
 
             //Thực hiện cập nhậts
             var result = await _GroupServieService.Update(oldObj);
@@ -177,7 +236,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
             else
             {
                 ModelState.AddModelError("", result.Message);
-                return View(obj);
+                return View(model);
             }
         }
 

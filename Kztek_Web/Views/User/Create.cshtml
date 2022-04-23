@@ -40,7 +40,9 @@ Layout = Kztek_Library.Helpers.FunctionHelper.GetLayout(ViewBag.AreaCodeValue);
                 {
                     @class = "form-control",
                 @placeholder = ""
-                }) @Html.ValidationMessageFor(n =>
+                }) 
+                
+                @Html.ValidationMessageFor(n =>
 n.Username, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -143,7 +143,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             model.serviceCode = obj.ServiceCode;
             model.description = obj.Description;
             model.serviceName = objService.Name;
-            model.TimeIntend = obj.TimeIntend.ToString();
+            model.TimeIntend = obj.TimeIntend != null ? obj.TimeIntend.ToString() : DateTime.Now.ToString() ;
             return await Task.FromResult(model);
         }
 
