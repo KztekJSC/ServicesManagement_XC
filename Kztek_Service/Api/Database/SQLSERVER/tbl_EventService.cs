@@ -402,6 +402,8 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
                 if (result.isSuccess)
                 {
+
+                    ////
                     result = new MessageReport(true, "Thành công");
                     await LogHelper.WriteLogAPI("", "Xóa", "tbl_Event", JsonConvert.SerializeObject(item).ToString());
                     //nếu xóa sự kiện 2 xe đã vào bãi thì loại lại danh sách xác nhận
