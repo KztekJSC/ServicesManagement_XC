@@ -194,7 +194,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [CheckSessionCookie(AreaConfig.Admin)]
         public async Task<IActionResult> Delete(string id)
         {
-            var result = await _tbl_EventService.DeleteById(id);
+            var result = await _tbl_EventService.DeleteById(id ,HttpContext);
             if (result.isSuccess)
             {
                 await LogHelper.WriteLog(id, ActionConfig.Delete, id, HttpContext);

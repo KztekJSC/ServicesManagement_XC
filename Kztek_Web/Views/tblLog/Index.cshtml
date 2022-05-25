@@ -25,7 +25,7 @@
             <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:KEYWORD" }) </label>
             <input type="text" name="key" value="@ViewBag.keyValue" class="form-control" />
         </div>
-        <div class="col-md-2 col-xs-12 divboxmd">
+        @*<div class="col-md-2 col-xs-12 divboxmd">
             <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:FROMDATE" })</label>
             <div class="input-group">
                 @Html.TextBox("fromdate", (string)ViewBag.fromdateValue, new { @class = "form-control datepicker" })
@@ -33,11 +33,11 @@
                     <i class="fa fa-calendar"></i>
                 </span>
             </div>
-        </div>
+        </div>*@
         <div class="col-md-2 col-xs-12 divboxmd">
-            <label class="control-label"> @await Component.InvokeAsync("Language", new { path = "BODY:SEARCH:TODATE" })</label>
+            <label class="control-label"> Thời gian</label>
             <div class="input-group">
-                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control datepicker" })
+                @Html.TextBox("todate", (string)ViewBag.todateValue, new { @class = "form-control drp_auto_input" })
                 <span class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </span>

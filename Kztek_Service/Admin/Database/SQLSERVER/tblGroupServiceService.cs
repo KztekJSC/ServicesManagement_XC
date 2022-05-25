@@ -35,7 +35,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
         public async Task<List<tblGroupService>> GetAllByService(string service)
         {
            var qu = from n in _tblGroupServiceRepository.Table
-                    where n.ServiceId == service
+                    where n.ServiceId == service  
                     select n;
             return await Task.FromResult(qu.ToList());
         }

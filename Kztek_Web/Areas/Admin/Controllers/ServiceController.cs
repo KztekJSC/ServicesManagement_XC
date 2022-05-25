@@ -24,7 +24,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         private IServiceService _ServiceService;
         private IColumTableService _ColumTableService;
         private ItblGroupServiceService _tblGroupServiceService;
-        public ServiceController(ItblGroupServiceService _tblGroupServiceService,Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService, IColumTableService _ColumTableService)
+        public ServiceController(ItblGroupServiceService _tblGroupServiceService, Itbl_EventService _tbl_EventService, IGroupService _GroupService, IServiceService _ServiceService, IColumTableService _ColumTableService)
         {
             this._tbl_EventService = _tbl_EventService;
             this._tblGroupServiceService = _tblGroupServiceService;
@@ -35,11 +35,11 @@ namespace Kztek_Web.Areas.Admin.Controllers
 
 
         #region DDL
-        public async Task<List<SelectListModel>> GetAllGroupByService(string service )
-          
+        public async Task<List<SelectListModel>> GetAllGroupByService(string service)
+
         {
             var lstIdGr = await _tblGroupServiceService.GetAllByService(service);
-           
+
             var lstGr = new List<Kztek_Model.Models.Group>();
             foreach (var item in lstIdGr)
             {
@@ -53,20 +53,23 @@ namespace Kztek_Web.Areas.Admin.Controllers
                     obj.Description = m.Description;
                     obj.ModifiedDate = m.ModifiedDate;
                     obj.Name = m.Name;
+                   
                     lstGr.Add(obj);
                 }
 
             }
+            List<Kztek_Model.Models.Group> lsGr = lstGr.OrderBy(group => group.Name).ToList();
+
             var list = new List<SelectListModel> { };
-          
-            if (lstGr.Any())
+        
+            if (lsGr.Any())
             {
-                foreach (var item in lstGr)
+                foreach (var item in lsGr)
                 {
                     list.Add(new SelectListModel { ItemValue = item.Id, ItemText = item.Name });
                 }
             }
-            return list;
+            return /*(List<SelectListModel>)*/list;
         }
         private async Task<SelectListModel_Chosen> GetSelectModelGroupByService( string service ,string selecteds, string id = "GroupID" )
         {
@@ -439,7 +442,7 @@ namespace Kztek_Web.Areas.Admin.Controllers
         [CheckSessionCookie(AreaConfig.Admin)]
         public async Task<IActionResult> Delete(string id)
         {
-            var result = await _tbl_EventService.DeleteById(id);
+            var result = await _tbl_EventService.DeleteById(id , HttpContext);
             if (result.isSuccess)
             {
                 await LogHelper.WriteLog(id, ActionConfig.Delete,"tbl_Event", id, HttpContext);

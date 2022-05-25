@@ -206,4 +206,7 @@ BEGIN
 	ALTER TABLE tbl_Event ADD TimeIntend datetime  null
 END
 
-
+--IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Group' AND COLUMN_NAME = 'SortOrder')
+--BEGIN
+--	ALTER TABLE [Group] ADD SortOrder int   null   
+--END

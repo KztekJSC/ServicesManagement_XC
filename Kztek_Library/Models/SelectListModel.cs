@@ -9,6 +9,12 @@ namespace Kztek_Library.Models
         public string ItemText { get; set; }
     }
 
+    public class model
+    {
+        public string ItemValue { get; set; }
+
+        
+    }
     public class SelectListModel_Breadcrumb
     {
         public string MenuName { get; set; }

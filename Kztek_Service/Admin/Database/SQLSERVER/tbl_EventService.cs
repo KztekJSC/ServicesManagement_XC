@@ -90,7 +90,7 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             return await Task.FromResult(listData);
         }
 
-        public async Task<MessageReport> DeleteById(string id)
+        public async Task<MessageReport> DeleteById(string id , HttpContext httpcontext)
         {
             var result = new MessageReport(false, await LanguageHelper.GetLanguageText("MESSAGEREPORT:ERR"));
 
@@ -104,8 +104,11 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
                 }
                 else
                 {
+                    
                     obj.IsDeleted = true;
+                    await LogHelper.WriteLog(id, ActionConfig.Delete, "tbl_Event", id + "-" + obj.BB_Id, httpcontext);
                     return await _tbl_EventRepository.Update(obj);
+                
                 }
 
             }

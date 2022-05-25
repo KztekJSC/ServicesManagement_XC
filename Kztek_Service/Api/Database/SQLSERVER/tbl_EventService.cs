@@ -267,16 +267,18 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 return result;
             }
             var lstPlateVN = model.plateVN.Split(",");
+            var count = 0;
             foreach (var item in lsst)
             {
-                if (item.Id != obj.Id)
-                {
+                count++;
+                //if (item.Id != obj.Id)
+                //{
 
                     item.Service = model.service;
                     item.ServiceCode = model.serviceCode;
                     item.Code = model.code;
 
-                    item.PlateVN = lstPlateVN[1];
+                    item.PlateVN = lstPlateVN[count -1].Trim();
                     item.ImageVN = model.imageVN;
 
                     if (!string.IsNullOrEmpty(model.timeInVN))
@@ -312,50 +314,53 @@ namespace Kztek_Service.Api.Database.SQLSERVER
 
 
                     result = await _tbl_EventRepository.Update(item);
+                    await LogHelper.WriteLogAPI("", "Update", "tbl_Event", JsonConvert.SerializeObject(item).ToString());
+                //}
                 }
-                }
 
 
 
-            obj.Service = model.service;
-            obj.ServiceCode = model.serviceCode;
-            obj.Code = model.code;
+            //obj.Service = model.service;
+            //obj.ServiceCode = model.serviceCode;
+            //obj.Code = model.code;
 
-            obj.PlateVN = lstPlateVN[0];
-            obj.ImageVN = model.imageVN;
+            //obj.PlateVN = lstPlateVN[0];
+            //obj.ImageVN = model.imageVN;
 
-            if (!string.IsNullOrEmpty(model.timeInVN))
-            {
-                obj.TimeInVN = Convert.ToDateTime(model.timeInVN);
+            //if (!string.IsNullOrEmpty(model.timeInVN))
+            //{
+            //    obj.TimeInVN = Convert.ToDateTime(model.timeInVN);
 
-            }
+            //}
 
-            obj.PlateCN = model.plateCN;
-            obj.ImageCN = model.imageCN;
+            //obj.PlateCN = model.plateCN;
+            //obj.ImageCN = model.imageCN;
 
-            if (!string.IsNullOrEmpty(model.timeInCN))
-            {
-                obj.TimeInCN = Convert.ToDateTime(model.timeInCN);
-            }
+            //if (!string.IsNullOrEmpty(model.timeInCN))
+            //{
+            //    obj.TimeInCN = Convert.ToDateTime(model.timeInCN);
+            //}
 
-            obj.ProductType = model.productType;
-            obj.Weight = model.weight;
-            obj.VehicleType = model.vehicleType;
-            obj.ProductGroup = model.productGroup;
-            obj.Price = model.price;
-            obj.SubPrice = model.subPrice;
-            obj.PaymentStatus = model.paymentStatus;
-            obj.ModifiedDate = DateTime.Now;
+            //obj.ProductType = model.productType;
+            //obj.Weight = model.weight;
+            //obj.VehicleType = model.vehicleType;
+            //obj.ProductGroup = model.productGroup;
+            //obj.Price = model.price;
+            //obj.SubPrice = model.subPrice;
+            //obj.PaymentStatus = model.paymentStatus;
+            //obj.ModifiedDate = DateTime.Now;
 
-            //Lấy id dịch vụ từ db
-            var idService = await GetIdService(obj.Service, obj.ServiceCode);
+            ////Lấy id dịch vụ từ db
+            //var idService = await GetIdService(obj.Service, obj.ServiceCode);
 
-            //gán lại id dịch vụ
-            obj.Service = idService;
-            result = await _tbl_EventRepository.Update(obj);
+            ////gán lại id dịch vụ
+            //obj.Service = idService;
+            //result = await _tbl_EventRepository.Update(obj);
+            //await LogHelper.WriteLogAPI("", "Update", "tbl_Event", JsonConvert.SerializeObject(obj).ToString());
             if (result.isSuccess)
             {
                 result = new MessageReport(true, "Thành công");
+
             }
 
             return result;
@@ -398,7 +403,7 @@ namespace Kztek_Service.Api.Database.SQLSERVER
                 if (result.isSuccess)
                 {
                     result = new MessageReport(true, "Thành công");
-
+                    await LogHelper.WriteLogAPI("", "Xóa", "tbl_Event", JsonConvert.SerializeObject(item).ToString());
                     //nếu xóa sự kiện 2 xe đã vào bãi thì loại lại danh sách xác nhận
                     if (item.VehicleStatusVN == 1 && item.VehicleStatusCN == 1)
                     {

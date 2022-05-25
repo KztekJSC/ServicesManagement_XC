@@ -144,27 +144,27 @@ namespace Kztek_Web.Controllers
         {
             var model = new RegisterModel();
             model.isAny = _UserService.GetAll().Result.Any();
-            if (model.isAny)
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            //if (model.isAny)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Register(RegisterModel model)
         {
             model.isAny = _UserService.GetAll().Result.Any();
-            if (model.isAny)
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            //if (model.isAny)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
 
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
             //Kiểm tra mật khẩu
             if (model.Password != model.RePassword)

@@ -300,7 +300,7 @@ namespace Kztek_Web.Controllers
             oldObj.Name = model.Name;
             oldObj.Username = model.Username;
             oldObj.Admin = model.isAdmin;
-            oldObj.GroupIds = oldObj.Admin ? "" : groupids;
+            oldObj.GroupIds = oldObj.Admin ? "" : groupids;      
             oldObj.TypeNotifi = model.TypeNotifi;
 
             //Kiểm tra mật khẩu mới

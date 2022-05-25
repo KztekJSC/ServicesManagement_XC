@@ -14,7 +14,7 @@ namespace Kztek_Service.Admin
     public interface Itbl_EventService
     {
         Task<MessageReport> Create(tbl_Event obj);
-        Task<MessageReport> DeleteById(string id);
+        Task<MessageReport> DeleteById(string id , HttpContext HttpContext);
         Task<tbl_Event> GetById(string id);
         Task<MessageReport> Update(tbl_Event oldObj);
          Task<GridModel<tbl_Event>> GetPagingInOut(string key, int page, int v, string statusID, string fromdate, string todate, string ServiceId = "", string GroupId = "");

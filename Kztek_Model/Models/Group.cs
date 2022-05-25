@@ -18,6 +18,8 @@ namespace Kztek_Model.Models
 
         public string Name { get; set; }
 
+        //public string SortOrder { get; set; }
+
         public string Description { get; set; }
 
         public DateTime CreatedDate { get; set; } //Ngày tạo

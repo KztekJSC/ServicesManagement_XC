@@ -50,9 +50,10 @@ namespace Kztek_Service.Admin.Database.SQLSERVER
             if (!string.IsNullOrWhiteSpace(fromdate) || !string.IsNullOrWhiteSpace(todate))
             {
                 var fdate = Convert.ToDateTime(fromdate);
-                var tdate = Convert.ToDateTime(todate).AddDays(1);
+                var tdate = Convert.ToDateTime(todate);
 
-                query = query.Where(n => n.Date.Value >= fdate && n.Date < tdate);
+                query = query.Where(n => n.Date.Value.ToString("ddMMyyyy") .Equals( tdate.ToString("ddMMyyyy")));
+         
             }
             else
             {
